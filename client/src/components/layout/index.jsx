@@ -4,22 +4,24 @@ import Header from "./Nav";
 import Footer from "./Footer";
 import { makeStyles } from "@material-ui/core/styles";
 import { Outlet } from "react-router-dom";
-// Custom hook for styling
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    minHeight: "100vh",
+    minHeight: "100vh", 
   },
   content: {
     flexGrow: 1,
-    flexShrink: 0, // Prevents shrinking of content div
+    flexShrink: 0, 
+    overflow: 'auto', // Helps to ensure content flows correctly
   },
   footer: {
-    flexShrink: 0, // Prevents shrinking of footer div
-    // Rest of footer styles
+    flexShrink: 0, 
+    marginTop: 'auto', // Pushes the footer to the end of content or viewport
   },
 }));
+
 const PageLayout = () => {
   const classes = useStyles();
   return (
@@ -28,14 +30,17 @@ const PageLayout = () => {
       <main className={classes.content}>
         <Outlet />
       </main>
-      <Footer className={classes.footer} />
+      <Footer className={classes.footer} />         
     </div>
   );
 };
+
 PageLayout.propTypes = {
   children: PropTypes.node,
 };
+
 PageLayout.defaultProps = {
   children: null,
 };
+
 export default PageLayout;

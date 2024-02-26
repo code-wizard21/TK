@@ -68,7 +68,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function CollapsibleRow({ props, row, isMobile, index }) {
   const [open, setOpen] = useState(false);
   const onDelete = (data) => {
-    console.log(data);
     const getCustomer = () => {
       Http.get("/api/wash/getWasherlist")
         .then((data) => {
@@ -271,7 +270,7 @@ export default function ResponsiveCollapsibleTable() {
             }}
             startIcon={<AddIcon />}
           >
-            Add Washer
+            Add 
           </Button>
         </Stack>
 

@@ -79,11 +79,7 @@ function CollapsibleRow({ index, row, isMobile }) {
               <span> {row.Date}</span>
               {/* </div> */}
             </TableCell>
-            <TableCell>
-              <IconButton color="secondary" aria-label="add an alarm">
-                <CheckBoxIcon />
-              </IconButton>
-            </TableCell>
+
           </>
         )}
       </StyledTableRow>
@@ -106,17 +102,7 @@ function CollapsibleRow({ index, row, isMobile }) {
                       </TableCell>
                       <TableCell align="right">{row.date}</TableCell>
                     </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        Action
-                      </TableCell>
 
-                      <TableCell align="right">
-                        <IconButton color="secondary" aria-label="add an alarm">
-                          <CheckBoxIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
                   </TableBody>
                 </Table>
               </Box>
@@ -144,7 +130,7 @@ export default function ResponsiveCollapsibleTable(props) {
               <>
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+             
               </>
             )}
           </TableRow>

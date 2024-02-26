@@ -47,14 +47,29 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function CollapsibleRow({ index, props, row, isMobile }) {
   const [open, setOpen] = useState(false);
-  const onAccepted = (data) => {
+  const onRejected = (data) => {
     console.log(data);
+    Http.post("/api/cus/rejetedItemCustom", { id: data })
+      .then((data) => {
+        props.setData(data.data);
+        props.setFlag(true);
+        toast.success(" Request successfully Rejected.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const onAccepted = (data) => {
     Http.post("/api/cus/acceptedItemCustom", {
       name: props.auth.user.name,
       carnumber: data,
     })
       .then((data) => {
-        toast.success(" Request successfully submitted.");
+        toast.success(" Request successfully submitted.", {
+          hideProgressBar: true,
+        });
         props.setData(data.data);
         props.setFlag(true);
       })
@@ -89,14 +104,10 @@ function CollapsibleRow({ index, props, row, isMobile }) {
         {!isMobile && (
           <>
             <TableCell>
-              {/* <div className="date"> */}
               <span> {row.Detail}</span>
-              {/* </div> */}
             </TableCell>
             <TableCell>
-              {/* <div className="date"> */}
               <span> {row.Date}</span>
-              {/* </div> */}
             </TableCell>
 
             <TableCell>
@@ -107,9 +118,15 @@ function CollapsibleRow({ index, props, row, isMobile }) {
               >
                 <CheckIcon />
               </IconButton>
-              {/* <IconButton color="secondary" aria-label="add an alarm">
+              <IconButton
+                color="secondary"
+                aria-label="add an alarm"
+                onClick={() => {
+                  onRejected(row.id);
+                }}
+              >
                 <ClearIcon />
-              </IconButton> */}
+              </IconButton>
             </TableCell>
           </>
         )}
@@ -146,9 +163,15 @@ function CollapsibleRow({ index, props, row, isMobile }) {
                         >
                           <CheckIcon />
                         </IconButton>
-                        {/* <IconButton color="secondary" aria-label="add an alarm">
+                        <IconButton
+                          color="secondary"
+                          aria-label="add an alarm"
+                          onClick={() => {
+                            onRejected(row.id);
+                          }}
+                        >
                           <ClearIcon />
-                        </IconButton> */}
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   </TableBody>

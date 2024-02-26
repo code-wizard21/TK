@@ -1,5 +1,5 @@
 import { useState } from "react";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 
 export const useSnackbar = () => {
   const [open, setOpen] = useState(false);
@@ -22,11 +22,11 @@ export const useSnackbar = () => {
     onClose: onAlertBtnClose,
     anchorOrigin: {
       vertical: "top",
-      horizontal: "right"
+      horizontal: "right",
     },
 
     ContentProps: {
-      "aria-describedby": "message-id"
-    }
+      "aria-describedby": "message-id",
+    },
   };
 };

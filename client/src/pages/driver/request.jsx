@@ -16,7 +16,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import CheckBoxIcon from "@mui/icons-material/Check";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -75,11 +75,7 @@ function CollapsibleRow({ index, row, isMobile }) {
             <TableCell>
               <span> {row.Date}</span>
             </TableCell>
-            <TableCell>
-              <IconButton color="secondary" aria-label="add an alarm">
-                <CheckBoxIcon />
-              </IconButton>
-            </TableCell>
+
           </>
         )}
       </StyledTableRow>
@@ -102,17 +98,7 @@ function CollapsibleRow({ index, row, isMobile }) {
                       </TableCell>
                       <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        Action
-                      </TableCell>
-
-                      <TableCell align="right">
-                        <IconButton color="secondary" aria-label="add an alarm">
-                          <CheckBoxIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
+            
                   </TableBody>
                 </Table>
               </Box>
@@ -140,7 +126,7 @@ export default function ResponsiveCollapsibleTable(props) {
               <>
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+   
               </>
             )}
           </TableRow>
