@@ -1,0 +1,48 @@
+.home {
+  display: inline-grid;
+  width: 100%;
+}
+
+.btnContainer {
+  margin: 0.35em;
+  display: flex;
+  justify-self: flex-end;
+}
+
+.accept {
+  background-color: green;
+  color: white;
+  padding: 0.3em 0.5em;
+  margin: 0.5em;
+  display: flex;
+  text-decoration: none;
+  border-radius: 2em;
+  font-weight: bolder;
+  justify-content: center;
+}
+.finish {
+  background-color: black;
+  color: white;
+  padding: 0.3em 0.5em;
+  margin: 0.5em;
+  display: flex;
+  text-decoration: none;
+  border-radius: 2em;
+  font-weight: bolder;
+  justify-content: center;
+}
+
+.requestclean {
+  background-color: orange;
+  color: white;
+  padding: 0.3em 0.5em;
+  margin: 0.5em;
+  display: flex;
+  text-decoration: none;
+  border-radius: 2em;
+  font-weight: bolder;
+  justify-content: center;
+}
+
+
+  

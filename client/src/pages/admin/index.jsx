@@ -1,0 +1,50 @@
+import React, { useState } from "react";
+import { Grid, Box } from "@mui/material";
+import { styled } from "@mui/system";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Sidebar from "./sidebar";
+import { Outlet } from "react-router-dom";
+
+const AdminStyled = styled("div")(({ theme }) => ({
+  root: {
+    display: "flex",
+  },
+  //... other styles defined in your code
+}));
+
+function Admin() {
+  const [open, setOpen] = useState(true);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8,
+      }}
+    >
+      <CssBaseline />
+      <Grid container>
+        <Grid item xs={12} sm={3}>
+          <Sidebar
+            handleDrawerOpen={handleDrawerOpen}
+            handleDrawerClose={handleDrawerClose}
+            draweropen={open}
+          />
+        </Grid>
+        <Grid item xs={12} sm={9}>
+          <Outlet />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+export default Admin;
