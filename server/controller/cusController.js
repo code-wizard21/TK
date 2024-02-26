@@ -12,13 +12,13 @@ exports.Register = (req, res) => {
   };
   // Save Tutorial in the database
   Customerlist.create(userlist)
-    .then(data => {
+    .then((data) => {
       // const customer = await Customerlist.findAll({
       //   where: {
       //     CustomerName: req.body.name,
       //   },
       // });
-      res.status(200).send({data});
+      res.status(200).send({ data });
     })
     .catch((err) => {
       res.status(500).send({
@@ -27,10 +27,17 @@ exports.Register = (req, res) => {
       });
     });
 };
-
+exports.findallcustomreq = async (req, res) => {
+  const customerlist = await Customerlist.findAll({
+    where: {
+      State: "request",
+    },
+  });
+  res.send(customerlist);
+};
 exports.findAllCustom = async (req, res) => {
   console.log(req.body);
-  console.log("121212112121",req.body)
+  console.log("121212112121", req.body);
   const customerlist = await Customerlist.findAll({
     where: {
       CustomerName: req.body.name,
@@ -90,4 +97,26 @@ exports.findAcceptCustom = async (req, res) => {
   });
 
   res.send(customerlist);
+};
+exports.rejetedItemCustom = async (req, res) => {
+  console.log(req.body);
+  try {
+    const user = await Customerlist.update(
+      { State: "rejected" },
+      {
+        where: {
+          id: req.body.id,
+        },
+      }
+    );
+    const customerlist = await Customerlist.findAll({
+      where: {
+        State: "request",
+      },
+    });
+    console.log(customerlist);
+    res.status(200).json(customerlist);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

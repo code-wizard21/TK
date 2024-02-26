@@ -13,12 +13,11 @@ import {
   useTheme,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import ClearIcon from "@mui/icons-material/Clear";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
-// ... Your rows data here
+
 function createData(cnumber, description, date) {
   return { cnumber, description, date };
 }

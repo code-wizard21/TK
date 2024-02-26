@@ -5,39 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
-  Button,
-  Checkbox,
   Divider,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-// third party
 import * as Yup from "yup";
 import { Formik } from "formik";
-
-// project imports
 import useScriptRef from "../../../hooks/useScriptRef";
 import AnimateButton from "../../../ui-component/extended/AnimateButton";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
-
-// assets
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Http from "../../../utils/http";
-import Google from "../../../assets/images/icons/social-google.svg";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-// ============================|| FIREBASE - LOGIN ||============================ //
 
 const Login = ({ ...others }) => {
   const theme = useTheme();
@@ -138,11 +127,6 @@ const Login = ({ ...others }) => {
               .catch((err) => {
                 console.log(err);
               });
-
-            // if (scriptedRef.current) {
-            //   setStatus({ success: true });
-            //   setSubmitting(false);
-            // }
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {
@@ -243,31 +227,6 @@ const Login = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-            {/* <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              spacing={1}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checked}
-                    onChange={(event) => setChecked(event.target.checked)}
-                    name="checked"
-                    color="primary"
-                  />
-                }
-                label="Remember me"
-              />
-              <Typography
-                variant="subtitle1"
-                color="secondary"
-                sx={{ textDecoration: "none", cursor: "pointer" }}
-              >
-                Forgot Password?
-              </Typography>
-            </Stack> */}
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

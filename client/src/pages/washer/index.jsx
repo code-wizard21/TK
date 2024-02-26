@@ -5,9 +5,16 @@ import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import Accept from "./accecpint";
 import Washing from "./washing";
+import { useTheme } from "@material-ui/core/styles";
 import Request from "./request";
 import Http from "../../utils/http";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {
+  Container
+} from "@mui/material";
+
 export default function LabTabs() {
+
   const [value, setValue] = useState("1");
   const [cusList, setCusList] = useState([]);
   const [cusAccepted, setCusAccepted] = useState([]);
@@ -23,7 +30,7 @@ export default function LabTabs() {
       navigate("/");
     }
   }, [auth.isLoggedI, navigate]);
-
+  const theme = useTheme();
   useEffect(() => {
     Http.get("/api/wash/getAllList")
       .then((data) => {
@@ -47,6 +54,7 @@ export default function LabTabs() {
         console.log(err);
       });
   }, [flag, auth.user.name]);
+ const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
@@ -57,22 +65,25 @@ export default function LabTabs() {
         // Add additional styling as needed here
       }}
     >
+       <Container>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList
-            onChange={handleChange}
-            allowScrollButtonsMobile
-            aria-label="lab API tabs example"
-            sx={{
-              "& .MuiTab-root": {
-                // Apply styles to each Tab
-                fontSize: { sm: "0.875rem", md: "1rem" }, // Adjust font size for different breakpoints
-                minWidth: 0, // Remove the default minWidth
-                padding: { sm: "6px 12px", md: "8px 16px" }, // Adjust padding for different breakpoints
-                // Add additional styles as needed
-              },
-            }}
-          >
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              centered={isSmallScreen ? false : true} // If not small screen, center the tabs for visual appeal
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                "& .MuiTab-root": {
+                  fontSize: isSmallScreen ? "0.7rem" : "1rem",
+                  minWidth: 0,
+                  padding: isSmallScreen ? "5px 10px" : "10px 20px",
+                  fontWeight: "600",
+                  color: "#191923",
+                },
+          
+              }}
+            >
             <Tab label="Requested" value="1" />
             <Tab label="Accepted" value="2" />
             <Tab label="Washed " value="3" />
@@ -102,6 +113,7 @@ export default function LabTabs() {
           <Washing data={cusWashed} setData={setCusWashed} auth={auth} />
         </TabPanel>
       </TabContext>
+      </Container>
     </Box>
   );
 }

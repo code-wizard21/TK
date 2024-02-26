@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import Box from "@mui/joy/Box";
 import Drawer from "@mui/joy/Drawer";
 import Button from "@mui/joy/Button";
@@ -16,10 +15,11 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import { useSelector } from "react-redux";
-
-import SendIcon from "@mui/icons-material/Send";
+import AddIcon from "@mui/icons-material/Add";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
@@ -29,68 +29,23 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Http from "../../../utils/http";
 
 export default function DrawerAnchor() {
-  const [trackCode, setTrackCode] = useState("");
-  const [description, setDescription] = useState("");
-  const [showErrors, setShowErrors] = useState(false);
-  const [date, setDate] = useState(dayjs());
-  const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+  const navigate = useNavigate();
 
-  const validate = () => {
-    console.log("eeee");
-    if (!trackCode && !description) {
-      setShowErrors(true);
-    } else {
-      setShowErrors(false);
-
-      Http.post("/api/cus/register", {
-        name: auth.user.name,
-        cardNum: trackCode,
-        detail: description,
-        date: date,
-      })
-        .then((data) => {
-          if (data.data) {
-            getList();
-
-            // toggleDrawer('right', false)
-            toast.success(" Request is successfully submitted.");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-  const toggleDrawer = (anchor, open) => (event) => {
-    console.log("anchor", anchor, open);
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [value, setValue] = useState("1");
   const [cusData, setCusData] = useState([]);
   const [cusAccept, setCusAccept] = useState([]);
+  const [open, setOpen] = React.useState(false);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   useEffect(() => {
     getList();
   }, []);
+    const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const getList = () => {
     Http.post("/api/cus/findAllCustom", { name: auth.user.name })
       .then((data) => {
@@ -101,24 +56,157 @@ export default function DrawerAnchor() {
       });
     Http.post("/api/cus/findAcceptCustom", { name: auth.user.name })
       .then((data) => {
-        setCusAccept(data.data);
+        console.log(data.data);
+        setCusAccept(data.data);  
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const list = (anchor) => (
+  const buttonStyle = {
+    backgroundColor: "#009688",
+    color: "#FFFFFF",
+    textTransform: "uppercase",
+    // Larger padding for a more prominent button
+    fontSize: "1rem",
+    boxShadow: "5px 5px 15px rgba(0,0,0,0.15)", // Soft shadow for a neumorphic effect
+    borderRadius: "50px", // Rounded corners for a softer appeal
+    fontWeight: "600", // Bold typography
+    letterSpacing: "1px", // Letter spacing for uppercase font
+    marginLeft: "auto",
+    padding: "5px 10px",
+  };
+
+  const toggleDrawer = (inOpen) => {
+    setOpen(inOpen);
+  };
+  return (
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: { xs: 2, sm: 4, md: 6, lg: 8 },
+      }}
+    >
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={1}
+          sx={{ width: 1 }} // makes the Stack take the full width of the Container
+        >
+          <Box flexGrow={1}></Box>
+
+          <Button
+            variant="contained"
+            onClick={() => toggleDrawer(true)}
+            style={buttonStyle}
+            size="small"
+          >
+            <AddIcon />
+          </Button>
+        </Stack>
+
+        <TabContext value={value}>
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: "#A9A9A9",
+              backgroundColor: "#F3F6F9", // Changing the background color to a modern light shade
+            }}
+          >
+            <TabList
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              centered={isSmallScreen ? false : true} // If not small screen, center the tabs for visual appeal
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                "& .MuiTab-root": {
+                  fontSize: isSmallScreen ? "0.7rem" : "1rem",
+                  minWidth: 0,
+                  padding: isSmallScreen ? "5px 10px" : "10px 20px",
+                  fontWeight: "600",
+                  color: "#191923",
+                },
+          
+              }}
+            >
+              <Tab label="Requested" value="1" />
+              <Tab label="Accepted" value="2" />
+              <Tab label="Washed " value="3" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <Request data={cusData} setData={setCusData} auth={auth} />
+          </TabPanel>
+          <TabPanel value="2">
+            <Accept data={cusAccept} />
+          </TabPanel>
+          <TabPanel value="3">
+            <Washing />
+          </TabPanel>
+        </TabContext>
+
+        <Drawer open={open} onClose={() => toggleDrawer(false)}>
+          <RequestTask toggleDrawer={toggleDrawer} refreshList={getList} />
+        </Drawer>
+      </Container>
+    </Box>
+  );
+}
+
+const RequestTask = ({ toggleDrawer, refreshList }) => {
+  const auth = useSelector((state) => state.auth);
+  const [showErrors, setShowErrors] = useState(false);
+  const [date, setDate] = useState(dayjs());
+  const [description, setDescription] = useState("");
+  const [trackCode, setTrackCode] = useState("");
+
+  const validate = () => {
+    if (
+      (trackCode == "") |
+      (description == "") |
+      dayjs(date).isBefore(dayjs(), "day")
+    ) {
+      setShowErrors(true);
+    } else {
+      toggleDrawer(false);
+
+      setShowErrors(false);
+
+      Http.post("/api/cus/register", {
+        name: auth.user.name,
+        cardNum: trackCode,
+        detail: description,
+        date: date,
+      })
+        .then((data) => {
+          console.log(data.data);
+          if (data.data) {
+            toast.success("Request successfully submitted.", {
+              hideProgressBar: true,
+            });
+            refreshList();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  return (
     <Box
       sx={{
         flexGrow: 1,
         py: 8,
         backgroundColor: "#F3F6F9", // Add a light, modern background color
-        borderRadius: "15px", // Round the corners for a modern look,
-        width: "100%",
+        borderRadius: "15px", // Round the corners for a modern look
+        overflow: "auto", // enable scroll if content overflows
+        height: "100vh", // occupy full viewport height
+        boxSizing: "border-box", // ensure padding and border are included in element's total height and width
       }}
       role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
     >
       <Container maxWidth="lg">
         <Typography
@@ -154,6 +242,7 @@ export default function DrawerAnchor() {
               name="tell"
               label="Input the Description"
               multiline
+              error={!description && showErrors}
               id="standard-basic"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -167,6 +256,7 @@ export default function DrawerAnchor() {
                 <DateCalendar
                   value={date}
                   onChange={(newValue) => setDate(dayjs(newValue))}
+                  sx={{ width: "300px" }}
                 />
               </DemoItem>
             </LocalizationProvider>
@@ -175,7 +265,6 @@ export default function DrawerAnchor() {
 
         <Button
           variant="contained"
-          endIcon={<SendIcon />}
           onClick={validate}
           style={{
             backgroundColor: "#FF7F50",
@@ -186,99 +275,11 @@ export default function DrawerAnchor() {
             boxShadow: "0px 3px 5px 2px rgba(63,81,181, .3)",
             marginBottom: "10px",
           }}
+          size="small"
         >
           Request
         </Button>
       </Container>
     </Box>
   );
-
-  return (
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: { xs: 2, sm: 4, md: 6, lg: 8 },
-      }}
-    >
-      <Container>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={1}
-          sx={{ width: 1 }} // makes the Stack take the full width of the Container
-        >
-          <Box flexGrow={1}></Box>
-
-          <Button
-            variant="contained"
-            onClick={toggleDrawer("right", true)}
-            style={{
-              backgroundColor: "#191923", // Deep, rich color for button background
-              color: "#FFFFFF", // White color for button text offers good contrast
-              textTransform: "uppercase", // uppercase looks cleaner and more contemporary
-              padding: "10px 20px", // slightly larger padding to make the button more prominent
-              fontSize: "1rem", // slightly larger text for better readability
-              boxShadow: "0px 3px 5px 2px rgba(25,25,35, .3)", // add subtle shadow to give the button a bit of depth
-              marginLeft: "auto", // move button to the right
-            }}
-          >
-            Add Request
-          </Button>
-        </Stack>
-
-        <TabContext value={value}>
-          <Box
-            sx={{
-              borderBottom: 1,
-              borderColor: "#A9A9A9",
-              backgroundColor: "#F3F6F9", // Changing the background color to a modern light shade
-            }}
-          >
-            <TabList
-              onChange={handleChange}
-              allowScrollButtonsMobile
-              aria-label="lab API tabs example"
-              sx={{
-                "& .MuiTab-root": {
-                  fontSize: "1rem",
-                  minWidth: 0,
-                  padding: "10px 20px",
-                  fontWeight: "600",
-                  color: "#191923", // Adjusting the text color to a dark shade for contrast
-                },
-                "& .Mui-selected": {
-                  // Styling the selected tab
-                  color: "#007BFF", // Changing the selected tab text color to a modern blue shade
-                  backgroundColor: "#E1E5EA", // Setting the selected tab's background color slightly darker than the tab strip background for distinction
-                },
-              }}
-            >
-              <Tab label="Requested" value="1" />
-              <Tab label="Accepted" value="2" />
-              <Tab label="Washed " value="3" />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
-            <Request data={cusData} setData={setCusData} auth={auth} />
-          </TabPanel>
-          <TabPanel value="2">
-            <Accept data={cusAccept} />
-          </TabPanel>
-          <TabPanel value="3">
-            <Washing />
-          </TabPanel>
-        </TabContext>
-
-        <Drawer
-          anchor={"right"}
-          open={state["right"]}
-          onClose={toggleDrawer("right", false)}
-        >
-          {list("right")}
-        </Drawer>
-      </Container>
-    </Box>
-  );
-}
+};

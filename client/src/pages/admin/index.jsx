@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { Grid, Box } from "@mui/material";
-import { styled } from "@mui/system";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Sidebar from "./sidebar";
 import { Outlet } from "react-router-dom";
 
-const AdminStyled = styled("div")(({ theme }) => ({
-  root: {
-    display: "flex",
-  },
-  //... other styles defined in your code
-}));
 
 function Admin() {
   const [open, setOpen] = useState(true);

@@ -13,12 +13,10 @@ import {
   useTheme,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import ClearIcon from "@mui/icons-material/Clear";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Http from "../../../utils/http";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-toastify";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,7 +50,9 @@ function CollapsibleRow({ props, row, isMobile, index }) {
       name: props.auth.user.name,
     })
       .then((data) => {
-        toast.error(" Request is refuesed.");
+        toast.error(" Request is refuesed.",{
+           hideProgressBar: true,
+        });
         props.setData(data.data);
       })
       .catch((err) => {});
@@ -109,7 +109,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
                       <TableCell component="th" scope="row">
                         Date
                       </TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
+                      <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">

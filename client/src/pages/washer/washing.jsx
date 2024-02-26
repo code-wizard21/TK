@@ -17,7 +17,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-// ... Your rows data here
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -100,7 +100,7 @@ function CollapsibleRow({ index, row, isMobile }) {
                       <TableCell component="th" scope="row">
                         Date
                       </TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
+                      <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">

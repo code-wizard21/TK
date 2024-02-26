@@ -258,7 +258,7 @@ export default function ResponsiveCollapsibleTable() {
               align="center"
               marginBottom={"40px"}
             >
-              Mange Client
+              Mange Company
             </Typography>
           </Box>
           <Button
@@ -272,7 +272,7 @@ export default function ResponsiveCollapsibleTable() {
             }}
             startIcon={<AddIcon />}
           >
-            Add Client
+            Add
           </Button>
         </Stack>
 
