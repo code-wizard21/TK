@@ -59,13 +59,8 @@ export default function LandingPage() {
   
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
-      <Hero />
       <Box sx={{ bgcolor: "background.default" }}>
-        <Features />
-        <Divider />
-        <Highlights />
       </Box>
-    </ThemeProvider>
+    </ThemeProvider>                
   );
 }

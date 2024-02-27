@@ -27,6 +27,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Http from "../../../utils/http";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { GoogleReCaptchaProvider, GoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const Login = ({ ...others }) => {
   const theme = useTheme();
@@ -36,6 +37,8 @@ const Login = ({ ...others }) => {
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
+  const [token, setToken] = useState("");
   const googleHandler = async () => {
     console.error("Login");
   };
@@ -46,6 +49,10 @@ const Login = ({ ...others }) => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const setTokenFunc = (getToken) => {
+    setToken(getToken);
   };
   const navigate = useNavigate();
 
@@ -99,6 +106,7 @@ const Login = ({ ...others }) => {
             Http.post("/api/auth/sigin", {
               Email: values?.email,
               Password: values?.password,
+              token,
             })
               .then((data) => {
                 // debugger;
@@ -126,6 +134,7 @@ const Login = ({ ...others }) => {
               })
               .catch((err) => {
                 console.log(err);
+                setRefreshReCaptcha(!refreshReCaptcha);
               });
           } catch (err) {
             console.error(err);
@@ -154,7 +163,6 @@ const Login = ({ ...others }) => {
               margin="normal"
             >
               <InputLabel
-                marginBottom="10"
                 htmlFor="outlined-adornment-email-login"
               >
                 Email Address
@@ -162,7 +170,6 @@ const Login = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
-                marginBottom="10"
                 value={values.email}
                 name="email"
                 onBlur={handleBlur}
@@ -249,6 +256,13 @@ const Login = ({ ...others }) => {
                 </LoadingButton>
               </AnimateButton>
             </Box>
+            <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
+              <GoogleReCaptcha
+                className="google-recaptcha-custom-class"
+                onVerify={setTokenFunc}
+                refreshReCaptcha={refreshReCaptcha}
+              />
+            </GoogleReCaptchaProvider>
           </form>
         )}
       </Formik>

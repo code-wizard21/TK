@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <AuthWrapper1>
       <Grid
-        // container
+        container
         direction="column"
         justifyContent="flex-end"
         sx={{ minHeight: "100vh" }}
