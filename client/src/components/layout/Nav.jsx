@@ -107,10 +107,11 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+          {auth.isLoggedIn?<Box sx={{ color: "#515151", marginRight: "1em", fontWeight: "bold" }}>{auth.user.name}({auth.user.job})</Box>:<></>}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="/assets/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

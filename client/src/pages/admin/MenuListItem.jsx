@@ -13,13 +13,15 @@ import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 const MainListItems = () => {
   return (
     <>
+      <Divider />
       <div>
+        <ListSubheader inset>Users</ListSubheader>
         <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
           <ListItem button>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Manage Client" />
+            <ListItemText primary="Manage Company" />
           </ListItem>
         </Link>
 
