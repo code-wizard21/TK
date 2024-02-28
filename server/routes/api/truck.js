@@ -3,9 +3,9 @@ const router = express.Router();
 
 const truckController = require("../../controller/truckController");
 
-router.post("/register", truckController.register);
-router.get("/getTruckList", truckController.getTruckList);
-router.put("/updateTruckList", truckController.updateTruckList);
-router.delete("/deleteTruckList", truckController.deleteTruckList);
+router.post("/", truckController.register);
+router.get("/:id", truckController.getTruckList);
+router.put("/:id", truckController.updateTruckList);
+router.delete("/:id", truckController.deleteTruckList);
 
 module.exports = router;
