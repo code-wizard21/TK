@@ -6,6 +6,6 @@ router.use("/auth", require("../routes/api/auth"));
 router.use("/cus", require("../routes/api/customer"));
 router.use("/wash", require("../routes/api/washer"));
 router.use("/driv", require("../routes/api/driver"));
-
+router.use("/truck", require("../routes/api/truck"));
 
 module.exports = router;
