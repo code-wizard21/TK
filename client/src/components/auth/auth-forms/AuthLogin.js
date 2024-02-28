@@ -27,7 +27,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Http from "../../../utils/http";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import { GoogleReCaptchaProvider, GoogleReCaptcha } from "react-google-recaptcha-v3";
+import { GoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const Login = ({ ...others }) => {
   const theme = useTheme();
@@ -256,13 +256,11 @@ const Login = ({ ...others }) => {
                 </LoadingButton>
               </AnimateButton>
             </Box>
-            <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
-              <GoogleReCaptcha
-                className="google-recaptcha-custom-class"
-                onVerify={setTokenFunc}
-                refreshReCaptcha={refreshReCaptcha}
-              />
-            </GoogleReCaptchaProvider>
+            <GoogleReCaptcha
+              className="google-recaptcha-custom-class"
+              onVerify={setTokenFunc}
+              refreshReCaptcha={refreshReCaptcha}
+            />
           </form>
         )}
       </Formik>

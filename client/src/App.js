@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { jwtDecode } from "jwt-decode";
 import { ToastContainer } from "react-toastify";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import "react-toastify/dist/ReactToastify.css";
 
 const LocalStorage = localStorage.getItem("authToken");
@@ -16,9 +17,11 @@ const App = () => {
   return (
     <>
       <ToastContainer />
-      <Provider store={store}>
-        <RoutesDefined />
-      </Provider>
+      <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
+        <Provider store={store}>
+          <RoutesDefined />
+        </Provider>
+      </GoogleReCaptchaProvider>
     </>
   );
 };
