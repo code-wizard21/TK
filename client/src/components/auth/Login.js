@@ -1,6 +1,5 @@
 import { useTheme } from "@mui/material/styles";
 import { Grid, Stack, Typography, useMediaQuery } from "@mui/material";
-import AuthWrapper1 from "./AuthWrapper1";
 import AuthCardWrapper from "./AuthCardWrapper";
 import AuthLogin from "./auth-forms/AuthLogin";
 import logo from "../../assets/images/photo.png";
@@ -10,13 +9,11 @@ const Login = () => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
-    <AuthWrapper1>
       <Grid
         container
         direction="column"
         justifyContent="flex-end"
         sx={{ minHeight: "100vh" }}
-        style={{ background: "rgb(238, 242, 246)" }}
       >
         <Grid item xs={12}>
           <Grid
@@ -86,7 +83,6 @@ const Login = () => {
           </Grid>
         </Grid>
       </Grid>
-    </AuthWrapper1>
   );
 };
 

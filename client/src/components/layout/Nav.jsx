@@ -30,7 +30,7 @@ function ResponsiveAppBar() {
     }
   }, [auth.isLoggedIn]);
 
-  const settings = isLogIn ? ["Change Password", "Logout"] : ["LogIn"];
+  const settings = isLogIn ? ["Logout"] : ["LogIn"];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
