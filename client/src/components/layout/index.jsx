@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Header from "./Nav";
-import Footer from "./Footer";
 import { makeStyles } from "@material-ui/core/styles";
 import { Outlet } from "react-router-dom";
 
@@ -30,7 +29,6 @@ const PageLayout = () => {
       <main className={classes.content}>
         <Outlet />
       </main>
-      <Footer className={classes.footer} />         
     </div>
   );
 };

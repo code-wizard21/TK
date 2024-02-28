@@ -20,6 +20,7 @@ import { TextField, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 import Drawer from "@mui/joy/Drawer";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { RequestTask } from "../../components/requesttask";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -162,152 +163,9 @@ export default function LabTabs() {
           </TabPanel>
         </TabContext>
         <Drawer open={open} onClose={() => toggleDrawer(false)} >
-          <RequestTask toggleDrawer={toggleDrawer} refreshList={getAllRequst}/>
+          <RequestTask toggleDrawer={toggleDrawer} refreshList={getAllRequst} isDriver />
         </Drawer>
       </Container>
     </Box>
   );
 }
-
-const RequestTask = ({ toggleDrawer ,refreshList}) => {
-  const [companyName, setCompanyName] = useState("");
-  const [showErrors, setShowErrors] = useState(false);
-  const [date, setDate] = useState(dayjs());
-  const [description, setDescription] = useState("");
-  const [trackCode, setTrackCode] = useState("");
-
-  const validate = () => {
-    console.log(trackCode, "eee");
-    if (
-      (trackCode == "") |
-      (description == "") |
-      (companyName == "") |
-      dayjs(date).isBefore(dayjs(), "day")
-    ) {
-      setShowErrors(true);
-    } else {
-      toggleDrawer(false);
-      console.log("data");
-      setShowErrors(false);
-
-      Http.post("/api/cus/register", {
-        name: companyName,
-        cardNum: trackCode,
-        detail: description,
-        date: date,
-      })
-        .then((data) => {
-          console.log(data.data);
-          if (data.data) {
-            toast.success("Request successfully submitted.", {
-              hideProgressBar: true,
-            });
-            refreshList();
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-  return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        py: 8,
-        backgroundColor: "#F3F6F9", // Add a light, modern background color
-        borderRadius: "15px", // Round the corners for a modern look
-        overflow: "auto", // enable scroll if content overflows
-        height: "100vh", // occupy full viewport height
-        boxSizing: "border-box", // ensure padding and border are included in element's total height and width
-      }}
-      role="presentation"
-    >
-      <Container maxWidth="lg">
-        <Typography
-          component="h1"
-          variant="h4"
-          align="center"
-          style={{
-            color: "#3f51b5",
-            fontWeight: 600,
-            margin: "20px 0",
-            textTransform: "uppercase",
-          }}
-        >
-          Request Wash
-        </Typography>
-
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12}>
-            <Grid item xs={12}>
-              <TextField
-                error={!companyName && showErrors}
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                id="outlined-basic"
-                name="companyname"
-                label="Company Name"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <TextField
-              error={!trackCode && showErrors}
-              value={trackCode}
-              onChange={(e) => setTrackCode(e.target.value)}
-              id="outlined-basic"
-              name="carcode"
-              label="Truck Number"
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              name="tell"
-              label="Input the Description"
-              multiline
-              error={!description && showErrors}
-              id="standard-basic"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              minRows={5}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoItem label="">
-                <DateCalendar
-                  value={date}
-                  onChange={(newValue) => setDate(dayjs(newValue))}
-                  sx={{ width: "300px" }}
-                />
-              </DemoItem>
-            </LocalizationProvider>
-          </Grid>
-        </Grid>
-
-        <Button
-          variant="contained"
-          onClick={validate}
-          style={{
-            backgroundColor: "#FF7F50",
-            color: "white",
-            textTransform: "uppercase",
-            padding: "10px 20px",
-            fontSize: "0.875rem",
-            boxShadow: "0px 3px 5px 2px rgba(63,81,181, .3)",
-            marginBottom: "10px",
-          }}
-        >
-          Request
-        </Button>
-      </Container>
-    </Box>
-  );
-};
