@@ -27,11 +27,13 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
     const [trackCode, setTrackCode] = useState("");
     const [trucks, setTrucks] = useState([]);
     const [companies, setCompanies] = useState([]);
-    useEffect(async () => {
+    useEffect(() => {
+      (async function() {
         const trucks = await Http.get("/api/truck");
         setTrucks(trucks.data);
         const companies = await Http.get("/api/user/byrole/company");
         setCompanies(companies.data);
+      })();
     }, []);
   
     const validate = () => {

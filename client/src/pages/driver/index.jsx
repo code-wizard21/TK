@@ -42,7 +42,7 @@ export default function LabTabs() {
   }, []);
 
   const getAllRequst = () => {
-    Http.post("/api/order/bystatus/requested", { name: "" })
+    Http.get("/api/order/bystatus/requested", { name: "" })
       .then((data) => {
         setNewOrders(data.data);
       })

@@ -8,7 +8,7 @@ exports.createOrder = (req, res) => {
     CarNumber: req.body.cardNum,
     Detail: req.body.detail,
     Date: req.body.date,
-    State: "request",
+    State: STATUS_REQUESTED,
   };
   // Save Tutorial in the database
   Customerlist.create(userlist)

@@ -39,7 +39,7 @@ export default function LabTabs() {
       .catch((err) => {
         console.log(err);
       });
-    Http.post("/api/order/bystatus/accepted", { name: auth.user.name })
+    Http.get("/api/order/bystatus/accepted", { name: auth.user.name })
       .then((data) => {
         setAcceptedOrders(data.data);
       })
