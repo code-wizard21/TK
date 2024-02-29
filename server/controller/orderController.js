@@ -13,11 +13,6 @@ exports.Register = (req, res) => {
   // Save Tutorial in the database
   Customerlist.create(userlist)
     .then((data) => {
-      // const customer = await Customerlist.findAll({
-      //   where: {
-      //     CustomerName: req.body.name,
-      //   },
-      // });
       res.status(200).send({ data });
     })
     .catch((err) => {
@@ -27,17 +22,8 @@ exports.Register = (req, res) => {
       });
     });
 };
-exports.findallcustomreq = async (req, res) => {
-  const customerlist = await Customerlist.findAll({
-    where: {
-      State: "request",
-    },
-  });
-  res.send(customerlist);
-};
+
 exports.findAllCustom = async (req, res) => {
-  console.log(req.body);
-  console.log("121212112121", req.body);
   const customerlist = await Customerlist.findAll({
     where: {
       CustomerName: req.body.name,
@@ -89,10 +75,20 @@ exports.acceptedItemCustom = async (req, res) => {
   }
 };
 exports.findAcceptCustom = async (req, res) => {
+  console.log(req.body);
   const customerlist = await Customerlist.findAll({
     where: {
       CustomerName: req.body.name,
       State: "accepted",
+    },
+  });
+
+  res.send(customerlist);
+};
+exports.findallcustomreq = async (req, res) => {
+  const customerlist = await Customerlist.findAll({
+    where: {
+      State: "request",
     },
   });
 
