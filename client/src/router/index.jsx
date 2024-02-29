@@ -5,11 +5,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { lazy } from "react";
 import PageLayout from "../components/layout";
 
-const Dashboard = lazy(() => import("../pages/client/dashboard"));
-const Login = lazy(() => import("../components/auth/Login"));
+const CompanyDashboard = lazy(() => import("../pages/company"));
+const DriverDashboard = lazy(() => import("../pages/driver"));
+const WasherDashboard = lazy(() => import("../pages/washer"));
 
-const DriverTask = lazy(() => import("../pages/driver/index"));
-const WasherTask = lazy(() => import("../pages/washer"));
+const Login = lazy(() => import("../components/auth/Login"));
 const LandingPage = lazy(() => import("../pages/landing"));
 const Admin = lazy(() => import("../pages/admin"));
 const AdminRole = lazy(() => import("../pages/admin/role/admin-role"));
@@ -37,10 +37,9 @@ function RoutesDefined() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PageLayout />}>
             <Route index element={<LandingPage />} />
-            <Route path="client/dashboard" element={<Dashboard />} />
-            <Route path="driver/checktask" element={<DriverTask />} />
-         
-            <Route path="washer/checktask" element={<WasherTask />} />
+            <Route path="company/dashboard" element={<CompanyDashboard />} />
+            <Route path="driver/dashboard" element={<DriverDashboard />} />
+            <Route path="washer/dashboard" element={<WasherDashboard />} />
             <Route path="admin" element={<Admin />}>
               <Route index element={<AdminRole />} />
               <Route path="driver-role" element={<DriverRole />} />

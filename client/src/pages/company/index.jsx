@@ -14,8 +14,8 @@ import { useTheme } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import { useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import Http from "../../../utils/http";
-import { RequestTask } from "../../../components/requesttask";
+import Http from "../../utils/http";
+import { RequestTask } from "../../components/requesttask";
 
 export default function DrawerAnchor() {
   const auth = useSelector((state) => state.auth);
@@ -30,20 +30,20 @@ export default function DrawerAnchor() {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
-    getList();
+    getOrders();
   }, []);
     const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const getList = () => {
-    Http.post("/api/cus/findAllCustom", { name: auth.user.name })
+  const getOrders = () => {
+    Http.get("/api/order/bystatus/requested", { name: auth.user.name })
       .then((data) => {
         setCusData(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.post("/api/cus/findAcceptCustom", { name: auth.user.name })
+    Http.get("/api/order/bystatus/accepted", { name: auth.user.name })
       .then((data) => {
         console.log(data.data);
         setCusAccept(data.data);  
@@ -138,7 +138,7 @@ export default function DrawerAnchor() {
         </TabContext>
 
         <Drawer open={open} onClose={() => toggleDrawer(false)}>
-          <RequestTask toggleDrawer={toggleDrawer} refreshList={getList} />
+          <RequestTask toggleDrawer={toggleDrawer} refreshList={getOrders} />
         </Drawer>
       </Container>
     </Box>

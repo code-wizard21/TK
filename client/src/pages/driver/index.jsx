@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
-import Accept from "./accecpint";
+import Accept from "./accept";
 import Washing from "./washing";
 import Http from "../../utils/http";
 import AddIcon from "@mui/icons-material/Add";
@@ -24,9 +24,9 @@ import { RequestTask } from "../../components/requesttask";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
-  const [reqList, setReqList] = useState([]);
-  const [cusList, setCusList] = useState([]);
-  const [cusWashed, setCusWashed] = useState([]);
+  const [newOrders, setNewOrders] = useState([]);
+  const [acceptedOrders, setAcceptedOrders] = useState([]);
+  const [washedOrders, setWashedOrders] = useState([]);
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
@@ -42,10 +42,9 @@ export default function LabTabs() {
   }, []);
 
   const getAllRequst = () => {
-    Http.post("/api/cus/findallcustomreq", { name: "" })
+    Http.post("/api/order/bystatus/requested", { name: "" })
       .then((data) => {
-        setReqList(data.data);
-        console.log(data.data);
+        setNewOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -53,25 +52,16 @@ export default function LabTabs() {
   };
 
   const getList = () => {
-    Http.get("/api/driv/getAllAccepted")
+    Http.get("/api/order/bystatus/accepted")
       .then((data) => {
-        setCusList(data.data);
+        setAcceptedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    Http.get("/api/driv/getAllAccepted")
+    Http.get("/api/order/bystatus/washed")
       .then((data) => {
-        setCusList(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    Http.get("/api/driv/getAllWashed")
-      .then((data) => {
-        setCusWashed(data.data);
-        // setCusList(data.data);
+        setWashedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -153,13 +143,13 @@ export default function LabTabs() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <Request data={reqList} />
+            <Request data={newOrders} />
           </TabPanel>
           <TabPanel value="2">
-            <Accept data={cusList} />
+            <Accept data={acceptedOrders} />
           </TabPanel>
           <TabPanel value="3">
-            <Washing data={cusWashed} />
+            <Washing data={washedOrders} />
           </TabPanel>
         </TabContext>
         <Drawer open={open} onClose={() => toggleDrawer(false)} >

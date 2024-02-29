@@ -3,11 +3,10 @@ const router = express.Router();
 
 const orderController = require("../../controller/orderController");
 
-router.post("/customerRegister", orderController.Register);
-router.post("/findAllCustom", orderController.findAllCustom);
-router.post("/acceptedItemCustom", orderController.acceptedItemCustom);
-router.post("/findAcceptCustom", orderController.findAcceptCustom);
-router.post("/findallcustomreq", orderController.findallcustomreq);
-router.post("/rejetedItemCustom", orderController.rejetedItemCustom);
+router.post("/", orderController.createOrder);
+router.get("/bystatus/:status", orderController.getOrderByStatus);
+// router.delete("/:id", orderController.deleteOrder);
+router.post("/accept", orderController.accept);
+router.post("/reject", orderController.reject);
 
 module.exports = router;

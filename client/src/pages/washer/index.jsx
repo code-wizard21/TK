@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
-import Accept from "./accecpint";
+import Accept from "./accept";
 import Washing from "./washing";
 import { useTheme } from "@material-ui/core/styles";
 import Request from "./request";
@@ -16,9 +16,9 @@ import {
 export default function LabTabs() {
 
   const [value, setValue] = useState("1");
-  const [cusList, setCusList] = useState([]);
-  const [cusAccepted, setCusAccepted] = useState([]);
-  const [cusWashed, setCusWashed] = useState([]);
+  const [requestedOrders, setRequestedOrders] = useState([]);
+  const [acceptedOrders, setAcceptedOrders] = useState([]);
+  const [washedOrders, setWashedOrders] = useState([]);
   const [flag, setFlag] = useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -32,23 +32,23 @@ export default function LabTabs() {
   }, [auth.isLoggedI, navigate]);
   const theme = useTheme();
   useEffect(() => {
-    Http.get("/api/wash/getAllList")
+    Http.get("/api/order/bystatus/requested")
       .then((data) => {
-        setCusList(data.data);
+        setRequestedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.post("/api/wash/getAcceptList", { name: auth.user.name })
+    Http.post("/api/order/bystatus/accepted", { name: auth.user.name })
       .then((data) => {
-        setCusAccepted(data.data);
+        setAcceptedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/wash/getAllWashed")
+    Http.get("/api/order/bystatus/washed")
       .then((data) => {
-        setCusWashed(data.data);
+        setWashedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -93,24 +93,22 @@ export default function LabTabs() {
           <Request
             flag={flag}
             setFlag={setFlag}
-            data={cusList}
-            setData={setCusList}
+            data={requestedOrders}
+            setData={setRequestedOrders}
             auth={auth}
           />
         </TabPanel>
         <TabPanel value="2">
           <Accept
-            data={cusAccepted}
-            setData={setCusAccepted}
-            cusWashed={cusWashed}
-            setCusWashed={setCusWashed}
+            data={acceptedOrders}
+            setData={setAcceptedOrders}
             flag={flag}
             setFlag={setFlag}
             auth={auth}
           />
         </TabPanel>
         <TabPanel value="3">
-          <Washing data={cusWashed} setData={setCusWashed} auth={auth} />
+          <Washing data={washedOrders} setData={setWashedOrders} auth={auth} />
         </TabPanel>
       </TabContext>
       </Container>

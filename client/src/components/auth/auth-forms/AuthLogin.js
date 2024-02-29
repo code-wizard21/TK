@@ -116,17 +116,20 @@ const Login = ({ ...others }) => {
                   localStorage.setItem("authToken", token);
                   const decodedToken = jwtDecode(token);
                   dispatch({ type: "LOGIN_REQUEST", payload: decodedToken });
-                  if (decodedToken.job === "customer") {
-                    navigate("/client/dashboard");
+                  if (decodedToken.job === "company") {
+                    navigate("/company/dashboard");
                   } else if (decodedToken.job === "washer") {
-                    navigate("/washer/checktask");
+                    navigate("/washer/dashboard");
                   } else if (decodedToken.job === "driver") {
-                    navigate("/driver/checktask");
+                    navigate("/driver/dashboard");
                   } else if (decodedToken.job === "admin") {
                     navigate("/admin");
+                  } else {
+                    toast.error("Unknown Role", {
+                      hideProgressBar: true,
+                    });
                   }
                 } else {
-                  setLoading(false);
                   toast.error(data.data.error, {
                     hideProgressBar: true,
                   });

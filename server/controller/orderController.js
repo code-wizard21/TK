@@ -1,8 +1,8 @@
+const { STATUS_REJECTED, STATUS_REQUESTED, STATUS_ACCEPTED } = require("../constants");
 const db = require("../models");
 const Customerlist = db.customer;
 
-exports.Register = (req, res) => {
-  console.log(req.body);
+exports.createOrder = (req, res) => {
   const userlist = {
     CustomerName: req.body.name,
     CarNumber: req.body.cardNum,
@@ -23,82 +23,43 @@ exports.Register = (req, res) => {
     });
 };
 
-exports.findAllCustom = async (req, res) => {
+// exports.deleteOrder = (req, res) => {
+//   const id = req.params.id;
+//   // Save Tutorial in the database
+//   Customerlist.destroy({
+//     where: {
+//       id: id,
+//     },
+//   })
+//   .then((data) => {
+//     res.status(200).send({ data });
+//   })
+//   .catch((err) => {
+//     res.status(500).send({
+//       message:
+//         err.message || "Some error occurred while creating the userlist.",
+//     });
+//   });
+// };
+
+exports.getOrderByStatus = async (req, res) => {
+  const status = req.params.status;
+  const company = req.body.company;
+  let qwhere = {
+    State: status,
+  }
+  if(company) qwhere.CustomerName = company;
+
   const customerlist = await Customerlist.findAll({
-    where: {
-      CustomerName: req.body.name,
-      State: "request",
-    },
+    where: qwhere,
   });
 
   res.send(customerlist);
 };
-exports.deleteItemCustom = async (req, res) => {
-  console.log(req.body);
-  const id = req.body.id;
-  try {
-    const user = await Customerlist.destroy({
-      where: {
-        id: id,
-      },
-    });
-    const customerlist = await Customerlist.findAll({
-      where: {
-        CustomerName: req.body.name,
-      },
-    });
-    res.status(200).json(customerlist);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-exports.acceptedItemCustom = async (req, res) => {
-  // console.log(req.body)
+exports.accept = async (req, res) => {
   try {
     const user = await Customerlist.update(
-      { State: "accepted" },
-      {
-        where: {
-          CarNumber: req.body.carnumber,
-        },
-      }
-    );
-    const customerlist = await Customerlist.findAll({
-      where: {
-        State: "request",
-      },
-    });
-    console.log(customerlist);
-    res.status(200).json(customerlist);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-exports.findAcceptCustom = async (req, res) => {
-  console.log(req.body);
-  const customerlist = await Customerlist.findAll({
-    where: {
-      CustomerName: req.body.name,
-      State: "accepted",
-    },
-  });
-
-  res.send(customerlist);
-};
-exports.findallcustomreq = async (req, res) => {
-  const customerlist = await Customerlist.findAll({
-    where: {
-      State: "request",
-    },
-  });
-
-  res.send(customerlist);
-};
-exports.rejetedItemCustom = async (req, res) => {
-  console.log(req.body);
-  try {
-    const user = await Customerlist.update(
-      { State: "rejected" },
+      { State: STATUS_ACCEPTED },
       {
         where: {
           id: req.body.id,
@@ -107,10 +68,29 @@ exports.rejetedItemCustom = async (req, res) => {
     );
     const customerlist = await Customerlist.findAll({
       where: {
-        State: "request",
+        State: STATUS_REQUESTED,
       },
     });
-    console.log(customerlist);
+    res.status(200).json(customerlist);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+exports.reject = async (req, res) => {
+  try {
+    const user = await Customerlist.update(
+      { State: STATUS_REJECTED },
+      {
+        where: {
+          id: req.body.id,
+        },
+      }
+    );
+    const customerlist = await Customerlist.findAll({
+      where: {
+        State: STATUS_REQUESTED,
+      },
+    });
     res.status(200).json(customerlist);
   } catch (err) {
     res.status(500).json({ message: err.message });

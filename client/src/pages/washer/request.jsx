@@ -47,13 +47,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function CollapsibleRow({ index, props, row, isMobile }) {
   const [open, setOpen] = useState(false);
-  const onRejected = (data) => {
-    console.log(data);
-    Http.post("/api/cus/rejetedItemCustom", { id: data })
+  const onRejected = (id) => {
+    Http.post("/api/order/reject", { id })
       .then((data) => {
         props.setData(data.data);
         props.setFlag(true);
-        toast.success(" Request successfully Rejected.", {
+        toast.success(" Request successfully rejected.", {
           hideProgressBar: true,
         });
       })
@@ -61,13 +60,10 @@ function CollapsibleRow({ index, props, row, isMobile }) {
         console.log(err);
       });
   };
-  const onAccepted = (data) => {
-    Http.post("/api/cus/acceptedItemCustom", {
-      name: props.auth.user.name,
-      carnumber: data,
-    })
+  const onAccepted = (id) => {
+    Http.post("/api/order/accept", { id })
       .then((data) => {
-        toast.success(" Request successfully submitted.", {
+        toast.success(" Request successfully accepted.", {
           hideProgressBar: true,
         });
         props.setData(data.data);
@@ -114,7 +110,7 @@ function CollapsibleRow({ index, props, row, isMobile }) {
               <IconButton
                 color="secondary"
                 aria-label="add an alarm"
-                onClick={() => onAccepted(row.CarNumber)}
+                onClick={() => onAccepted(row.id)}
               >
                 <CheckIcon />
               </IconButton>
@@ -159,7 +155,7 @@ function CollapsibleRow({ index, props, row, isMobile }) {
                         <IconButton
                           color="secondary"
                           aria-label="add an alarm"
-                          onClick={() => onAccepted(row.CarNumber)}
+                          onClick={() => onAccepted(row.id)}
                         >
                           <CheckIcon />
                         </IconButton>

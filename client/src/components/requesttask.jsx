@@ -30,7 +30,7 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
     useEffect(async () => {
         const trucks = await Http.get("/api/truck");
         setTrucks(trucks.data);
-        const companies = await Http.get("/api/auth/getCustomer");
+        const companies = await Http.get("/api/user/byrole/company");
         setCompanies(companies.data);
     }, []);
   
@@ -47,7 +47,7 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
         console.log("data");
         setShowErrors(false);
   
-        Http.post("/api/cus/register", {
+        Http.post("/api/order", {
           name: isDriver?companyName:auth.user.name,
           cardNum: trackCode,
           detail: description,

@@ -1,6 +1,6 @@
 const db = require("../models");
 const Trucklist = db.trucklist;
-exports.register = async (req, res) => {
+exports.createTruck = async (req, res) => {
   console.log(req.body);
   // Create a trucklist
   try {
@@ -40,13 +40,13 @@ exports.register = async (req, res) => {
     console.log(err);
   }
 };
-exports.getTruckList = async (req, res) => {
+exports.getTrucks = async (req, res) => {
   const trucklist = await Trucklist.findAll({});
   //   console.log(trucklist[0].dataValues);
   res.send(trucklist);
 };
-exports.updateTruckList = async (req, res) => {
-  const id = req.body.id;
+exports.updateTrucks = async (req, res) => {
+  const id = req.params.id;
   const { FirstNumber, SecondNumber, Company, Type } = req.body;
   try {
     const user = await Trucklist.update(
@@ -63,8 +63,8 @@ exports.updateTruckList = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-exports.deleteTruckList = async (req, res) => {
-  const id = req.body.id;
+exports.deleteTruck = async (req, res) => {
+  const id = req.params.id;
   try {
     const user = await Trucklist.destroy({
       where: {

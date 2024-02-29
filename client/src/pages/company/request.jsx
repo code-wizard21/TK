@@ -13,12 +13,12 @@ import {
   useTheme,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import CheckIcon from "@mui/icons-material/Check";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Http from "../../utils/http";
-
+import { toast } from "react-toastify";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "white",
@@ -41,17 +41,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ index, props, row, isMobile }) {
+function CollapsibleRow({ props, row, isMobile, index }) {
   const [open, setOpen] = useState(false);
-  const onWashed = (data) => {
-    console.log(data);
-    Http.post("/api/wash/setSelectWashed", { id: data })
-      .then((data) => {
-        // props.setCusWashed(data.data);
-        props.setFlag(!props.flag);
-      })
-      .catch((err) => {});
-  };
+  // const onDelete = (id) => {
+  //   Http.delete(`/api/order/${id}`)
+  //     .then((data) => {
+  //       toast.error(" Request is canceled.",{
+  //          hideProgressBar: true,
+  //       });
+  //       props.setData(data.data);
+  //     })
+  //     .catch((err) => {});
+  // };
   return (
     <>
       <StyledTableRow
@@ -75,31 +76,21 @@ function CollapsibleRow({ index, props, row, isMobile }) {
             <span> {row.CarNumber}</span>
           </div>
         </TableCell>
-        <TableCell>{row.CustomerName}</TableCell>
+        <TableCell>{row.Detail}</TableCell>
         {!isMobile && (
           <>
             <TableCell>
-              {/* <div className="date"> */}
-              <span> {row.Detail}</span>
-              {/* </div> */}
-            </TableCell>
-            <TableCell>
-              {/* <div className="date"> */}
               <span> {row.Date}</span>
-              {/* </div> */}
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
               <IconButton
                 color="secondary"
                 aria-label="add an alarm"
-                onClick={() => onWashed(row.CarNumber)}
+                onClick={() => onDelete(row.id)}
               >
-                <CheckIcon />
+                <RestoreFromTrashIcon />
               </IconButton>
-              {/* <IconButton color="secondary" aria-label="add an alarm">
-                <ClearIcon />
-              </IconButton> */}
-            </TableCell>
+            </TableCell> */}
           </>
         )}
       </StyledTableRow>
@@ -112,30 +103,25 @@ function CollapsibleRow({ index, props, row, isMobile }) {
                   <TableBody>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        Description
-                      </TableCell>
-                      <TableCell align="right">{row.Detail}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
                         Date
                       </TableCell>
                       <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell component="th" scope="row">
                         Action
                       </TableCell>
 
                       <TableCell align="right">
-                        <IconButton color="secondary" aria-label="add an alarm">
-                          <CheckIcon />
+                        <IconButton
+                          color="secondary"
+                          aria-label="add an alarm"
+                          onClick={() => onDelete(row.id)}
+                        >
+                          <RestoreFromTrashIcon />
                         </IconButton>
-                        {/* <IconButton color="secondary" aria-label="add an alarm">
-                          <ClearIcon />
-                        </IconButton> */}
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
                   </TableBody>
                 </Table>
               </Box>
@@ -149,7 +135,8 @@ function CollapsibleRow({ index, props, row, isMobile }) {
 export default function ResponsiveCollapsibleTable(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const { data } = props;
+  console.log(data);
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -158,10 +145,9 @@ export default function ResponsiveCollapsibleTable(props) {
             {isMobile && <TableCell />}
             <StyledTableCell>ID</StyledTableCell>
             <StyledTableCell>Car Number</StyledTableCell>
-            <StyledTableCell>Company Name</StyledTableCell>
+            <StyledTableCell>Description</StyledTableCell>
             {!isMobile && (
               <>
-                <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
                 <StyledTableCell>Action</StyledTableCell>
               </>
@@ -169,7 +155,7 @@ export default function ResponsiveCollapsibleTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.data.map((row, index) => (
+          {data.map((row, index) => (
             <CollapsibleRow
               index={index}
               props={props}
