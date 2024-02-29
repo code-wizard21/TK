@@ -67,23 +67,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ props, row, isMobile, index }) {
+function CollapsibleRow({ getCompanies, row, isMobile, index }) {
   const [open, setOpen] = useState(false);
-  const getCustomer = () => {
-    Http.get("/api/auth/getCustomer")
+  const onDelete = (id) => {
+    Http.delete(`/api/user/${id}`)
       .then((data) => {
-        // console.log(data.data)
-        props(data.data);
-      })
-      .catch((err) => {});
-  };
-  const onDelete = (data) => {
-    console.log(data);
-    Http.post("/api/auth/deleteItemCustom", {
-      id: data,
-    })
-      .then((data) => {
-        getCustomer();
+        getCompanies();
       })
       .catch((err) => {});
   };
@@ -190,7 +179,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
 export default function ResponsiveCollapsibleTable() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [cutomerList, setCustomList] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const {
     control,
     handleSubmit,
@@ -201,14 +190,13 @@ export default function ResponsiveCollapsibleTable() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getCustomer();
+    getCompanies();
   }, []);
 
-  const getCustomer = () => {
-    Http.get("/api/auth/getCustomer")
+  const getCompanies = () => {
+    Http.get("/api/user/byrole/company")
       .then((data) => {
-        // console.log(data.data)
-        setCustomList(data.data);
+        setCompanies(data.data);
       })
       .catch((err) => {});
   };
@@ -221,15 +209,15 @@ export default function ResponsiveCollapsibleTable() {
   };
   const handleOk = (data) => {
     setOpen(false);
-    Http.post("/api/auth/register", {
+    Http.post("/api/user", {
       email: data.email,
       password: data.password,
       phone: data.phonenumber,
       name: data.username,
+      role: 'company'
     })
       .then((data) => {
-        console.log("customer");
-        getCustomer();
+        getCompanies();
       })
       .catch((err) => {});
   };
@@ -258,7 +246,7 @@ export default function ResponsiveCollapsibleTable() {
               align="center"
               marginBottom={"40px"}
             >
-              Mange Company
+              Manage Company
             </Typography>
           </Box>
           <Button
@@ -296,9 +284,9 @@ export default function ResponsiveCollapsibleTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {cutomerList.map((row, index) => (
+              {companies.map((row, index) => (
                 <CollapsibleRow
-                  props={setCustomList}
+                  getCompanies={getCompanies}
                   index={index}
                   key={row.id}
                   row={row}

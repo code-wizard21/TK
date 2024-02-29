@@ -5,18 +5,17 @@ const userController = require("../../controller/userController");
 
 //Admin CRUD
 
-router.delete("/delete/:id", userController.authDelete);
-router.get("/:state", userController.getCustomer);
+router.delete("/:id", userController.deleteUser);
+router.get("/byrole/:role", userController.getUserByRole);
 router.get("/allWashed", userController.getAllWashed);
 router.get("/allAccepted", userController.getAllAccepted);
 
 //Driver API Implemented
 
-router.post("/driverRegister", userController.driverRegister);
+router.post("/", userController.createUser);
 
 //Washer API Implemented
 
-router.post("/washerRegister", userController.washerRegister);
 router.get("/allList", userController.getAllWasherList);
 router.post("/setSelectWashed", userController.setSelectWashed);
 

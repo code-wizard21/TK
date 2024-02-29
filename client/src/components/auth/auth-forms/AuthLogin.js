@@ -103,7 +103,7 @@ const Login = ({ ...others }) => {
           // debugger;
           try {
             setLoading(true);
-            Http.post("/api/auth/sigin", {
+            Http.post("/api/auth/signin", {
               Email: values?.email,
               Password: values?.password,
               token,

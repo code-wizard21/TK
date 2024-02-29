@@ -5,12 +5,11 @@ const db = require("../models");
 const Userlist = db.userlist;
 const Customerlist = db.customer;
 
-exports.getCustomer = async (req, res) => {
-  const { state } = req.params;
-  console.log("1111212", state);
+exports.getUserByRole = async (req, res) => {
+  const { role } = req.params;
   const userlist = await Userlist.findAll({
     where: {
-      Job: state,
+      Job: role,
     },
   });
   res.send(userlist);
@@ -36,8 +35,8 @@ exports.authUpdate = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-exports.authDelete = async (req, res) => {
-  const id = req.body.id;
+exports.deleteUser = async (req, res) => {
+  const id = req.params.id;
   try {
     const user = await Userlist.destroy({
       where: {
@@ -83,38 +82,14 @@ exports.getAllAccepted = async (req, res) => {
 
   res.send(customerlist);
 };
-exports.driverRegister = async (req, res) => {
-  console.log(req.body);
+exports.createUser = async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const userlist = {
     Name: req.body.name,
     Email: req.body.email,
     Password: hashedPassword,
-    Job: "driver",
     PhoneNumber: req.body.number,
-  };
-  // Save Tutorial in the database
-  Userlist.create(userlist)
-    .then((data) => {
-      // console.log(data.dataValues)
-
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the userlist.",
-      });
-    });
-};
-exports.washerRegister = async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  const userlist = {
-    Name: req.body.name,
-    Email: req.body.email,
-    Password: hashedPassword,
-    Job: "washer",
-    PhoneNumber: req.body.number,
+    Job: req.body.role
   };
   // Save Tutorial in the database
   Userlist.create(userlist)

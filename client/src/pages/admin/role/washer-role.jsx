@@ -65,22 +65,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ props, row, isMobile, index }) {
+function CollapsibleRow({ getWashers, row, isMobile, index }) {
   const [open, setOpen] = useState(false);
-  const onDelete = (data) => {
-    const getCustomer = () => {
-      Http.get("/api/wash/getWasherlist")
-        .then((data) => {
-          // console.log(data.data)
-          props(data.data);
-        })
-        .catch((err) => {});
-    };
-    Http.post("/api/wash/deleteItemWasher", {
-      id: data,
-    })
+  const onDelete = (id) => {
+    Http.delete(`/api/user/${id}`)
       .then((data) => {
-        getCustomer();
+        getWashers();
       })
       .catch((err) => {});
   };
@@ -128,7 +118,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
               <IconButton
                 color="secondary"
                 aria-label="add an alarm"
-                onClick={() => onDelete(row.PhoneNumber)}
+                onClick={() => onDelete(row.id)}
               >
                 <RestoreFromTrashIcon />
               </IconButton>
@@ -172,7 +162,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
                         <IconButton
                           color="secondary"
                           aria-label="add an alarm"
-                          onClick={() => onDelete(row.PhoneNumber)}
+                          onClick={() => onDelete(row.id)}
                         >
                           <RestoreFromTrashIcon />
                         </IconButton>
@@ -191,7 +181,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
 export default function ResponsiveCollapsibleTable() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [washerList, setWasherList] = useState([]);
+  const [washers, setWashers] = useState([]);
   const [open, setOpen] = React.useState(false);
   const {
     control,
@@ -201,7 +191,7 @@ export default function ResponsiveCollapsibleTable() {
     register,
   } = useForm();
   useEffect(() => {
-    getWasher();
+    getWashers();
   }, []);
   const handleOpen = () => {
     setOpen(true);
@@ -211,23 +201,22 @@ export default function ResponsiveCollapsibleTable() {
   };
   const handleOk = (data) => {
     setOpen(false);
-    Http.post("/api/wash/register", {
+    Http.post("/api/user", {
       name: data.username,
       email: data.email,
       password: data.password,
       number: data.phonenumber,
+      role: 'washer'
     })
       .then((data) => {
-        console.log("customer");
-        getWasher();
+        getWashers();
       })
       .catch((err) => {});
   };
-  const getWasher = () => {
-    Http.get("/api/wash/getWasher")
+  const getWashers = () => {
+    Http.get("/api/user/byrole/washer")
       .then((data) => {
-        console.log(data.data);
-        setWasherList(data.data);
+        setWashers(data.data);
       })
       .catch((err) => {});
   };
@@ -256,7 +245,7 @@ export default function ResponsiveCollapsibleTable() {
               align="center"
               marginBottom={"40px"}
             >
-              Mange Washer
+              Manage Washer
             </Typography>
           </Box>
           <Button
@@ -292,13 +281,13 @@ export default function ResponsiveCollapsibleTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {washerList.map((row, index) => (
+              {washers.map((row, index) => (
                 <CollapsibleRow
                   key={row.id}
                   row={row}
                   isMobile={isMobile}
                   index={index}
-                  props={setWasherList}
+                  getWashers={getWashers}
                 />
               ))}
             </TableBody>

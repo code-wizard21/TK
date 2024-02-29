@@ -65,23 +65,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ props, row, isMobile, index }) {
+function CollapsibleRow({ getDrivers, row, isMobile, index }) {
   const [open, setOpen] = useState(false);
-  const onDelete = (data) => {
-    console.log(data);
-    const getCustomer = () => {
-      Http.get("/api/driv/getDriver")
-        .then((data) => {
-          // console.log(data.data)
-          props(data.data);
-        })
-        .catch((err) => {});
-    };
-    Http.post("/api/driv/deleteItemDriver", {
-      id: data,
-    })
+  const onDelete = (id) => {
+    Http.delete(`/api/user/${id}`)
       .then((data) => {
-        getCustomer();
+        getDrivers();
       })
       .catch((err) => {});
   };
@@ -129,7 +118,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
               <IconButton
                 color="secondary"
                 aria-label="add an alarm"
-                onClick={() => onDelete(row.PhoneNumber)}
+                onClick={() => onDelete(row.id)}
               >
                 <RestoreFromTrashIcon />
               </IconButton>
@@ -173,7 +162,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
                         <IconButton
                           color="secondary"
                           aria-label="add an alarm"
-                          onClick={() => onDelete(row.PhoneNumber)}
+                          onClick={() => onDelete(row.id)}
                         >
                           <RestoreFromTrashIcon />
                         </IconButton>
@@ -192,7 +181,7 @@ function CollapsibleRow({ props, row, isMobile, index }) {
 export default function ResponsiveCollapsibleTable() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [driverList, setDriverList] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [open, setOpen] = useState(false);
   const {
     control,
@@ -202,7 +191,7 @@ export default function ResponsiveCollapsibleTable() {
     register,
   } = useForm();
   useEffect(() => {
-    getDriver();
+    getDrivers();
   }, []);
   const handleOpen = () => {
     setOpen(true);
@@ -212,23 +201,22 @@ export default function ResponsiveCollapsibleTable() {
   };
   const handleOk = (data) => {
     setOpen(false);
-    Http.post("/api/driv/register", {
+    Http.post("/api/user", {
       name: data.username,
       email: data.email,
       password: data.password,
       number: data.phonenumber,
+      role: 'driver'
     })
       .then((data) => {
-        console.log("customer");
-        getDriver();
+        getDrivers();
       })
       .catch((err) => {});
   };
-  const getDriver = () => {
-    Http.get("/api/driv/getDriver")
+  const getDrivers = () => {
+    Http.get("/api/user/byrole/driver")
       .then((data) => {
-        console.log(data.data);
-        setDriverList(data.data);
+        setDrivers(data.data);
       })
       .catch((err) => {});
   };
@@ -257,7 +245,7 @@ export default function ResponsiveCollapsibleTable() {
               align="center"
               marginBottom={"40px"}
             >
-              Mange Driver
+              Manage Driver
             </Typography>
           </Box>
           <Button
@@ -295,9 +283,9 @@ export default function ResponsiveCollapsibleTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {driverList.map((row, index) => (
+              {drivers.map((row, index) => (
                 <CollapsibleRow
-                  props={setDriverList}
+                  getDrivers={getDrivers}
                   key={row.id}
                   row={row}
                   isMobile={isMobile}
