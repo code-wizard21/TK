@@ -1,4 +1,4 @@
-const { STATUS_REJECTED, STATUS_REQUESTED, STATUS_ACCEPTED } = require("../constants");
+const { STATUS_REJECTED, STATUS_REQUESTED, STATUS_ACCEPTED, STATUS_WASHED } = require("../constants");
 const db = require("../models");
 const Customerlist = db.customer;
 
@@ -89,6 +89,27 @@ exports.reject = async (req, res) => {
     const customerlist = await Customerlist.findAll({
       where: {
         State: STATUS_REQUESTED,
+      },
+    });
+    res.status(200).json(customerlist);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.wash = async (req, res) => {
+  try {
+    const user = await Customerlist.update(
+      { State: STATUS_WASHED },
+      {
+        where: {
+          id: req.body.id,
+        },
+      }
+    );
+    const customerlist = await Customerlist.findAll({
+      where: {
+        State: STATUS_ACCEPTED,
       },
     });
     res.status(200).json(customerlist);

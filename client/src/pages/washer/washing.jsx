@@ -75,11 +75,11 @@ function CollapsibleRow({ index, row, isMobile }) {
             <TableCell>
               <span> {row.Date}</span>
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
               <IconButton color="secondary" aria-label="add an alarm">
                 <ClearIcon />
               </IconButton>
-            </TableCell>
+            </TableCell> */}
           </>
         )}
       </StyledTableRow>
@@ -102,7 +102,7 @@ function CollapsibleRow({ index, row, isMobile }) {
                       </TableCell>
                       <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell component="th" scope="row">
                         Action
                       </TableCell>
@@ -112,7 +112,7 @@ function CollapsibleRow({ index, row, isMobile }) {
                           <ClearIcon />
                         </IconButton>
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
                   </TableBody>
                 </Table>
               </Box>
@@ -134,13 +134,13 @@ export default function ResponsiveCollapsibleTable(props) {
           <TableRow>
             {isMobile && <TableCell />}
             <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell>Car Number</StyledTableCell>
+            <StyledTableCell>Truck Number</StyledTableCell>
             <StyledTableCell>Company Name</StyledTableCell>
             {!isMobile && (
               <>
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+                {/* <StyledTableCell>Action</StyledTableCell> */}
               </>
             )}
           </TableRow>

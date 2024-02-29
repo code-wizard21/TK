@@ -144,12 +144,12 @@ export default function ResponsiveCollapsibleTable(props) {
           <TableRow>
             {isMobile && <TableCell />}
             <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell>Car Number</StyledTableCell>
+            <StyledTableCell>Truck Number</StyledTableCell>
             <StyledTableCell>Description</StyledTableCell>
             {!isMobile && (
               <>
                 <StyledTableCell>Date</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+                {/* <StyledTableCell>Action</StyledTableCell> */}
               </>
             )}
           </TableRow>

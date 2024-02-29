@@ -8,5 +8,6 @@ router.get("/bystatus/:status", orderController.getOrderByStatus);
 // router.delete("/:id", orderController.deleteOrder);
 router.post("/accept", orderController.accept);
 router.post("/reject", orderController.reject);
+router.post("/wash", orderController.wash);
 
 module.exports = router;

@@ -122,8 +122,8 @@ export default function DrawerAnchor() {
               }}
             >
               <Tab label="Requested" value="1" />
-              <Tab label="Accepted" value="2" />
-              <Tab label="Washed " value="3" />
+              <Tab label="In Progress" value="2" />
+              <Tab label="Completed " value="3" />
             </TabList>
           </Box>
           <TabPanel value="1">

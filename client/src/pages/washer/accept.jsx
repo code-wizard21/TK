@@ -44,7 +44,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function CollapsibleRow({ index, props, row, isMobile }) {
   const [open, setOpen] = useState(false);
   const onWashed = (id) => {
-    Http.post("/api/order/accept", { id })
+    Http.post("/api/order/wash", { id })
       .then((data) => {
         props.setFlag(!props.flag);
       })
@@ -155,7 +155,7 @@ export default function ResponsiveCollapsibleTable(props) {
           <TableRow>
             {isMobile && <TableCell />}
             <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell>Car Number</StyledTableCell>
+            <StyledTableCell>Truck Number</StyledTableCell>
             <StyledTableCell>Company Name</StyledTableCell>
             {!isMobile && (
               <>

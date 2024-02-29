@@ -137,7 +137,7 @@ export default function LabTabs() {
             
               }}
             >
-              <Tab label="Request" value="1" />
+              <Tab label="Requested" value="1" />
               <Tab label="In Progress" value="2" />
               <Tab label="Completed" value="3" />
             </TabList>
