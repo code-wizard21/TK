@@ -12,7 +12,6 @@ if (LocalStorage) {
   const decodedToken = jwtDecode(LocalStorage);
   store.dispatch({ type: "LOGIN_REQUEST", payload: decodedToken });
 }
-
 const App = () => {
   return (
     <>

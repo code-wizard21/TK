@@ -25,9 +25,16 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
     const [date, setDate] = useState(dayjs());
     const [description, setDescription] = useState("");
     const [trackCode, setTrackCode] = useState("");
+    const [trucks, setTrucks] = useState([]);
+    const [companies, setCompanies] = useState([]);
+    useEffect(async () => {
+        const trucks = await Http.get("/api/truck");
+        setTrucks(trucks.data);
+        const companies = await Http.get("/api/auth/getCustomer");
+        setCompanies(companies.data);
+    }, []);
   
     const validate = () => {
-      console.log(trackCode, "eee");
       if (
         (trackCode == "") |
         (description == "") |
@@ -60,9 +67,6 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
           });
       }
     };
-    //TODO: demo data truck numbers
-    const truckNumbers = ['2022-2023', '3022-5023', '1222-3223', '1522-2223'];
-    const companyNames = ['ABC', 'DEF', 'GHG', 'ZZZ'];
 
     return (
       <Box
@@ -98,7 +102,7 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
                 <Autocomplete
                     disablePortal
                     id="combo-box-company"
-                    options={companyNames}
+                    options={companies.map(i => i.Name)}
                     onChange={(e,v) => setCompanyName(v)}
                     renderInput={(params) => 
                         <TextField
@@ -118,7 +122,7 @@ export const RequestTask = ({ toggleDrawer ,refreshList, isDriver}) => {
                 <Autocomplete
                     disablePortal
                     id="combo-box-trucknumber"
-                    options={truckNumbers}
+                    options={trucks.map(i => `${i.FirstNumber}-${i.SecondNumber}`)}
                     onChange={(e, v) => setTrackCode(v)}
                     renderInput={(params) => 
                         <TextField
