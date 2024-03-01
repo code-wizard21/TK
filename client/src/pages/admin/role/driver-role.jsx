@@ -75,14 +75,20 @@ function CollapsibleRow({
   setDeleteId,
   setUpdateFlag,
   setUpdateId,
+  setNamelist,
+  setUserEmail,
+  setUserPhone,
 }) {
   const [open, setOpen] = useState(false);
   const onDelete = (id) => {
     setDeleteFlag(true);
     setDeleteId(id);
   };
-  const onEdit = (id) => {
-    setUpdateId(id);
+  const onEdit = (row) => {
+    setUpdateId(row.id);
+    setNamelist(row.Name);
+    setUserEmail(row.Email);
+    setUserPhone(row.PhoneNumber);
     setUpdateFlag(true);
   };
   return (
@@ -136,7 +142,7 @@ function CollapsibleRow({
               <IconButton
                 color="secondary"
                 aria-label="add an alarm"
-                onClick={() => onEdit(row.id)}
+                onClick={() => onEdit(row)}
               >
                 <EditIcon />
               </IconButton>
@@ -187,7 +193,7 @@ function CollapsibleRow({
                         <IconButton
                           color="secondary"
                           aria-label="add an alarm"
-                          onClick={() => onEdit(row.id)}
+                          onClick={() => onEdit(row)}
                         >
                           <EditIcon />
                         </IconButton>
@@ -211,6 +217,9 @@ export default function ResponsiveCollapsibleTable() {
   const [deleteflag, setDeleteFlag] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [updateId, setUpdateId] = useState("");
+  const [nameList, setNamelist] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPhone, setUserPhone] = useState("");
   const [updateflag, setUpdateFlag] = useState(false);
 
   const {
@@ -351,6 +360,9 @@ export default function ResponsiveCollapsibleTable() {
                   setDeleteId={setDeleteId}
                   setUpdateFlag={setUpdateFlag}
                   setUpdateId={setUpdateId}
+                  setNamelist={setNamelist}
+                  setUserEmail={setUserEmail}
+                  setUserPhone={setUserPhone}
                 />
               ))}
             </TableBody>
@@ -527,14 +539,14 @@ export default function ResponsiveCollapsibleTable() {
 
         <DialogContent>
           <Typography sx={{ mb: 3 }}>
-            Please input the necessary informations for adding a Driver.
+            Please input the necessary informations for updating a Driver.
           </Typography>
 
           <form onSubmit={handleSubmit(handleUpdateOk)} style={{}}>
             <Controller
               name="username"
               control={control}
-              defaultValue=""
+              defaultValue={nameList}
               rules={{ required: "Username is required" }}
               render={({ field }) => (
                 <TextField
@@ -550,7 +562,7 @@ export default function ResponsiveCollapsibleTable() {
             <Controller
               name="email"
               control={control}
-              defaultValue=""
+              defaultValue={userEmail}
               rules={{ required: "Email is required" }}
               render={({ field }) => (
                 <TextField
@@ -574,7 +586,7 @@ export default function ResponsiveCollapsibleTable() {
             <Controller
               name="phonenumber"
               control={control}
-              defaultValue=""
+              defaultValue={userPhone}
               rules={{ required: "Phone Number is required" }}
               render={({ field }) => (
                 <TextField
