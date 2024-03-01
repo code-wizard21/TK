@@ -63,7 +63,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(dayjs());
-  const [openRejecter, setOpenRejecter] = useState(false);
+  const [openResender, setOpenResender] = useState(false);
   const [rejectid, setRejectID] = useState(false);
   const {
     control,
@@ -72,37 +72,23 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
     reset,
     register,
   } = useForm();
-  const onRejected = (id) => {
+  const onResend = (id) => {
     setRejectID(id);
-    setOpenRejecter(true);
+    setOpenResender(true);
     reset();
   };
   const handleClose = () => {
-    setOpenRejecter(false);
+    setOpenResender(false);
   };
   const handleOk = (data) => {
-    console.log(data);
-    setOpenRejecter(false);
+    setOpenResender(false);
     Http.put("/api/order/bystatus/requested", { id: rejectid, ...data, date })
       .then((data) => {
         setRejected(data.data);
 
-        toast.success(" Request successfully restored.", {
+        toast.success(" Request successfully resent.", {
           hideProgressBar: true,
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const onAccepted = (id) => {
-    Http.post("/api/order/accept", { id })
-      .then((data) => {
-        toast.success(" Request successfully accepted.", {
-          hideProgressBar: true,
-        });
-        props.setData(data.data);
-        props.setFlag(true);
       })
       .catch((err) => {
         console.log(err);
@@ -149,7 +135,7 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
                 color="secondary"
                 aria-label="add an alarm"
                 onClick={() => {
-                  onRejected(row.id);
+                  onResend(row.id);
                 }}
               >
                 <SettingsBackupRestoreIcon />
@@ -192,18 +178,11 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
                         <IconButton
                           color="secondary"
                           aria-label="add an alarm"
-                          onClick={() => onAccepted(row.id)}
-                        >
-                          <CheckIcon />
-                        </IconButton>
-                        <IconButton
-                          color="secondary"
-                          aria-label="add an alarm"
                           onClick={() => {
-                            onRejected(row.id);
+                            onResend(row.id);
                           }}
                         >
-                          <ClearIcon />
+                          <SettingsBackupRestoreIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -215,7 +194,7 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
         </TableRow>
       )}
       <Dialog
-        open={openRejecter}
+        open={openResender}
         onClose={handleClose}
         PaperProps={{
           sx: {
@@ -231,10 +210,9 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
 
           <form onSubmit={handleSubmit(handleOk)} style={{}}>
             <Controller
-              name="description"
+              name="date"
               control={control}
               defaultValue=""
-              rules={{ required: "Description is required" }}
               render={({ field }) => (
                 <Grid xs={12} md={6}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>

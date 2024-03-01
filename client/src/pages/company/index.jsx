@@ -26,8 +26,9 @@ export default function DrawerAnchor() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [value, setValue] = useState("1");
-  const [cusData, setCusData] = useState([]);
-  const [cusAccept, setCusAccept] = useState([]);
+  const [requestedOrders, setRequestedOrders] = useState([]);
+  const [acceptedOrders, setAcceptedOrders] = useState([]);
+  const [washedOrders, setWashedOrders] = useState([]);
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
@@ -39,15 +40,21 @@ export default function DrawerAnchor() {
   const getOrders = () => {
     Http.get("/api/order/bystatus/requested", { name: auth.user.name })
       .then((data) => {
-        setCusData(data.data);
+        setRequestedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
     Http.get("/api/order/bystatus/accepted", { name: auth.user.name })
       .then((data) => {
-        console.log(data.data);
-        setCusAccept(data.data);  
+        setAcceptedOrders(data.data);  
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    Http.get("/api/order/bystatus/washed", { name: auth.user.name })
+      .then((data) => {
+        setWashedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -129,16 +136,18 @@ export default function DrawerAnchor() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <RequestedList data={cusData} setData={setCusData} auth={auth} role={"company"} />
+            <RequestedList data={requestedOrders} setData={setRequestedOrders} auth={auth} role={"company"} />
           </TabPanel>
           <TabPanel value="2">
             <RejectedList role={"company"} />
           </TabPanel>
           <TabPanel value="3">
-            <AcceptedList data={cusAccept} role={"company"} />
+            <AcceptedList data={acceptedOrders} role={"company"} />
           </TabPanel>
           <TabPanel value="4">
-            <CompletedList />
+            <CompletedList data={washedOrders} 
+              setData={setWashedOrders}
+              auth={auth}/>
           </TabPanel>
         </TabContext>
 

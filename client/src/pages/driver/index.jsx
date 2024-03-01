@@ -147,7 +147,9 @@ export default function LabTabs() {
             <AcceptedList data={acceptedOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="4">
-            <CompletedList data={washedOrders} />
+            <CompletedList data={washedOrders} 
+              setData={setWashedOrders}
+              auth={auth}/>
           </TabPanel>
         </TabContext>
         <Drawer open={open} onClose={() => toggleDrawer(false)} >
