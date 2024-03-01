@@ -41,12 +41,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ row, isMobile, index, role, setFlag, flag }) {
+function CollapsibleRow({ row, isMobile, index, role, setFlag, flag, props }) {
   const [open, setOpen] = useState(false);
   const onWashed = (id) => {
     Http.post("/api/order/wash", { id })
       .then((data) => {
-        setFlag(!flag);
+        props.setFlag(!props.flag);
+        props.setData(data.data);
       })
       .catch((err) => {});
   };
@@ -76,17 +77,8 @@ function CollapsibleRow({ row, isMobile, index, role, setFlag, flag }) {
 
         {!isMobile && (
           <>
-            {role=='company' && <TableCell>{row.Detail}</TableCell>}
-            {role=='driver' && 
-                <>
-                    <TableCell>{row.CompanyName}</TableCell>
-                    <TableCell>
-                        {/* <div className="date"> */}
-                        <span> {row.Detail}</span>
-                        {/* </div> */}
-                    </TableCell>
-                </>
-            }
+            {(role=='driver' || role=='washer') && <TableCell>{row.CompanyName}</TableCell>}
+            <TableCell>{row.Detail}</TableCell>
             <TableCell component="th" scope="row">
               <div className="accept">
                 <span> {row.PicksName}</span>
@@ -176,7 +168,7 @@ function CollapsibleRow({ row, isMobile, index, role, setFlag, flag }) {
                                 </TableCell>
 
                                 <TableCell align="right">
-                                    <IconButton color="secondary" aria-label="add an alarm">
+                                    <IconButton color="secondary" aria-label="add an alarm" onClick={() => onWashed(row.id)}>
                                         <CheckIcon />
                                     </IconButton>
                                 </TableCell>
@@ -208,7 +200,7 @@ export default function AcceptedList(props) {
 
             {!isMobile && (
               <>
-                {role=='driver' && <StyledTableCell>Company Name</StyledTableCell>}
+                {(role=='driver' || role=='washer') && <StyledTableCell>Company Name</StyledTableCell>}
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Pickup Location</StyledTableCell>
                 <StyledTableCell>Dropdown Location</StyledTableCell>

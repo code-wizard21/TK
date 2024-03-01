@@ -144,7 +144,7 @@ export default function LabTabs() {
             <RejectedList role={"driver"} />
           </TabPanel>
           <TabPanel value="3">
-            <AcceptedList data={acceptedOrders} role={"driver"} />
+            <AcceptedList data={acceptedOrders} setData={setAcceptedOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="4">
             <CompletedList data={washedOrders} 

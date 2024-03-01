@@ -142,7 +142,7 @@ export default function DrawerAnchor() {
             <RejectedList role={"company"} />
           </TabPanel>
           <TabPanel value="3">
-            <AcceptedList data={acceptedOrders} role={"company"} />
+            <AcceptedList data={acceptedOrders} setData={setAcceptedOrders} role={"company"} />
           </TabPanel>
           <TabPanel value="4">
             <CompletedList data={washedOrders} 
