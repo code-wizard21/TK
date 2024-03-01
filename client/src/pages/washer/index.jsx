@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
-import Accept from "./accept";
 import Washing from "./washing";
 import { useTheme } from "@material-ui/core/styles";
 import Request from "./request";
 import Http from "../../utils/http";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Container } from "@mui/material";
+import AcceptedList from "../../components/accepted";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -96,12 +96,13 @@ export default function LabTabs() {
             />
           </TabPanel>
           <TabPanel value="2">
-            <Accept
+            <AcceptedList
               data={acceptedOrders}
               setData={setAcceptedOrders}
               flag={flag}
               setFlag={setFlag}
               auth={auth}
+              role={"washer"}
             />
           </TabPanel>
           <TabPanel value="3">

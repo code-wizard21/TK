@@ -5,7 +5,6 @@ import Button from "@mui/joy/Button";
 import { Tab } from "@mui/material";
 import { Stack } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
-import Accept from "./accept";
 import Washing from "./washing";
 import Request from "./request";
 import { Container } from "@mui/material";
@@ -16,6 +15,7 @@ import { useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import Http from "../../utils/http";
 import { RequestTask } from "../../components/requesttask";
+import AcceptedList from "../../components/accepted";
 
 export default function DrawerAnchor() {
   const auth = useSelector((state) => state.auth);
@@ -130,7 +130,7 @@ export default function DrawerAnchor() {
             <Request data={cusData} setData={setCusData} auth={auth} />
           </TabPanel>
           <TabPanel value="2">
-            <Accept data={cusAccept} />
+            <AcceptedList data={cusAccept} role={"company"} />
           </TabPanel>
           <TabPanel value="3">
             <Washing />

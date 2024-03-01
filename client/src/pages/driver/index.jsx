@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
-import Accept from "./accept";
 import Washing from "./washing";
 import Http from "../../utils/http";
 import AddIcon from "@mui/icons-material/Add";
@@ -21,6 +20,7 @@ import Drawer from "@mui/joy/Drawer";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import { RequestTask } from "../../components/requesttask";
+import AcceptedList from "../../components/accepted";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -146,7 +146,7 @@ export default function LabTabs() {
             <Request data={newOrders} />
           </TabPanel>
           <TabPanel value="2">
-            <Accept data={acceptedOrders} />
+            <AcceptedList data={acceptedOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="3">
             <Washing data={washedOrders} />
