@@ -78,6 +78,19 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
     setOpenResender(true);
     reset();
   };
+  const onCancel = (id) => {
+    Http.post("/api/order/cancel", { id })
+      .then((data) => {
+        setRejected(data.data);
+
+        toast.success("Successfully cancelled.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleClose = () => {
     setOpenResender(false);
   };
@@ -132,9 +145,20 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
             </TableCell>
 
             <TableCell>
+              {role=='company' && 
               <IconButton
                 color="secondary"
-                aria-label="add an alarm"
+                aria-label="Cancel"
+                onClick={() => {
+                  onCancel(row.id);
+                }}
+              >
+                <ClearIcon />
+              </IconButton>
+              }
+              <IconButton
+                color="secondary"
+                aria-label="Resend"
                 onClick={() => {
                   onResend(row.id);
                 }}
@@ -174,8 +198,18 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
                       <TableCell component="th" scope="row">
                         Action
                       </TableCell>
-
                       <TableCell align="right">
+                        {role=='company' && 
+                          <IconButton
+                            color="secondary"
+                            aria-label="Cancel"
+                            onClick={() => {
+                              onCancel(row.id);
+                            }}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        }
                         <IconButton
                           color="secondary"
                           aria-label="add an alarm"
