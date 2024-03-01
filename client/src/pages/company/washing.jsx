@@ -67,12 +67,28 @@ function CollapsibleRow({ row, isMobile }) {
         )}
         <TableCell component="th" scope="row">
           <div className="accept">
+            <span></span>
+          </div>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <div className="accept">
             <span> {row.cnumber}</span>
           </div>
         </TableCell>
-        <TableCell>{row.description}</TableCell>
+
         {!isMobile && (
           <>
+            <TableCell>{row.Detail}</TableCell>
+            <TableCell component="th" scope="row">
+              <div className="accept">
+                <span> {row.PicksName}</span>
+              </div>
+            </TableCell>
+            <TableCell component="th" scope="row">
+              <div className="accept">
+                <span> {row.DropsName}</span>
+              </div>
+            </TableCell>
             <TableCell>
               {/* <div className="date"> */}
               <span> {row.date}</span>
@@ -98,6 +114,18 @@ function CollapsibleRow({ row, isMobile }) {
                         Date
                       </TableCell>
                       <TableCell align="right">{row.date}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Pickup Location
+                      </TableCell>
+                      <TableCell align="right">{row.PicksName}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Dropdown Location
+                      </TableCell>
+                      <TableCell align="right">{row.DropsName}</TableCell>
                     </TableRow>
                     {/* <TableRow>
                       <TableCell component="th" scope="row">
@@ -130,10 +158,14 @@ export default function ResponsiveCollapsibleTable() {
         <TableHead>
           <TableRow>
             {isMobile && <TableCell />}
+            <StyledTableCell>ID</StyledTableCell>
             <StyledTableCell>Truck Number</StyledTableCell>
-            <StyledTableCell>Description</StyledTableCell>
+
             {!isMobile && (
               <>
+                <StyledTableCell>Description</StyledTableCell>
+                <StyledTableCell>Pickup Location</StyledTableCell>
+                <StyledTableCell>Dropdown Location</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
                 {/* <StyledTableCell>Action</StyledTableCell> */}
               </>

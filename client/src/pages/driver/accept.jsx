@@ -66,20 +66,30 @@ function CollapsibleRow({ index, row, isMobile }) {
             <span> {row.CarNumber}</span>
           </div>
         </TableCell>
-        <TableCell>{row.CustomerName}</TableCell>
+        {/* <TableCell>{row.CustomerName}</TableCell> */}
         {!isMobile && (
           <>
+            <TableCell>{row.CustomerName}</TableCell>
             <TableCell>
               {/* <div className="date"> */}
               <span> {row.Detail}</span>
               {/* </div> */}
+            </TableCell>
+            <TableCell component="th" scope="row">
+              <div className="accept">
+                <span> {row.PicksName}</span>
+              </div>
+            </TableCell>
+            <TableCell component="th" scope="row">
+              <div className="accept">
+                <span> {row.DropsName}</span>
+              </div>
             </TableCell>
             <TableCell>
               {/* <div className="date"> */}
               <span> {row.Date}</span>
               {/* </div> */}
             </TableCell>
-
           </>
         )}
       </StyledTableRow>
@@ -98,11 +108,22 @@ function CollapsibleRow({ index, row, isMobile }) {
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
+                        Pickup Location
+                      </TableCell>
+                      <TableCell align="right">{row.PicksName}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Dropdown Location
+                      </TableCell>
+                      <TableCell align="right">{row.DropsName}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
                         Date
                       </TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
+                      <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>
-
                   </TableBody>
                 </Table>
               </Box>
@@ -125,12 +146,14 @@ export default function ResponsiveCollapsibleTable(props) {
             {isMobile && <TableCell />}
             <StyledTableCell>ID</StyledTableCell>
             <StyledTableCell>Truck Number</StyledTableCell>
-            <StyledTableCell>Company Name</StyledTableCell>
+
             {!isMobile && (
               <>
+                <StyledTableCell>Company Name</StyledTableCell>
                 <StyledTableCell>Description</StyledTableCell>
+                <StyledTableCell>Pickup Location</StyledTableCell>
+                <StyledTableCell>Dropdown Location</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
-             
               </>
             )}
           </TableRow>
