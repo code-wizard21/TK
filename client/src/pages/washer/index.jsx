@@ -9,12 +9,9 @@ import { useTheme } from "@material-ui/core/styles";
 import Request from "./request";
 import Http from "../../utils/http";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {
-  Container
-} from "@mui/material";
+import { Container } from "@mui/material";
 
 export default function LabTabs() {
-
   const [value, setValue] = useState("1");
   const [requestedOrders, setRequestedOrders] = useState([]);
   const [acceptedOrders, setAcceptedOrders] = useState([]);
@@ -41,6 +38,7 @@ export default function LabTabs() {
       });
     Http.get("/api/order/bystatus/accepted", { name: auth.user.name })
       .then((data) => {
+        console.log(data);
         setAcceptedOrders(data.data);
       })
       .catch((err) => {
@@ -54,7 +52,7 @@ export default function LabTabs() {
         console.log(err);
       });
   }, [flag, auth.user.name]);
- const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
@@ -65,10 +63,10 @@ export default function LabTabs() {
         // Add additional styling as needed here
       }}
     >
-       <Container>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList
+      <Container>
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList
               onChange={handleChange}
               aria-label="lab API tabs example"
               centered={isSmallScreen ? false : true} // If not small screen, center the tabs for visual appeal
@@ -81,36 +79,39 @@ export default function LabTabs() {
                   fontWeight: "600",
                   color: "#191923",
                 },
-          
               }}
             >
-            <Tab label="Requested" value="1" />
-            <Tab label="In Progress" value="2" />
-            <Tab label="Completed " value="3" />
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-          <Request
-            flag={flag}
-            setFlag={setFlag}
-            data={requestedOrders}
-            setData={setRequestedOrders}
-            auth={auth}
-          />
-        </TabPanel>
-        <TabPanel value="2">
-          <Accept
-            data={acceptedOrders}
-            setData={setAcceptedOrders}
-            flag={flag}
-            setFlag={setFlag}
-            auth={auth}
-          />
-        </TabPanel>
-        <TabPanel value="3">
-          <Washing data={washedOrders} setData={setWashedOrders} auth={auth} />
-        </TabPanel>
-      </TabContext>
+              <Tab label="Requested" value="1" />
+              <Tab label="In Progress" value="2" />
+              <Tab label="Completed " value="3" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <Request
+              flag={flag}
+              setFlag={setFlag}
+              data={requestedOrders}
+              setData={setRequestedOrders}
+              auth={auth}
+            />
+          </TabPanel>
+          <TabPanel value="2">
+            <Accept
+              data={acceptedOrders}
+              setData={setAcceptedOrders}
+              flag={flag}
+              setFlag={setFlag}
+              auth={auth}
+            />
+          </TabPanel>
+          <TabPanel value="3">
+            <Washing
+              data={washedOrders}
+              setData={setWashedOrders}
+              auth={auth}
+            />
+          </TabPanel>
+        </TabContext>
       </Container>
     </Box>
   );
