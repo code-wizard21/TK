@@ -86,7 +86,7 @@ exports.accept = async (req, res) => {
 exports.reject = async (req, res) => {
   try {
     const user = await Order.update(
-      { State: STATUS_REJECTED },
+      { State: STATUS_REJECTED, Reason: req.body.description },
       {
         where: {
           id: req.body.id,

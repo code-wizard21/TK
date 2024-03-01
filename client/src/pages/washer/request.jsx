@@ -11,6 +11,10 @@ import {
   Box,
   useMediaQuery,
   useTheme,
+  Button,
+  TextField,
+  Stack,
+  Typography,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -18,9 +22,13 @@ import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import CheckIcon from "@mui/icons-material/Check";
+import { useForm, Controller } from "react-hook-form";
 // import axios from "axios";
 import Http from "../../utils/http";
 import { toast } from "react-toastify";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import Dialog from "@mui/material/Dialog";
 // ... Your rows data here
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -47,18 +55,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function CollapsibleRow({ index, props, row, isMobile }) {
   const [open, setOpen] = useState(false);
+  const [rejectid, setRejectID] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    register,
+  } = useForm();
   const onRejected = (id) => {
-    Http.post("/api/order/reject", { id })
-      .then((data) => {
-        props.setData(data.data);
-        props.setFlag(true);
-        toast.success(" Request successfully rejected.", {
-          hideProgressBar: true,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setRejectID(id);
   };
   const onAccepted = (id) => {
     Http.post("/api/order/accept", { id })
@@ -68,6 +74,23 @@ function CollapsibleRow({ index, props, row, isMobile }) {
         });
         props.setData(data.data);
         props.setFlag(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOk = (data) => {
+    setOpen(false);
+    Http.post("/api/order/reject", { id: rejectid, ...data })
+      .then((data) => {
+        props.setData(data.data);
+        props.setFlag(true);
+        toast.success(" Request successfully rejected.", {
+          hideProgressBar: true,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -177,6 +200,63 @@ function CollapsibleRow({ index, props, row, isMobile }) {
           </TableCell>
         </TableRow>
       )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
+        }}
+      >
+        <DialogTitle>Reject</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>
+            Please input the reason to reject.
+          </Typography>
+
+          <form onSubmit={handleSubmit(handleOk)} style={{}}>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Description is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Description"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.username}
+                  helperText={errors.username ? errors.username.message : ""}
+                />
+              )}
+            />
+
+            <Stack
+              direction={"row"}
+              style={{
+                justifyContent: "right",
+                gap: "8px",
+              }}
+            >
+              <Button variant="outlined" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ width: "100px" }}
+              >
+                Reject
+              </Button>
+            </Stack>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

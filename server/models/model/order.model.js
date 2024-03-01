@@ -21,6 +21,9 @@ module.exports = (sequelize, Sequelize) => {
     State: {
       type: Sequelize.STRING,
     },
+    Reason: {
+      type: Sequelize.STRING,
+    }
   });
 
   return Order;
