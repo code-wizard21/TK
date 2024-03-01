@@ -3,7 +3,13 @@ const bcrypt = require("bcrypt");
 
 const db = require("../models");
 const User = db.user;
-
+const {
+  STATUS_REJECTED,
+  STATUS_REQUESTED,
+  STATUS_ACCEPTED,
+  STATUS_WASHED,
+  STATUS_DISABLED,
+} = require("../constants");
 exports.getUserByRole = async (req, res) => {
   const { role } = req.params;
   const userlist = await User.findAll({
@@ -72,4 +78,16 @@ exports.updateByUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+};
+exports.updateByUserDisabled = async (req, res) => {
+  console.log("121212121", req.body.id);
+  const user = await User.update(
+    { State: "Disabled" },
+    {
+      where: {
+        id: req.body.id,
+      },
+    }
+  );
+  res.status(200).json(user);
 };

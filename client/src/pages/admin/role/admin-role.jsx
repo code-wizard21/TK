@@ -32,6 +32,7 @@ import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import EditIcon from "@material-ui/icons/Edit";
+import PersonAddDisabledSharpIcon from "@material-ui/icons/PersonAddDisabledSharp";
 // ... Your rows data here
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -94,6 +95,16 @@ function CollapsibleRow({
     setUserEmail(row.Email);
     setUserPhone(row.PhoneNumber);
   };
+  const onDisable = (row) => {
+    console.log(row.id);
+    Http.put("/api/user/", { id: row.id })
+      .then((data) => {
+        getCompanies();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <StyledTableRow
@@ -122,7 +133,11 @@ function CollapsibleRow({
             <span> {row.Email}</span>
           </div>
         </TableCell>
-
+        <TableCell component="th" scope="row">
+          <div className="accept">
+            <span> {row.State}</span>
+          </div>
+        </TableCell>
         {/* {!isMobile && (
           <TableCell component="th" scope="row">
             <div className="accept">
@@ -147,6 +162,13 @@ function CollapsibleRow({
                 onClick={() => onEdit(row)}
               >
                 <EditIcon />
+              </IconButton>
+              <IconButton
+                color="secondary"
+                aria-label="add an alarm"
+                onClick={() => onDisable(row)}
+              >
+                <PersonAddDisabledSharpIcon />
               </IconButton>
             </TableCell>
           </>
@@ -195,6 +217,13 @@ function CollapsibleRow({
                           onClick={() => onEdit(row)}
                         >
                           <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          color="secondary"
+                          aria-label="add an alarm"
+                          onClick={() => onDisable(row)}
+                        >
+                          <PersonAddDisabledSharpIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -255,6 +284,7 @@ export default function ResponsiveCollapsibleTable() {
       email: data.email,
       phone: data.phonenumber,
       name: data.username,
+      password: data.password,
     })
       .then((data) => {
         getCompanies();
@@ -342,7 +372,7 @@ export default function ResponsiveCollapsibleTable() {
 
                 {!isMobile && (
                   <>
-                    {/* <StyledTableCell>Password</StyledTableCell> */}
+                    <StyledTableCell>Status</StyledTableCell>
                     <StyledTableCell>Phone Number</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </>
@@ -586,7 +616,23 @@ export default function ResponsiveCollapsibleTable() {
                 />
               )}
             />
-
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Password is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.password}
+                  helperText={errors.password ? errors.password.message : ""}
+                />
+              )}
+            />
             <Controller
               name="phonenumber"
               control={control}

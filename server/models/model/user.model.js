@@ -12,6 +12,9 @@ module.exports = (sequelize, Sequelize) => {
     Job: {
       type: Sequelize.STRING,
     },
+    State: {
+      type: Sequelize.STRING,
+    },
     Password: {
       type: Sequelize.STRING,
     },
