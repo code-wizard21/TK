@@ -51,3 +51,25 @@ exports.createUser = async (req, res) => {
       });
     });
 };
+exports.updateByUser = async (req, res) => {
+  console.log(req.body);
+  const id = req.params.id;
+  try {
+    const user = await User.update(
+      {
+        Email: req.body.email,
+        PhoneNumber: req.body.phone,
+        Name: req.body.name,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

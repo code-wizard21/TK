@@ -29,6 +29,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useForm, Controller } from "react-hook-form";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import EditIcon from "@material-ui/icons/Edit";
 // ... Your rows data here
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -65,14 +66,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ getWashers, row, isMobile, index }) {
+function CollapsibleRow({
+  setDeleteFlag,
+  setDeleteId,
+  getWashers,
+  row,
+  isMobile,
+  index,
+  setUpdateFlag,
+  setUpdateId,
+}) {
   const [open, setOpen] = useState(false);
   const onDelete = (id) => {
-    Http.delete(`/api/user/${id}`)
-      .then((data) => {
-        getWashers();
-      })
-      .catch((err) => {});
+    setDeleteFlag(true);
+    setDeleteId(id);
+  };
+  const onEdit = (id) => {
+    setUpdateId(id);
+    setUpdateFlag(true);
   };
   return (
     <>
@@ -104,13 +115,13 @@ function CollapsibleRow({ getWashers, row, isMobile, index }) {
             </div>
           </TableCell>
         )}
-        {!isMobile && (
+        {/* {!isMobile && (
           <TableCell component="th" scope="row">
             <div className="accept">
               <span> {row.Password}</span>
             </div>
           </TableCell>
-        )}
+        )} */}
         {!isMobile && <TableCell>{row.PhoneNumber}</TableCell>}
         {!isMobile && (
           <>
@@ -121,6 +132,13 @@ function CollapsibleRow({ getWashers, row, isMobile, index }) {
                 onClick={() => onDelete(row.id)}
               >
                 <RestoreFromTrashIcon />
+              </IconButton>
+              <IconButton
+                color="secondary"
+                aria-label="add an alarm"
+                onClick={() => onEdit(row.id)}
+              >
+                <EditIcon />
               </IconButton>
             </TableCell>
           </>
@@ -166,6 +184,13 @@ function CollapsibleRow({ getWashers, row, isMobile, index }) {
                         >
                           <RestoreFromTrashIcon />
                         </IconButton>
+                        <IconButton
+                          color="secondary"
+                          aria-label="add an alarm"
+                          onClick={() => onEdit(row.id)}
+                        >
+                          <EditIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -183,6 +208,10 @@ export default function ResponsiveCollapsibleTable() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [washers, setWashers] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const [deleteflag, setDeleteFlag] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [updateId, setUpdateId] = useState("");
+  const [updateflag, setUpdateFlag] = useState(false);
   const {
     control,
     handleSubmit,
@@ -197,7 +226,21 @@ export default function ResponsiveCollapsibleTable() {
     setOpen(true);
   };
   const handleClose = () => {
+    setUpdateFlag(false);
     setOpen(false);
+  };
+  const handleUpdateOk = (data) => {
+    console.log(updateId);
+    Http.put(`/api/user/${updateId}`, {
+      email: data.email,
+      phone: data.phonenumber,
+      name: data.username,
+    })
+      .then((data) => {
+        getWashers();
+      })
+      .catch((err) => {});
+    setUpdateFlag(false);
   };
   const handleOk = (data) => {
     setOpen(false);
@@ -206,7 +249,7 @@ export default function ResponsiveCollapsibleTable() {
       email: data.email,
       password: data.password,
       number: data.phonenumber,
-      role: 'washer'
+      role: "washer",
     })
       .then((data) => {
         getWashers();
@@ -219,6 +262,18 @@ export default function ResponsiveCollapsibleTable() {
         setWashers(data.data);
       })
       .catch((err) => {});
+  };
+  const handlecloseOk = () => {
+    console.log(deleteId);
+    Http.delete(`/api/user/${deleteId}`)
+      .then((data) => {
+        getWashers();
+      })
+      .catch((err) => {});
+    setDeleteFlag(false);
+  };
+  const handleClosedialog = () => {
+    setDeleteFlag(false);
   };
 
   return (
@@ -259,7 +314,7 @@ export default function ResponsiveCollapsibleTable() {
             }}
             startIcon={<AddIcon />}
           >
-            Add 
+            Add
           </Button>
         </Stack>
 
@@ -273,7 +328,7 @@ export default function ResponsiveCollapsibleTable() {
                 {!isMobile && (
                   <>
                     <StyledTableCell>Email</StyledTableCell>
-                    <StyledTableCell>Password</StyledTableCell>
+                    {/* <StyledTableCell>Password</StyledTableCell> */}
                     <StyledTableCell>Phone Number</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </>
@@ -288,6 +343,11 @@ export default function ResponsiveCollapsibleTable() {
                   isMobile={isMobile}
                   index={index}
                   getWashers={getWashers}
+                  setDeleteFlag={setDeleteFlag}
+                  deleteflag={deleteflag}
+                  setDeleteId={setDeleteId}
+                  setUpdateFlag={setUpdateFlag}
+                  setUpdateId={setUpdateId}
                 />
               ))}
             </TableBody>
@@ -404,6 +464,146 @@ export default function ResponsiveCollapsibleTable() {
                 style={{ width: "100px" }}
               >
                 Add
+              </Button>
+            </Stack>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={deleteflag}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
+        }}
+      >
+        <DialogTitle>Delete Washer</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>
+            Do you really want to delete the selected information? ​
+          </Typography>
+
+          <form onSubmit={handleSubmit(handlecloseOk)} style={{}}>
+            <Stack
+              direction={"row"}
+              style={{
+                justifyContent: "right",
+                gap: "8px",
+              }}
+            >
+              <Button variant="outlined" onClick={handleClosedialog}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ width: "100px" }}
+              >
+                OK
+              </Button>
+            </Stack>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={updateflag}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
+        }}
+      >
+        <DialogTitle>Update Washer</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>
+            Please input the necessary informations for adding a Washer.
+          </Typography>
+
+          <form onSubmit={handleSubmit(handleUpdateOk)} style={{}}>
+            <Controller
+              name="username"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Username is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Username"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.username}
+                  helperText={errors.username ? errors.username.message : ""}
+                />
+              )}
+            />
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Email is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.email}
+                  helperText={errors.email ? errors.email.message : ""}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^\S+@\S+\.\S+$/,
+                      message: "Entered value does not match email format",
+                    },
+                  })}
+                />
+              )}
+            />
+
+            <Controller
+              name="phonenumber"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Phone Number is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Phone Number"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.phonenumber}
+                  helperText={
+                    errors.phonenumber ? errors.phonenumber.message : ""
+                  }
+                />
+              )}
+            />
+
+            <Stack
+              direction={"row"}
+              style={{
+                justifyContent: "right",
+                gap: "8px",
+              }}
+            >
+              <Button variant="outlined" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ width: "100px" }}
+              >
+                Update
               </Button>
             </Stack>
           </form>
