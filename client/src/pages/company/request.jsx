@@ -77,6 +77,16 @@ function CollapsibleRow({ props, row, isMobile, index }) {
           </div>
         </TableCell>
         <TableCell>{row.Detail}</TableCell>
+        <TableCell component="th" scope="row">
+          <div className="accept">
+            <span> {row.PicksName}</span>
+          </div>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <div className="accept">
+            <span> {row.DropsName}</span>
+          </div>
+        </TableCell>
         {!isMobile && (
           <>
             <TableCell>
@@ -146,6 +156,8 @@ export default function ResponsiveCollapsibleTable(props) {
             <StyledTableCell>ID</StyledTableCell>
             <StyledTableCell>Truck Number</StyledTableCell>
             <StyledTableCell>Description</StyledTableCell>
+            <StyledTableCell>Pickup Location</StyledTableCell>
+            <StyledTableCell>Dropdown Location</StyledTableCell>
             {!isMobile && (
               <>
                 <StyledTableCell>Date</StyledTableCell>

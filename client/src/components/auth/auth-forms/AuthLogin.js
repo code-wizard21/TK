@@ -103,6 +103,7 @@ const Login = ({ ...others }) => {
           // debugger;
           try {
             setLoading(true);
+            console.log(values);
             Http.post("/api/auth/signin", {
               Email: values?.email,
               Password: values?.password,
@@ -165,9 +166,7 @@ const Login = ({ ...others }) => {
               sx={{ ...theme.typography.customInput }}
               margin="normal"
             >
-              <InputLabel
-                htmlFor="outlined-adornment-email-login"
-              >
+              <InputLabel htmlFor="outlined-adornment-email-login">
                 Email Address
               </InputLabel>
               <OutlinedInput

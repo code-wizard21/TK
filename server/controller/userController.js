@@ -35,8 +35,8 @@ exports.createUser = async (req, res) => {
     Name: req.body.name,
     Email: req.body.email,
     Password: hashedPassword,
-    PhoneNumber: req.body.number,
-    Job: req.body.role
+    PhoneNumber: req.body.phone,
+    Job: req.body.role,
   };
   // Save Tutorial in the database
   Userlist.create(userlist)

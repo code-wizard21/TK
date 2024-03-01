@@ -29,7 +29,7 @@ const {
   pool,
 } = require("./config.js");
 
-app.use('/api', indexRouter);
+app.use("/api", indexRouter);
 const sequelize = new Sequelize(database, user, password, {
   host,
   port,

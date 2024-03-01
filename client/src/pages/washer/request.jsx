@@ -96,7 +96,7 @@ function CollapsibleRow({ index, props, row, isMobile }) {
             <span> {row.CarNumber}</span>
           </div>
         </TableCell>
-        <TableCell>{row.CustomerName}</TableCell>
+        <TableCell>{row.CompanyName}</TableCell>
         {!isMobile && (
           <>
             <TableCell>

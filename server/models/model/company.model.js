@@ -1,12 +1,18 @@
 module.exports = (sequelize, Sequelize) => {
-  const Customerlist = sequelize.define("customer", {
-    CustomerName: {
+  const Companylist = sequelize.define("company", {
+    CompanyName: {
       type: Sequelize.STRING,
     },
     CarNumber: {
       type: Sequelize.STRING,
     },
     Detail: {
+      type: Sequelize.STRING,
+    },
+    PicksName: {
+      type: Sequelize.STRING,
+    },
+    DropsName: {
       type: Sequelize.STRING,
     },
     Date: {
@@ -17,5 +23,5 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
 
-  return Customerlist;
+  return Companylist;
 };

@@ -1,14 +1,23 @@
-const { STATUS_REJECTED, STATUS_REQUESTED, STATUS_ACCEPTED, STATUS_WASHED } = require("../constants");
+const {
+  STATUS_REJECTED,
+  STATUS_REQUESTED,
+  STATUS_ACCEPTED,
+  STATUS_WASHED,
+} = require("../constants");
 const db = require("../models");
-const Customerlist = db.customer;
-
+const Customerlist = db.company;
+const DropList = db.droplist;
+const PickList = db.picklist;
 exports.createOrder = (req, res) => {
+  console.log(req.body);
   const userlist = {
-    CustomerName: req.body.name,
+    CompanyName: req.body.name,
     CarNumber: req.body.cardNum,
     Detail: req.body.detail,
     Date: req.body.date,
     State: STATUS_REQUESTED,
+    PicksName: req.body.pick,
+    DropsName: req.body.drop,
   };
   // Save Tutorial in the database
   Customerlist.create(userlist)
@@ -47,8 +56,8 @@ exports.getOrderByStatus = async (req, res) => {
   const company = req.body.company;
   let qwhere = {
     State: status,
-  }
-  if(company) qwhere.CustomerName = company;
+  };
+  if (company) qwhere.CustomerName = company;
 
   const customerlist = await Customerlist.findAll({
     where: qwhere,
@@ -116,4 +125,9 @@ exports.wash = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+};
+exports.getOrderByLocation = async (req, res) => {
+  const droplists = await DropList.findAll({});
+  const picklists = await PickList.findAll({});
+  res.status(200).json({ pick: picklists, drop: droplists });
 };
