@@ -55,6 +55,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function CollapsibleRow({ index, props, row, isMobile }) {
   const [open, setOpen] = useState(false);
+  const [openRejecter, setOpenRejecter] = useState(false);
   const [rejectid, setRejectID] = useState(false);
   const {
     control,
@@ -65,6 +66,8 @@ function CollapsibleRow({ index, props, row, isMobile }) {
   } = useForm();
   const onRejected = (id) => {
     setRejectID(id);
+    setOpenRejecter(true);
+    reset();
   };
   const onAccepted = (id) => {
     Http.post("/api/order/accept", { id })
@@ -80,10 +83,10 @@ function CollapsibleRow({ index, props, row, isMobile }) {
       });
   };
   const handleClose = () => {
-    setOpen(false);
+    setOpenRejecter(false);
   };
   const handleOk = (data) => {
-    setOpen(false);
+    setOpenRejecter(false);
     Http.post("/api/order/reject", { id: rejectid, ...data })
       .then((data) => {
         props.setData(data.data);
@@ -201,7 +204,7 @@ function CollapsibleRow({ index, props, row, isMobile }) {
         </TableRow>
       )}
       <Dialog
-        open={open}
+        open={openRejecter}
         onClose={handleClose}
         PaperProps={{
           sx: {
@@ -229,8 +232,8 @@ function CollapsibleRow({ index, props, row, isMobile }) {
                   label="Description"
                   variant="outlined"
                   style={{ marginBottom: "8px", width: "100%" }}
-                  error={!!errors.username}
-                  helperText={errors.username ? errors.username.message : ""}
+                  error={!!errors.description}
+                  helperText={errors.description ? errors.description.message : ""}
                 />
               )}
             />
