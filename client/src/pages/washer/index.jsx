@@ -5,11 +5,11 @@ import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import Washing from "./washing";
 import { useTheme } from "@material-ui/core/styles";
-import Request from "./request";
 import Http from "../../utils/http";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Container } from "@mui/material";
 import AcceptedList from "../../components/accepted";
+import RequestedList from "../../components/requested";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -87,12 +87,13 @@ export default function LabTabs() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <Request
+            <RequestedList
               flag={flag}
               setFlag={setFlag}
               data={requestedOrders}
               setData={setRequestedOrders}
               auth={auth}
+              role={"washer"}
             />
           </TabPanel>
           <TabPanel value="2">

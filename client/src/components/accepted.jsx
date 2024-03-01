@@ -131,7 +131,7 @@ function CollapsibleRow({ row, isMobile, index, role, setFlag, flag }) {
                       </TableCell>
                       <TableCell align="right">{row.Date}</TableCell>
                     </TableRow>}
-                    {role=='driver' &&
+                    {(role=='driver' || role=='washer') &&
                     <>
                         <TableRow>
                             <TableCell component="th" scope="row">

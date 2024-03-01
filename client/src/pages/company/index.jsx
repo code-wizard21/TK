@@ -6,7 +6,6 @@ import { Tab } from "@mui/material";
 import { Stack } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import Washing from "./washing";
-import Request from "./request";
 import { Container } from "@mui/material";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
@@ -16,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Http from "../../utils/http";
 import { RequestTask } from "../../components/requesttask";
 import AcceptedList from "../../components/accepted";
+import RequestedList from "../../components/requested";
 
 export default function DrawerAnchor() {
   const auth = useSelector((state) => state.auth);
@@ -127,7 +127,7 @@ export default function DrawerAnchor() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <Request data={cusData} setData={setCusData} auth={auth} />
+            <RequestedList data={cusData} setData={setCusData} auth={auth} role={"company"} />
           </TabPanel>
           <TabPanel value="2">
             <AcceptedList data={cusAccept} role={"company"} />
