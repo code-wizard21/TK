@@ -35,8 +35,8 @@ function RoutesDefined() {
       >
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/" element={<PageLayout />}>
-            <Route index element={<LandingPage />} />
             <Route path="company/dashboard" element={<CompanyDashboard />} />
             <Route path="driver/dashboard" element={<DriverDashboard />} />
             <Route path="washer/dashboard" element={<WasherDashboard />} />

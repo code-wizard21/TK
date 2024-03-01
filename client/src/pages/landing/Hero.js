@@ -1,23 +1,62 @@
 import * as React from "react";
-import { alpha } from "@mui/material";
+import { Button, alpha } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { styled, useMediaQuery, useTheme } from '@mui/system';
+
+// Import your logo here
+import Logo from '../../assets/images/photo.png';
+import { useNavigate } from "react-router-dom";
+
+const FullHeightContainer = styled(Container)({
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
+  padding: '0 24px',
+  background: '#e0f1ae',
+  // background: 'radial-gradient(circle at center top, #ffffff, #0066ff)',
+});
 
 export default function Hero() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
+  const goLogin = () => {
+    navigate("/login");
+  }
+  return (
+    <FullHeightContainer>
+      <Box mb={4}>
+        <img src={Logo} alt="Truck Wash Service Logo" style={{ width: isMobile?'150px':'300px' }} />
+      </Box>
+      <Typography variant="h3" component="h1" gutterBottom>
+        Your Truck Wash Service Title
+      </Typography>
+      <Typography variant="h6" color="textSecondary" paragraph>
+        Welcome to our Truck Wash Service. We offer high-quality, efficient wash services for all types of trucks.
+        Ensure your fleet remains clean and professional with our specialized wash treatments.
+      </Typography>
+      <Button variant="contained" color="primary" size="large" onClick={goLogin}>
+        Login
+      </Button>
+    </FullHeightContainer>
+  );
   return (
     <Box
       id="hero"
       sx={(theme) => ({
         width: "100%",
-        backgroundImage:
-          theme.palette.mode === "light"
-            ? "linear-gradient(180deg, #CEE5FD, #FFF)"
-            : "linear-gradient(#02294F, #090E10)",
+        backgroundImage: "url(/static/images/templates/templates-images/devices-light.png)",
         backgroundSize: "100% 20%",
         backgroundRepeat: "no-repeat",
+        height: "100vh"
       })}
     >
       <Container
@@ -72,30 +111,6 @@ export default function Hero() {
             .
           </Typography>
         </Stack>
-        <Box
-          id="image"
-          sx={(theme) => ({
-            mt: { xs: 8, sm: 10 },
-            alignSelf: "center",
-            height: { xs: 200, sm: 700 },
-            width: "100%",
-            backgroundImage:
-              theme.palette.mode === "light"
-                ? 'url("/static/images/templates/templates-images/hero-light.png")'
-                : 'url("/static/images/templates/templates-images/hero-dark.png")',
-            backgroundSize: "cover",
-
-            outline: "1px solid",
-            outlineColor:
-              theme.palette.mode === "light"
-                ? alpha("#BFCCD9", 0.5)
-                : alpha("#9CCCFC", 0.1),
-            boxShadow:
-              theme.palette.mode === "light"
-                ? `0 0 12px 8px ${alpha("#9CCCFC", 0.2)}`
-                : `0 0 24px 12px ${alpha("#033363", 0.2)}`,
-          })}
-        />
       </Container>
     </Box>
   );
