@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tab, Box } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
-import Washing from "./washing";
 import Http from "../../utils/http";
 import AddIcon from "@mui/icons-material/Add";
 import {  Stack, Container } from "@mui/material";
@@ -14,6 +13,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate from react
 import { RequestTask } from "../../components/requesttask";
 import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
+import CompletedList from "../../components/completed";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -142,7 +142,7 @@ export default function LabTabs() {
             <AcceptedList data={acceptedOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="3">
-            <Washing data={washedOrders} />
+            <CompletedList data={washedOrders} />
           </TabPanel>
         </TabContext>
         <Drawer open={open} onClose={() => toggleDrawer(false)} >
