@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const DropLocation = sequelize.define("drop_location", {
-    DropName: {
+    Name: {
       type: Sequelize.STRING,
     },
   });

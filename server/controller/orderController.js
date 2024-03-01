@@ -7,18 +7,18 @@ const {
 const db = require("../models");
 const Order = db.order;
 exports.createOrder = (req, res) => {
-  console.log(req.body);
-  const userlist = {
-    CompanyName: req.body.name,
-    CarNumber: req.body.cardNum,
-    Detail: req.body.detail,
+  const neworder = {
+    Company: req.body.name,
+    LeadNumber: req.body.leadNumber,
+    PupNumber: req.body.pupNumber,
+    Description: req.body.description,
     Date: req.body.date,
-    State: STATUS_REQUESTED,
-    PicksName: req.body.pick,
-    DropsName: req.body.drop,
+    Status: STATUS_REQUESTED,
+    Pickup: req.body.pickup,
+    Drop: req.body.drop,
   };
   // Save Tutorial in the database
-  Order.create(userlist)
+  Order.create(neworder)
     .then((data) => {
       res.status(200).send({ data });
     })
@@ -53,52 +53,52 @@ exports.getOrderByStatus = async (req, res) => {
   const status = req.params.status;
   const company = req.body.company;
   let qwhere = {
-    State: status,
+    Status: status,
   };
-  if (company) qwhere.CustomerName = company;
+  if (company) qwhere.Company = company;
 
-  const customerlist = await Order.findAll({
+  const orders = await Order.findAll({
     where: qwhere,
   });
 
-  res.send(customerlist);
+  res.send(orders);
 };
 exports.accept = async (req, res) => {
   try {
     const user = await Order.update(
-      { State: STATUS_ACCEPTED },
+      { Status: STATUS_ACCEPTED },
       {
         where: {
           id: req.body.id,
         },
       }
     );
-    const customerlist = await Order.findAll({
+    const orders = await Order.findAll({
       where: {
-        State: STATUS_REQUESTED,
+        Status: STATUS_REQUESTED,
       },
     });
-    res.status(200).json(customerlist);
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 exports.reject = async (req, res) => {
   try {
-    const user = await Order.update(
-      { State: STATUS_REJECTED, Reason: req.body.description },
+    const order = await Order.update(
+      { Status: STATUS_REJECTED, Reason: req.body.description },
       {
         where: {
           id: req.body.id,
         },
       }
     );
-    const customerlist = await Order.findAll({
+    const orders = await Order.findAll({
       where: {
-        State: STATUS_REQUESTED,
+        Status: STATUS_REQUESTED,
       },
     });
-    res.status(200).json(customerlist);
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -107,19 +107,19 @@ exports.reject = async (req, res) => {
 exports.wash = async (req, res) => {
   try {
     const user = await Order.update(
-      { State: STATUS_WASHED },
+      { Status: STATUS_WASHED },
       {
         where: {
           id: req.body.id,
         },
       }
     );
-    const customerlist = await Order.findAll({
+    const orders = await Order.findAll({
       where: {
-        State: STATUS_ACCEPTED,
+        Status: STATUS_ACCEPTED,
       },
     });
-    res.status(200).json(customerlist);
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -129,7 +129,7 @@ exports.updateOrderByStatus = async (req, res) => {
   const status = req.params.status;
 
   const user = await Order.update(
-    { State: status, Date: req.body.date },
+    { Status: status, Date: req.body.date },
     {
       where: {
         id: req.body.id,
@@ -138,7 +138,7 @@ exports.updateOrderByStatus = async (req, res) => {
   );
   const restore = await Order.findAll({
     where: {
-      State: STATUS_REJECTED,
+      Status: STATUS_REJECTED,
     },
   });
   res.send(restore);

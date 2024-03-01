@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const PickupLocation = sequelize.define("pickup_location", {
-    PickName: {
+    Name: {
       type: Sequelize.STRING,
     },
   });

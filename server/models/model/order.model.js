@@ -1,24 +1,27 @@
 module.exports = (sequelize, Sequelize) => {
   const Order = sequelize.define("order", {
-    CompanyName: {
+    Company: {
       type: Sequelize.STRING,
     },
-    CarNumber: {
+    LeadNumber: {
       type: Sequelize.STRING,
     },
-    Detail: {
+    PupNumber: {
       type: Sequelize.STRING,
     },
-    PicksName: {
+    Description: {
       type: Sequelize.STRING,
     },
-    DropsName: {
+    Pickup: {
+      type: Sequelize.STRING,
+    },
+    Drop: {
       type: Sequelize.STRING,
     },
     Date: {
       type: Sequelize.STRING,
     },
-    State: {
+    Status: {
       type: Sequelize.STRING,
     },
     Reason: {
