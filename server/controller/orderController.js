@@ -5,9 +5,7 @@ const {
   STATUS_WASHED,
 } = require("../constants");
 const db = require("../models");
-const Customerlist = db.company;
-const DropList = db.droplist;
-const PickList = db.picklist;
+const Order = db.order;
 exports.createOrder = (req, res) => {
   console.log(req.body);
   const userlist = {
@@ -20,7 +18,7 @@ exports.createOrder = (req, res) => {
     DropsName: req.body.drop,
   };
   // Save Tutorial in the database
-  Customerlist.create(userlist)
+  Order.create(userlist)
     .then((data) => {
       res.status(200).send({ data });
     })
@@ -59,7 +57,7 @@ exports.getOrderByStatus = async (req, res) => {
   };
   if (company) qwhere.CustomerName = company;
 
-  const customerlist = await Customerlist.findAll({
+  const customerlist = await Order.findAll({
     where: qwhere,
   });
 
@@ -67,7 +65,7 @@ exports.getOrderByStatus = async (req, res) => {
 };
 exports.accept = async (req, res) => {
   try {
-    const user = await Customerlist.update(
+    const user = await Order.update(
       { State: STATUS_ACCEPTED },
       {
         where: {
@@ -75,7 +73,7 @@ exports.accept = async (req, res) => {
         },
       }
     );
-    const customerlist = await Customerlist.findAll({
+    const customerlist = await Order.findAll({
       where: {
         State: STATUS_REQUESTED,
       },
@@ -87,7 +85,7 @@ exports.accept = async (req, res) => {
 };
 exports.reject = async (req, res) => {
   try {
-    const user = await Customerlist.update(
+    const user = await Order.update(
       { State: STATUS_REJECTED },
       {
         where: {
@@ -95,7 +93,7 @@ exports.reject = async (req, res) => {
         },
       }
     );
-    const customerlist = await Customerlist.findAll({
+    const customerlist = await Order.findAll({
       where: {
         State: STATUS_REQUESTED,
       },
@@ -108,7 +106,7 @@ exports.reject = async (req, res) => {
 
 exports.wash = async (req, res) => {
   try {
-    const user = await Customerlist.update(
+    const user = await Order.update(
       { State: STATUS_WASHED },
       {
         where: {
@@ -116,7 +114,7 @@ exports.wash = async (req, res) => {
         },
       }
     );
-    const customerlist = await Customerlist.findAll({
+    const customerlist = await Order.findAll({
       where: {
         State: STATUS_ACCEPTED,
       },
@@ -125,9 +123,4 @@ exports.wash = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
-exports.getOrderByLocation = async (req, res) => {
-  const droplists = await DropList.findAll({});
-  const picklists = await PickList.findAll({});
-  res.status(200).json({ pick: picklists, drop: droplists });
 };

@@ -1,11 +1,11 @@
 const db = require("../models");
-const Trucklist = db.trucklist;
+const Truck = db.truck;
 exports.createTruck = async (req, res) => {
   console.log(req.body);
   // Create a trucklist
   try {
     console.log(req.body);
-    const truck = await Trucklist.findOne({
+    const truck = await Truck.findOne({
       where: { FirstNumber: req.body.FirstNumber },
     });
     if (truck) {
@@ -21,7 +21,7 @@ exports.createTruck = async (req, res) => {
       Type: req.body.Type,
     };
     // Save Tutorial in the database
-    Trucklist.create(trucklist)
+    Truck.create(trucklist)
       .then((data) => {
         // console.log(data);
         // res.status(200);
@@ -41,7 +41,7 @@ exports.createTruck = async (req, res) => {
   }
 };
 exports.getTrucks = async (req, res) => {
-  const trucklist = await Trucklist.findAll({});
+  const trucklist = await Truck.findAll({});
   //   console.log(trucklist[0].dataValues);
   res.send(trucklist);
 };
@@ -49,7 +49,7 @@ exports.updateTrucks = async (req, res) => {
   const id = req.params.id;
   const { FirstNumber, SecondNumber, Company, Type } = req.body;
   try {
-    const user = await Trucklist.update(
+    const user = await Truck.update(
       { FirstNumber, SecondNumber, Company, Type },
 
       {
@@ -66,7 +66,7 @@ exports.updateTrucks = async (req, res) => {
 exports.deleteTruck = async (req, res) => {
   const id = req.params.id;
   try {
-    const user = await Trucklist.destroy({
+    const user = await Truck.destroy({
       where: {
         id: id,
       },

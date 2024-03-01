@@ -20,10 +20,9 @@ const db = {};
 
 db.sequelize = sequelize;
 
-db.userlist = require("./model/user.model.js")(sequelize, Sequelize);
-db.company = require("./model/company.model.js")(sequelize, Sequelize);
-db.washlist = require("./model/washer.model.js")(sequelize, Sequelize);
-db.trucklist = require("./model/truck.model.js")(sequelize, Sequelize);
-db.picklist = require("./model/pickup.model.js")(sequelize, Sequelize);
-db.droplist = require("./model/dorpdown.model.js")(sequelize, Sequelize);
+db.user = require("./model/user.model.js")(sequelize, Sequelize);
+db.order = require("./model/order.model.js")(sequelize, Sequelize);
+db.truck = require("./model/truck.model.js")(sequelize, Sequelize);
+db.pickup_location = require("./model/pickuplocation.model.js")(sequelize, Sequelize);
+db.drop_location = require("./model/droplocation.model.js")(sequelize, Sequelize);
 module.exports = db;

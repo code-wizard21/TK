@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
-  const PickupList = sequelize.define("pickup", {
+  const PickupLocation = sequelize.define("pickup_location", {
     PickName: {
       type: Sequelize.STRING,
     },
   });
 
-  return PickupList;
+  return PickupLocation;
 };

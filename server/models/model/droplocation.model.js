@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
-  const DropdownList = sequelize.define("dropdown", {
+  const DropLocation = sequelize.define("drop_location", {
     DropName: {
       type: Sequelize.STRING,
     },
   });
 
-  return DropdownList;
+  return DropLocation;
 };

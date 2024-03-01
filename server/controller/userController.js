@@ -2,12 +2,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const db = require("../models");
-const Userlist = db.userlist;
-const Customerlist = db.customer;
+const User = db.user;
 
 exports.getUserByRole = async (req, res) => {
   const { role } = req.params;
-  const userlist = await Userlist.findAll({
+  const userlist = await User.findAll({
     where: {
       Job: role,
     },
@@ -18,7 +17,7 @@ exports.getUserByRole = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const id = req.params.id;
   try {
-    const user = await Userlist.destroy({
+    const user = await User.destroy({
       where: {
         id: id,
       },
@@ -39,7 +38,7 @@ exports.createUser = async (req, res) => {
     Job: req.body.role,
   };
   // Save Tutorial in the database
-  Userlist.create(userlist)
+  User.create(userlist)
     .then((data) => {
       // console.log(data.dataValues)
 

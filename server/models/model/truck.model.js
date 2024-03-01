@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Trucklist = sequelize.define("trucklist", {
+  const Truck = sequelize.define("truck", {
     FirstNumber: {
       type: Sequelize.STRING,
     },
@@ -14,5 +14,5 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
 
-  return Trucklist;
+  return Truck;
 };

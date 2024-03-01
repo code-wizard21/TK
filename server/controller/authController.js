@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const db = require("../models");
-const Userlist = db.userlist;
+const User = db.user;
 exports.signin = async (req, res) => {
   try {
     console.log(req.body);
-    const user = await Userlist.findOne({
+    const user = await User.findOne({
       where: { Email: req.body.Email },
     });
     if (!user) {

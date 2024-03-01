@@ -34,6 +34,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
 
   const [trucks, setTrucks] = useState([]);
   const [companies, setCompanies] = useState([]);
+  const dropOptions = dropDown.map(i => i.DropName);
   useEffect(() => {
     (async function () {
       const trucks = await Http.get("/api/truck");
@@ -41,9 +42,10 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
       const companies = await Http.get("/api/user/byrole/company");
       setCompanies(companies.data);
 
-      const locations = await Http.get("/api/order/bylocation");
-      setDropDown(locations.data.drop);
-      setPicksUp(locations.data.pick);
+      const pickup_locations = await Http.get("/api/pickup_location");
+      const drop_locations = await Http.get("/api/drop_location");
+      setDropDown(drop_locations.data);
+      setPicksUp(pickup_locations.data);
     })();
   }, []);
 
@@ -174,7 +176,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
           <Grid xs={6} sm={6}>
             <Autocomplete
               disablePortal
-              id="combo-box-trucknumber"
+              id="combo-box-pickup"
               options={picksUp.map((i) => `${i.PickName}`)}
               onChange={(e, v) => setPicksOneUp(v)}
               renderInput={(params) => (
@@ -182,8 +184,8 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
                   {...params}
                   error={!pickOneUp && showErrors}
                   value={pickOneUp}
-                  id="outlined-basic"
-                  name="carcode"
+                  id="outlined-basic-pickup"
+                  name="pickup"
                   label="Pickup Location"
                   variant="outlined"
                   fullWidth
@@ -194,16 +196,16 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
           <Grid xs={6} sm={6}>
             <Autocomplete
               disablePortal
-              id="combo-box-trucknumber"
-              options={dropDown.map((i) => `${i.DropName}`)}
+              id="combo-box-drop"
+              options={dropOptions}
               onChange={(e, v) => setDropOneDown(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   error={!dropOneDown && showErrors}
                   value={dropOneDown}
-                  id="outlined-basic"
-                  name="carcode"
+                  id="outlined-basic-drop"
+                  name="drop"
                   label="Dropdown Location"
                   variant="outlined"
                   fullWidth

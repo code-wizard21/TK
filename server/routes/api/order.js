@@ -9,6 +9,5 @@ router.get("/bystatus/:status", orderController.getOrderByStatus);
 router.post("/accept", orderController.accept);
 router.post("/reject", orderController.reject);
 router.post("/wash", orderController.wash);
-router.get("/bylocation", orderController.getOrderByLocation);
 
 module.exports = router;
