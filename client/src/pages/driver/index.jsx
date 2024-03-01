@@ -14,6 +14,7 @@ import { RequestTask } from "../../components/requesttask";
 import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
+import RejectedList from "../../components/rejected";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -131,17 +132,21 @@ export default function LabTabs() {
               }}
             >
               <Tab label="Requested" value="1" />
-              <Tab label="In Progress" value="2" />
-              <Tab label="Completed" value="3" />
+              <Tab label="Rejected" value="2" />
+              <Tab label="In Progress" value="3" />
+              <Tab label="Completed" value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
             <RequestedList data={newOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="2">
-            <AcceptedList data={acceptedOrders} role={"driver"} />
+            <RejectedList role={"driver"} />
           </TabPanel>
           <TabPanel value="3">
+            <AcceptedList data={acceptedOrders} role={"driver"} />
+          </TabPanel>
+          <TabPanel value="4">
             <CompletedList data={washedOrders} />
           </TabPanel>
         </TabContext>

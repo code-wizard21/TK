@@ -16,6 +16,7 @@ import { RequestTask } from "../../components/requesttask";
 import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
+import RejectedList from "../../components/rejected";
 
 export default function DrawerAnchor() {
   const auth = useSelector((state) => state.auth);
@@ -122,17 +123,21 @@ export default function DrawerAnchor() {
               }}
             >
               <Tab label="Requested" value="1" />
-              <Tab label="In Progress" value="2" />
-              <Tab label="Completed " value="3" />
+              <Tab label="Rejected " value="2" />
+              <Tab label="In Progress" value="3" />
+              <Tab label="Completed " value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
             <RequestedList data={cusData} setData={setCusData} auth={auth} role={"company"} />
           </TabPanel>
           <TabPanel value="2">
-            <AcceptedList data={cusAccept} role={"company"} />
+            <RejectedList role={"company"} />
           </TabPanel>
           <TabPanel value="3">
+            <AcceptedList data={cusAccept} role={"company"} />
+          </TabPanel>
+          <TabPanel value="4">
             <CompletedList />
           </TabPanel>
         </TabContext>
