@@ -16,6 +16,8 @@ const AdminRole = lazy(() => import("../pages/admin/role/admin-role"));
 const DriverRole = lazy(() => import("../pages/admin/role/driver-role"));
 const WasherRole = lazy(() => import("../pages/admin/role/washer-role"));
 
+const RejectedList = lazy(() => import("../components/rejected"));
+
 function RoutesDefined() {
   return (
     <Router>
@@ -35,6 +37,7 @@ function RoutesDefined() {
       >
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/reject" element={<RejectedList />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/" element={<PageLayout />}>
             <Route path="company/dashboard" element={<CompanyDashboard />} />

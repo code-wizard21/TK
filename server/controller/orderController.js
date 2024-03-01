@@ -124,3 +124,22 @@ exports.wash = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.updateOrderByStatus = async (req, res) => {
+  console.log(req.body);
+  const status = req.params.status;
+
+  const user = await Order.update(
+    { State: status, Date: req.body.date },
+    {
+      where: {
+        id: req.body.id,
+      },
+    }
+  );
+  const restore = await Order.findAll({
+    where: {
+      State: STATUS_REJECTED,
+    },
+  });
+  res.send(restore);
+};

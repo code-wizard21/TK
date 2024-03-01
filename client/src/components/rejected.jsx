@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import {
   Table,
   TableBody,
@@ -15,8 +16,13 @@ import {
   TextField,
   Stack,
   Typography,
+  Unstable_Grid2 as Grid,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useForm, Controller } from "react-hook-form";
 import { styled } from "@mui/material/styles";
@@ -27,8 +33,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 // import axios from "axios";
-import Http from "../../utils/http";
+import Http from "../../src/utils/http";
 import { toast } from "react-toastify";
+import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
 // ... Your rows data here
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -53,9 +60,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function CollapsibleRow({ index, props, row, isMobile }) {
+function CollapsibleRow({ index, props, row, isMobile, setRejected }) {
   const [open, setOpen] = useState(false);
-
+  const [date, setDate] = useState(dayjs());
   const [openRejecter, setOpenRejecter] = useState(false);
   const [rejectid, setRejectID] = useState(false);
   const {
@@ -74,12 +81,13 @@ function CollapsibleRow({ index, props, row, isMobile }) {
     setOpenRejecter(false);
   };
   const handleOk = (data) => {
+    console.log(data);
     setOpenRejecter(false);
-    Http.post("/api/order/reject", { id: rejectid, ...data })
+    Http.put("/api/order/bystatus/requested", { id: rejectid, ...data, date })
       .then((data) => {
-        props.setData(data.data);
-        props.setFlag(true);
-        toast.success(" Request successfully rejected.", {
+        setRejected(data.data);
+
+        toast.success(" Request successfully restored.", {
           hideProgressBar: true,
         });
       })
@@ -123,7 +131,7 @@ function CollapsibleRow({ index, props, row, isMobile }) {
             <span> {row.CarNumber}</span>
           </div>
         </TableCell>
-        <TableCell>{row.CustomerName}</TableCell>
+        <TableCell>{row.CompanyName}</TableCell>
         {!isMobile && (
           <>
             <TableCell>
@@ -137,18 +145,11 @@ function CollapsibleRow({ index, props, row, isMobile }) {
               <IconButton
                 color="secondary"
                 aria-label="add an alarm"
-                onClick={() => onAccepted(row.id)}
-              >
-                <CheckIcon />
-              </IconButton>
-              <IconButton
-                color="secondary"
-                aria-label="add an alarm"
                 onClick={() => {
                   onRejected(row.id);
                 }}
               >
-                <ClearIcon />
+                <SettingsBackupRestoreIcon />
               </IconButton>
             </TableCell>
           </>
@@ -214,12 +215,10 @@ function CollapsibleRow({ index, props, row, isMobile }) {
           },
         }}
       >
-        <DialogTitle>Reject</DialogTitle>
+        <DialogTitle>Request Again</DialogTitle>
 
         <DialogContent>
-          <Typography sx={{ mb: 3 }}>
-            Please input the reason to reject.
-          </Typography>
+          <Typography sx={{ mb: 3 }}>Please select date.</Typography>
 
           <form onSubmit={handleSubmit(handleOk)} style={{}}>
             <Controller
@@ -228,16 +227,17 @@ function CollapsibleRow({ index, props, row, isMobile }) {
               defaultValue=""
               rules={{ required: "Description is required" }}
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Description"
-                  variant="outlined"
-                  style={{ marginBottom: "8px", width: "100%" }}
-                  error={!!errors.description}
-                  helperText={
-                    errors.description ? errors.description.message : ""
-                  }
-                />
+                <Grid xs={12} md={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoItem label="">
+                      <DateCalendar
+                        value={date}
+                        onChange={(newValue) => setDate(dayjs(newValue))}
+                        sx={{ width: "270px" }}
+                      />
+                    </DemoItem>
+                  </LocalizationProvider>
+                </Grid>
               )}
             />
 
@@ -257,7 +257,7 @@ function CollapsibleRow({ index, props, row, isMobile }) {
                 color="primary"
                 style={{ width: "100px" }}
               >
-                Reject
+                Request
               </Button>
             </Stack>
           </form>
@@ -266,10 +266,19 @@ function CollapsibleRow({ index, props, row, isMobile }) {
     </>
   );
 }
-export default function ResponsiveCollapsibleTable(props) {
+export default function RejectedList(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const [rejected, setRejected] = useState([]);
+  useEffect(() => {
+    Http.get("/api/order/bystatus/rejected")
+      .then((data) => {
+        setRejected(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -289,12 +298,13 @@ export default function ResponsiveCollapsibleTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.data.map((row, index) => (
+          {rejected.map((row, index) => (
             <CollapsibleRow
               index={index}
               props={props}
               key={row.id}
               row={row}
+              setRejected={setRejected}
               isMobile={isMobile}
             />
           ))}

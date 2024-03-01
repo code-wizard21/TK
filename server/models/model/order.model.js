@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     Reason: {
       type: Sequelize.STRING,
-    }
+    },
   });
 
   return Order;
