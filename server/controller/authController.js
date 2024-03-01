@@ -12,6 +12,9 @@ exports.signin = async (req, res) => {
     if (!user) {
       return res.send({ error: "User not found", status: 400 });
     }
+    if (user.State == "Disabled") {
+      return res.send({ error: "User is disabled", status: 403 });
+    }
     const isPasswordValid = await bcrypt.compare(
       req.body.Password,
       user.Password
@@ -31,6 +34,6 @@ exports.signin = async (req, res) => {
     console.log("token", token);
     res.send({ token, status: 200 });
   } catch (err) {
-    res.send({ error: err});
+    res.send({ error: err });
   }
 };

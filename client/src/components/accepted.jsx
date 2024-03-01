@@ -18,6 +18,7 @@ import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Http from "../utils/http";
+import moment from 'moment';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -91,7 +92,7 @@ function CollapsibleRow({ row, isMobile, index, role, setFlag, flag, props }) {
             </TableCell>
             <TableCell>
               {/* <div className="date"> */}
-              <span> {row.Date}</span>
+              <span> {moment(row.Date).format('YYYY-MM-DD')}</span>
               {/* </div> */}
             </TableCell>
             {
@@ -121,7 +122,7 @@ function CollapsibleRow({ row, isMobile, index, role, setFlag, flag, props }) {
                       <TableCell component="th" scope="row">
                         Date
                       </TableCell>
-                      <TableCell align="right">{row.Date}</TableCell>
+                      <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
                     </TableRow>}
                     {(role=='driver' || role=='washer') &&
                     <>
@@ -157,7 +158,7 @@ function CollapsibleRow({ row, isMobile, index, role, setFlag, flag, props }) {
                                 <TableCell component="th" scope="row">
                                     Date
                                 </TableCell>
-                                <TableCell align="right">{row.Date}</TableCell>
+                                <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
                             </TableRow>
                     }
                     {

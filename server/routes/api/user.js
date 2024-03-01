@@ -8,5 +8,6 @@ router.post("/", userController.createUser);
 router.delete("/:id", userController.deleteUser);
 router.get("/byrole/:role", userController.getUserByRole);
 router.put("/:id", userController.updateByUser);
-router.put("/", userController.updateByUserDisabled);
+router.post("/disable", userController.updateByUserDisabled);
+router.post("/enable", userController.updateByUserEnabled);
 module.exports = router;

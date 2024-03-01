@@ -16,6 +16,7 @@ exports.getUserByRole = async (req, res) => {
     where: {
       Job: role,
     },
+    order: [["id", "asc"]],
   });
   res.send(userlist);
 };
@@ -83,6 +84,18 @@ exports.updateByUserDisabled = async (req, res) => {
   console.log("121212121", req.body.id);
   const user = await User.update(
     { State: "Disabled" },
+    {
+      where: {
+        id: req.body.id,
+      },
+    }
+  );
+  res.status(200).json(user);
+};
+exports.updateByUserEnabled = async (req, res) => {
+  console.log("121212121", req.body.id);
+  const user = await User.update(
+    { State: "" },
     {
       where: {
         id: req.body.id,

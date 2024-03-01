@@ -97,7 +97,17 @@ function CollapsibleRow({
   };
   const onDisable = (row) => {
     console.log(row.id);
-    Http.put("/api/user/", { id: row.id })
+    Http.post("/api/user/disable", { id: row.id })
+      .then((data) => {
+        getCompanies();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const onEnable = (row) => {
+    console.log(row.id);
+    Http.post("/api/user/enable", { id: row.id })
       .then((data) => {
         getCompanies();
       })
@@ -163,13 +173,23 @@ function CollapsibleRow({
               >
                 <EditIcon />
               </IconButton>
-              <IconButton
-                color="secondary"
-                aria-label="add an alarm"
-                onClick={() => onDisable(row)}
-              >
-                <PersonAddDisabledSharpIcon />
-              </IconButton>
+              {row.State == "Disabled" ? (
+                <IconButton
+                  color="secondary"
+                  aria-label="add an alarm"
+                  onClick={() => onEnable(row)}
+                >
+                  <PersonAddDisabledSharpIcon />
+                </IconButton>
+              ) : (
+                <IconButton
+                  color="secondary"
+                  aria-label="add an alarm"
+                  onClick={() => onDisable(row)}
+                >
+                  <PersonAddDisabledSharpIcon />
+                </IconButton>
+              )}
             </TableCell>
           </>
         )}

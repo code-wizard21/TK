@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Tab, Box } from "@mui/material";
+import { Tab, Box, Card, CardContent, Grid } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import { useTheme } from "@material-ui/core/styles";
 import Http from "../../utils/http";
@@ -10,6 +10,7 @@ import { Container } from "@mui/material";
 import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
+import moment from "moment";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -63,6 +64,32 @@ export default function LabTabs() {
         // Add additional styling as needed here
       }}
     >
+      <Container>
+        <Grid xs={6} md={6}>
+          <Card
+            sx={{
+              marginBottom: '1em'
+            }}
+          >
+            <CardContent>
+              Washed Today:
+              {washedOrders.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD")).length}
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={6} md={6}>
+          <Card
+            sx={{
+              marginBottom: '1em'
+            }}
+          >
+            <CardContent>
+              Pending Today:
+              {acceptedOrders.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD")).length}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Container>
       <Container>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

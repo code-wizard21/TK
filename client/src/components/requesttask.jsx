@@ -20,7 +20,7 @@ import Button from "@mui/joy/Button";
 
 export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
   const auth = useSelector((state) => state.auth);
-  const [company, setCompany] = useState("");
+  const [company, setCompany] = useState(auth.user.name);
   const [showErrors, setShowErrors] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [description, setDescription] = useState("");
@@ -41,7 +41,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
         const trucks = await Http.get("/api/truck");
         setTrucks(trucks.data);
       } else {
-        const trucks = await Http.get("/api/truck/by/" + encodeURIComponent(auth.user.name));
+        const trucks = await Http.get("/api/truck/by/" + encodeURIComponent(company));
         setTrucks(trucks.data);
       }
       const companies = await Http.get("/api/user/byrole/company");
@@ -127,7 +127,12 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
                   disablePortal
                   id="combo-box-company"
                   options={companies.map((i) => i.Name)}
-                  onChange={(e, v) => setCompany(v)}
+                  onChange={(e, v) => {
+                      setCompany(v);
+                      setLeadNumber("");
+                      setPupNumber("");
+                    }
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -150,7 +155,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
             <Autocomplete
               disablePortal
               id="combo-box-leadnumber"
-              options={trucks.map(i => i.LeadNumber)}
+              options={trucks.filter(i => i.Company.trim() == company).map(i => i.LeadNumber)}
               value={leadNumber}
               onChange={(e, v) => {
                 setLeadNumber(v);
@@ -175,7 +180,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
             <Autocomplete
               disablePortal
               id="combo-box-pupnumber"
-              options={trucks.map(i => i.PupNumber)}
+              options={trucks.filter(i => i.Company.trim() == company).map(i => i.PupNumber)}
               onChange={(e, v) => setPupNumber(v)}
               value={pupNumber}
               renderInput={(params) => (

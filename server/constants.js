@@ -3,5 +3,5 @@ module.exports = {
   STATUS_ACCEPTED: "accepted",
   STATUS_REQUESTED: "requested",
   STATUS_WASHED: "washed",
-  STATUS_DISABLED: "disabled",
+  STATUS_CANCELLED: "cancelled",
 };
