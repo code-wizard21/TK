@@ -56,7 +56,7 @@ DROP TABLE IF EXISTS "public"."customers";
 CREATE TABLE "public"."customers" (
   "id" int4 NOT NULL DEFAULT nextval('customers_id_seq'::regclass),
   "CustomerName" varchar(255) COLLATE "pg_catalog"."default",
-  "CarNumber" varchar(32) COLLATE "pg_catalog"."default",
+  "LeadNumber" varchar(32) COLLATE "pg_catalog"."default",
   "Detail" varchar(255) COLLATE "pg_catalog"."default",
   "Date" date,
   "State" varchar(255) COLLATE "pg_catalog"."default",

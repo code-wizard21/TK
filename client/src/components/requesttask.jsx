@@ -20,21 +20,21 @@ import Button from "@mui/joy/Button";
 
 export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
   const auth = useSelector((state) => state.auth);
-  const [companyName, setCompanyName] = useState("");
+  const [company, setCompany] = useState("");
   const [showErrors, setShowErrors] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [description, setDescription] = useState("");
-  const [trackCode, setTrackCode] = useState("");
+  const [leadNumber, setLeadNumber] = useState("");
+  const [pupNumber, setPupNumber] = useState("");
 
-  const [picksUp, setPicksUp] = useState([]);
-  const [dropDown, setDropDown] = useState([]);
+  const [pickups, setPickups] = useState([]);
+  const [drops, setDrops] = useState([]);
 
-  const [pickOneUp, setPicksOneUp] = useState("");
-  const [dropOneDown, setDropOneDown] = useState("");
+  const [pickup, setPickup] = useState("");
+  const [drop, setDrop] = useState("");
 
   const [trucks, setTrucks] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const dropOptions = dropDown.map(i => i.DropName);
   useEffect(() => {
     (async function () {
       const trucks = await Http.get("/api/truck");
@@ -44,16 +44,16 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
 
       const pickup_locations = await Http.get("/api/pickup_location");
       const drop_locations = await Http.get("/api/drop_location");
-      setDropDown(drop_locations.data);
-      setPicksUp(pickup_locations.data);
+      setDrops(drop_locations.data);
+      setPickups(pickup_locations.data);
     })();
   }, []);
 
   const validate = () => {
     if (
-      (trackCode == "") |
-      (description == "") |
-      (isDriver ? companyName == "" : false) |
+      (leadNumber == "") |
+      // (pupNumber == "") |
+      (isDriver ? company == "" : false) |
       dayjs(date).isBefore(dayjs(), "day")
     ) {
       setShowErrors(true);
@@ -63,12 +63,13 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
       setShowErrors(false);
 
       Http.post("/api/order", {
-        name: isDriver ? companyName : auth.user.name,
-        cardNum: trackCode,
-        detail: description,
-        date: date,
-        pick: pickOneUp,
-        drop: dropOneDown,
+        name: isDriver ? company : auth.user.name,
+        leadNumber,
+        pupNumber,
+        description,
+        date,
+        pickup,
+        drop,
       })
         .then((data) => {
           console.log(data.data);
@@ -121,15 +122,15 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
                   disablePortal
                   id="combo-box-company"
                   options={companies.map((i) => i.Name)}
-                  onChange={(e, v) => setCompanyName(v)}
+                  onChange={(e, v) => setCompany(v)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      error={!companyName && showErrors}
-                      value={companyName}
+                      error={!company && showErrors}
+                      value={company}
                       id="outlined-basic"
-                      name="companyname"
-                      label="Company Name"
+                      name="company"
+                      label="Company"
                       variant="outlined"
                       fullWidth
                     />
@@ -140,20 +141,40 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
           ) : (
             <></>
           )}
-          <Grid xs={12} sm={12}>
+          <Grid xs={6} sm={6}>
             <Autocomplete
               disablePortal
-              id="combo-box-trucknumber"
+              id="combo-box-leadnumber"
               options={trucks.map((i) => `${i.FirstNumber}-${i.SecondNumber}`)}
-              onChange={(e, v) => setTrackCode(v)}
+              onChange={(e, v) => setLeadNumber(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  error={!trackCode && showErrors}
-                  value={trackCode}
+                  error={!leadNumber && showErrors}
+                  value={leadNumber}
                   id="outlined-basic"
                   name="carcode"
-                  label="Truck Number"
+                  label="Lead"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+          <Grid xs={6} sm={6}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-pupnumber"
+              options={trucks.map((i) => `${i.FirstNumber}-${i.SecondNumber}`)}
+              onChange={(e, v) => setPupNumber(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  error={!pupNumber && showErrors}
+                  value={pupNumber}
+                  id="outlined-basic"
+                  name="carcode"
+                  label="Pup"
                   variant="outlined"
                   fullWidth
                 />
@@ -164,8 +185,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
           <Grid xs={12}>
             <TextField
               name="tell"
-              label="Input the Description"
-              error={!description && showErrors}
+              label="Description"
               id="standard-basic"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -177,16 +197,15 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
             <Autocomplete
               disablePortal
               id="combo-box-pickup"
-              options={picksUp.map((i) => `${i.PickName}`)}
-              onChange={(e, v) => setPicksOneUp(v)}
+              options={pickups.map(i => i.Name)}
+              onChange={(e, v) => setPickup(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  error={!pickOneUp && showErrors}
-                  value={pickOneUp}
+                  value={pickup}
                   id="outlined-basic-pickup"
                   name="pickup"
-                  label="Pickup Location"
+                  label="Pickup"
                   variant="outlined"
                   fullWidth
                 />
@@ -197,16 +216,15 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
             <Autocomplete
               disablePortal
               id="combo-box-drop"
-              options={dropOptions}
-              onChange={(e, v) => setDropOneDown(v)}
+              options={drops.map(i => i.Name)}
+              onChange={(e, v) => setDrop(v)}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  error={!dropOneDown && showErrors}
-                  value={dropOneDown}
+                  value={drop}
                   id="outlined-basic-drop"
                   name="drop"
-                  label="Dropdown Location"
+                  label="Drop"
                   variant="outlined"
                   fullWidth
                 />

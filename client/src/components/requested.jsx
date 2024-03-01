@@ -116,27 +116,27 @@ function CollapsibleRow({ props, row, isMobile, index, role }) {
         </TableCell>
         <TableCell component="th" scope="row">
           <div className="accept">
-            <span> {row.CarNumber}</span>
+            <span> {row.LeadNumber + "-" + row.PupNumber}</span>
           </div>
         </TableCell>
 
         {!isMobile && (
           <>
-            {role=='company' && <TableCell>{row.Detail}</TableCell>}
+            {role=='company' && <TableCell>{row.Description}</TableCell>}
             {(role=='driver' || role=='washer') && <>
-                <TableCell>{row.CompanyName}</TableCell>
+                <TableCell>{row.Company}</TableCell>
                 <TableCell>
-                    <span> {row.Detail}</span>
+                    <span> {row.Description}</span>
                 </TableCell>
             </>}
             <TableCell component="th" scope="row">
               <div className="accept">
-                <span> {row.PicksName}</span>
+                <span> {row.Pickup}</span>
               </div>
             </TableCell>
             <TableCell component="th" scope="row">
               <div className="accept">
-                <span> {row.DropsName}</span>
+                <span> {row.Drop}</span>
               </div>
             </TableCell>
             <TableCell>
@@ -176,25 +176,25 @@ function CollapsibleRow({ props, row, isMobile, index, role }) {
                         <TableCell component="th" scope="row">
                             Company
                         </TableCell>
-                        <TableCell align="right">{row.CompanyName}</TableCell>
+                        <TableCell align="right">{row.Company}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell component="th" scope="row">
                         Description
                         </TableCell>
-                        <TableCell align="right">{row.Detail}</TableCell>
+                        <TableCell align="right">{row.Description}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        Pickup Location
+                        Pickup
                       </TableCell>
-                      <TableCell align="right">{row.PicksName}</TableCell>
+                      <TableCell align="right">{row.Pickup}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        Dropdown Location
+                        Drop
                       </TableCell>
-                      <TableCell align="right">{row.DropsName}</TableCell>
+                      <TableCell align="right">{row.Drop}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell component="th" scope="row">
@@ -228,63 +228,6 @@ function CollapsibleRow({ props, row, isMobile, index, role }) {
                             </TableCell>
                         </TableRow>
                     }
-                    <Dialog
-                      open={openRejecter}
-                      onClose={handleClose}
-                      PaperProps={{
-                        sx: {
-                          width: "80%", // You can use any valid CSS value here
-                          maxWidth: "400px", // Optional: you can set a maximum width as well
-                        },
-                      }}
-                    >
-                      <DialogTitle>Reject</DialogTitle>
-              
-                      <DialogContent>
-                        <Typography sx={{ mb: 3 }}>
-                          Please input the reason to reject.
-                        </Typography>
-              
-                        <form onSubmit={handleSubmit(handleOk)} style={{}}>
-                          <Controller
-                            name="description"
-                            control={control}
-                            defaultValue=""
-                            rules={{ required: "Description is required" }}
-                            render={({ field }) => (
-                              <TextField
-                                {...field}
-                                label="Description"
-                                variant="outlined"
-                                style={{ marginBottom: "8px", width: "100%" }}
-                                error={!!errors.description}
-                                helperText={errors.description ? errors.description.message : ""}
-                              />
-                            )}
-                          />
-              
-                          <Stack
-                            direction={"row"}
-                            style={{
-                              justifyContent: "right",
-                              gap: "8px",
-                            }}
-                          >
-                            <Button variant="outlined" onClick={handleClose}>
-                              Cancel
-                            </Button>
-                            <Button
-                              type="submit"
-                              variant="contained"
-                              color="primary"
-                              style={{ width: "100px" }}
-                            >
-                              Reject
-                            </Button>
-                          </Stack>
-                        </form>
-                      </DialogContent>
-                    </Dialog>
                   </TableBody>
                 </Table>
               </Box>
@@ -292,6 +235,63 @@ function CollapsibleRow({ props, row, isMobile, index, role }) {
           </TableCell>
         </TableRow>
       )}
+      <Dialog
+        open={openRejecter}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
+        }}
+      >
+        <DialogTitle>Reject</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>
+            Please input the reason to reject.
+          </Typography>
+
+          <form onSubmit={handleSubmit(handleOk)} style={{}}>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Description is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Description"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.description}
+                  helperText={errors.description ? errors.description.message : ""}
+                />
+              )}
+            />
+
+            <Stack
+              direction={"row"}
+              style={{
+                justifyContent: "right",
+                gap: "8px",
+              }}
+            >
+              <Button variant="outlined" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ width: "100px" }}
+              >
+                Reject
+              </Button>
+            </Stack>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -313,8 +313,8 @@ export default function RequestedList(props) {
             {!isMobile && (
               <>
                 <StyledTableCell>Description</StyledTableCell>
-                <StyledTableCell>Pickup Location</StyledTableCell>
-                <StyledTableCell>Dropdown Location</StyledTableCell>
+                <StyledTableCell>Pickup</StyledTableCell>
+                <StyledTableCell>Drop</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
                 {role=='washer' && <StyledTableCell>Action</StyledTableCell>}
               </>

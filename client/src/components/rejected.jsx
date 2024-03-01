@@ -114,14 +114,14 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
         </TableCell>
         <TableCell component="th" scope="row">
           <div className="accept">
-            <span> {row.CarNumber}</span>
+            <span> {row.LeadNumber + "-" + row.PupNumber}</span>
           </div>
         </TableCell>
-        {role=='driver' && <TableCell>{row.CompanyName}</TableCell>}
+        {role=='driver' && <TableCell>{row.Company}</TableCell>}
         {!isMobile && (
           <>
             <TableCell>
-              <span> {row.Detail}</span>
+              <span> {row.Description}</span>
             </TableCell>
             <TableCell>
               <span> {row.Reason}</span>
@@ -155,7 +155,7 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
                       <TableCell component="th" scope="row">
                         Description
                       </TableCell>
-                      <TableCell align="right">{row.Detail}</TableCell>
+                      <TableCell align="right">{row.Description}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
@@ -206,7 +206,7 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
         <DialogTitle>Request Again</DialogTitle>
 
         <DialogContent>
-          <Typography sx={{ mb: 3 }}>Please select date.</Typography>
+          <Typography sx={{ mb: 3 }}>Please select new date.</Typography>
 
           <form onSubmit={handleSubmit(handleOk)} style={{}}>
             <Controller

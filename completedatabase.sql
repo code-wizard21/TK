@@ -77,14 +77,14 @@ CACHE 1;
 DROP TABLE IF EXISTS "public"."companies";
 CREATE TABLE "public"."companies" (
   "id" int4 NOT NULL DEFAULT nextval('customers_id_seq'::regclass),
-  "CompanyName" varchar(255) COLLATE "pg_catalog"."default",
-  "CarNumber" varchar(32) COLLATE "pg_catalog"."default",
+  "Company" varchar(255) COLLATE "pg_catalog"."default",
+  "LeadNumber" varchar(32) COLLATE "pg_catalog"."default",
   "Detail" varchar(255) COLLATE "pg_catalog"."default",
   "Date" date,
   "State" varchar(255) COLLATE "pg_catalog"."default",
   "createdAt" date,
   "updatedAt" date,
-  "PicksName" varchar(255) COLLATE "pg_catalog"."default",
+  "Pickup" varchar(255) COLLATE "pg_catalog"."default",
   "DropsName" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
@@ -106,7 +106,7 @@ INSERT INTO "public"."companies" VALUES (216, 'A & K Enns Trucking Ltd.', '2404-
 DROP TABLE IF EXISTS "public"."dropdowns";
 CREATE TABLE "public"."dropdowns" (
   "id" int4 NOT NULL DEFAULT nextval('dropdowns_id_seq'::regclass),
-  "DropName" varchar(255) COLLATE "pg_catalog"."default",
+  "Name" varchar(255) COLLATE "pg_catalog"."default",
   "createdAt" date,
   "updatedAt" date
 )
@@ -125,7 +125,7 @@ INSERT INTO "public"."dropdowns" VALUES (3, 'drop3', '2024-02-29', '2024-02-29')
 DROP TABLE IF EXISTS "public"."pickups";
 CREATE TABLE "public"."pickups" (
   "id" int4 NOT NULL DEFAULT nextval('pickups_id_seq'::regclass),
-  "PickName" varchar(255) COLLATE "pg_catalog"."default",
+  "Name" varchar(255) COLLATE "pg_catalog"."default",
   "createdAt" date,
   "updatedAt" date
 )

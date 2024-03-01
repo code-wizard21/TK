@@ -62,24 +62,24 @@ function CollapsibleRow({ index, row, isMobile, role }) {
         </TableCell>
         <TableCell component="th" scope="row">
           <div className="accept">
-            <span> {row.CarNumber}</span>
+            <span> {row.LeadNumber + "-" + row.PupNumber}</span>
           </div>
         </TableCell>
         {/* <TableCell>{row.CustomerName}</TableCell> */}
         {!isMobile && (
           <>
-            {(role=='driver' || role=='washer') && <TableCell>{row.CompanyName}</TableCell>}
+            {(role=='driver' || role=='washer') && <TableCell>{row.Company}</TableCell>}
             <TableCell>
-              <span> {row.Detail}</span>
+              <span> {row.Description}</span>
             </TableCell>
             <TableCell component="th" scope="row">
               <div className="accept">
-                <span> {row.PicksName}</span>
+                <span> {row.Pickup}</span>
               </div>
             </TableCell>
             <TableCell component="th" scope="row">
               <div className="accept">
-                <span> {row.DropsName}</span>
+                <span> {row.Drop}</span>
               </div>
             </TableCell>
             <TableCell>
@@ -99,25 +99,25 @@ function CollapsibleRow({ index, row, isMobile, role }) {
                       <TableCell component="th" scope="row">
                         Company Name
                       </TableCell>
-                      <TableCell align="right">{row.CompanyName}</TableCell>
+                      <TableCell align="right">{row.Company}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         Description
                       </TableCell>
-                      <TableCell align="right">{row.Detail}</TableCell>
+                      <TableCell align="right">{row.Description}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        Pickup Location
+                        Pickup
                       </TableCell>
-                      <TableCell align="right">{row.PicksName}</TableCell>
+                      <TableCell align="right">{row.Pickup}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        Dropdown Location
+                        Drop
                       </TableCell>
-                      <TableCell align="right">{row.DropsName}</TableCell>
+                      <TableCell align="right">{row.Drop}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
@@ -153,8 +153,8 @@ export default function CompletedList(props) {
               <>
                 {(role=='driver' || role=='washer') && <StyledTableCell>Company Name</StyledTableCell>}
                 <StyledTableCell>Description</StyledTableCell>
-                <StyledTableCell>Pickup Location</StyledTableCell>
-                <StyledTableCell>Dropdown Location</StyledTableCell>
+                <StyledTableCell>Pickup</StyledTableCell>
+                <StyledTableCell>Drop</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
               </>
             )}
