@@ -37,8 +37,13 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
   const [companies, setCompanies] = useState([]);
   useEffect(() => {
     (async function () {
-      const trucks = await Http.get("/api/truck");
-      setTrucks(trucks.data);
+      if(isDriver) {
+        const trucks = await Http.get("/api/truck");
+        setTrucks(trucks.data);
+      } else {
+        const trucks = await Http.get("/api/truck/by/" + encodeURIComponent(auth.user.name));
+        setTrucks(trucks.data);
+      }
       const companies = await Http.get("/api/user/byrole/company");
       setCompanies(companies.data);
 
@@ -145,15 +150,20 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
             <Autocomplete
               disablePortal
               id="combo-box-leadnumber"
-              options={trucks.map((i) => `${i.FirstNumber}-${i.SecondNumber}`)}
-              onChange={(e, v) => setLeadNumber(v)}
+              options={trucks.map(i => i.LeadNumber)}
+              value={leadNumber}
+              onChange={(e, v) => {
+                setLeadNumber(v);
+                const truck = trucks.find(i => i.LeadNumber == v);
+                truck && setPupNumber(truck.PupNumber);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   error={!leadNumber && showErrors}
                   value={leadNumber}
                   id="outlined-basic"
-                  name="carcode"
+                  name="lead"
                   label="Lead"
                   variant="outlined"
                   fullWidth
@@ -165,15 +175,16 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
             <Autocomplete
               disablePortal
               id="combo-box-pupnumber"
-              options={trucks.map((i) => `${i.FirstNumber}-${i.SecondNumber}`)}
+              options={trucks.map(i => i.PupNumber)}
               onChange={(e, v) => setPupNumber(v)}
+              value={pupNumber}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   error={!pupNumber && showErrors}
                   value={pupNumber}
                   id="outlined-basic"
-                  name="carcode"
+                  name="pup"
                   label="Pup"
                   variant="outlined"
                   fullWidth

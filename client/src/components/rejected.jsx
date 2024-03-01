@@ -275,7 +275,7 @@ export default function RejectedList(props) {
             {isMobile && <TableCell />}
             <StyledTableCell>ID</StyledTableCell>
             <StyledTableCell>Truck Number</StyledTableCell>
-            {role=='driver' && <StyledTableCell>Company Name</StyledTableCell>}
+            {role=='driver' && <StyledTableCell>Company</StyledTableCell>}
             {!isMobile && (
               <>
                 <StyledTableCell>Description</StyledTableCell>

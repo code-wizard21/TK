@@ -6,7 +6,7 @@ exports.createTruck = async (req, res) => {
   try {
     console.log(req.body);
     const truck = await Truck.findOne({
-      where: { FirstNumber: req.body.FirstNumber },
+      where: { LeadNumber: req.body.LeadNumber },
     });
     if (truck) {
       return res.send({
@@ -15,8 +15,8 @@ exports.createTruck = async (req, res) => {
       });
     }
     const trucklist = {
-      FirstNumber: req.body.FirstNumber,
-      SecondNumber: req.body.SecondNumber,
+      LeadNumber: req.body.LeadNumber,
+      PupNumber: req.body.PupNumber,
       Company: req.body.Company,
       Type: req.body.Type,
     };
@@ -45,12 +45,18 @@ exports.getTrucks = async (req, res) => {
   //   console.log(trucklist[0].dataValues);
   res.send(trucklist);
 };
+exports.getTrucksByCompany = async (req, res) => {
+  console.log(req.params.company);
+  const trucklist = await Truck.findAll({where: {Company: req.params.company}});
+  console.log(trucklist);
+  res.send(trucklist);
+};
 exports.updateTrucks = async (req, res) => {
   const id = req.params.id;
-  const { FirstNumber, SecondNumber, Company, Type } = req.body;
+  const { LeadNumber, PupNumber, Company, Type } = req.body;
   try {
     const user = await Truck.update(
-      { FirstNumber, SecondNumber, Company, Type },
+      { LeadNumber, PupNumber, Company, Type },
 
       {
         where: {

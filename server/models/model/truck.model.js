@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
   const Truck = sequelize.define("truck", {
-    FirstNumber: {
+    LeadNumber: {
       type: Sequelize.STRING,
     },
-    SecondNumber: {
+    PupNumber: {
       type: Sequelize.STRING,
     },
     Company: {

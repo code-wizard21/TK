@@ -76,8 +76,8 @@ INSERT INTO "public"."customers" VALUES (210, 'customer', 'fwefwe', 'fwefqewf', 
 DROP TABLE IF EXISTS "public"."trucklists";
 CREATE TABLE "public"."trucklists" (
   "id" int4 NOT NULL DEFAULT nextval('trucklists_id_seq'::regclass),
-  "FirstNumber" varchar COLLATE "pg_catalog"."default",
-  "SecondNumber" varchar COLLATE "pg_catalog"."default",
+  "LeadNumber" varchar COLLATE "pg_catalog"."default",
+  "PupNumber" varchar COLLATE "pg_catalog"."default",
   "Company" varchar(255) COLLATE "pg_catalog"."default",
   "Type" varchar(255) COLLATE "pg_catalog"."default",
   "createdAt" date,

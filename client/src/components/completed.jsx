@@ -97,7 +97,7 @@ function CollapsibleRow({ index, row, isMobile, role }) {
                   <TableBody>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        Company Name
+                        Company
                       </TableCell>
                       <TableCell align="right">{row.Company}</TableCell>
                     </TableRow>
@@ -151,7 +151,7 @@ export default function CompletedList(props) {
 
             {!isMobile && (
               <>
-                {(role=='driver' || role=='washer') && <StyledTableCell>Company Name</StyledTableCell>}
+                {(role=='driver' || role=='washer') && <StyledTableCell>Company</StyledTableCell>}
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Pickup</StyledTableCell>
                 <StyledTableCell>Drop</StyledTableCell>

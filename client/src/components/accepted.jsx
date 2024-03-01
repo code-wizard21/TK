@@ -200,7 +200,7 @@ export default function AcceptedList(props) {
 
             {!isMobile && (
               <>
-                {(role=='driver' || role=='washer') && <StyledTableCell>Company Name</StyledTableCell>}
+                {(role=='driver' || role=='washer') && <StyledTableCell>Company</StyledTableCell>}
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Pickup</StyledTableCell>
                 <StyledTableCell>Drop</StyledTableCell>
