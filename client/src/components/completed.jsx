@@ -17,6 +17,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import moment from 'moment';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -83,7 +84,7 @@ function CollapsibleRow({ index, row, isMobile, role }) {
               </div>
             </TableCell>
             <TableCell>
-              <span> {row.Date}</span>
+              <span> {moment(row.Date).format('YYYY-MM-DD')}</span>
             </TableCell>
           </>
         )}
@@ -123,7 +124,7 @@ function CollapsibleRow({ index, row, isMobile, role }) {
                       <TableCell component="th" scope="row">
                         Date
                       </TableCell>
-                      <TableCell align="right">{row.Date}</TableCell>
+                      <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

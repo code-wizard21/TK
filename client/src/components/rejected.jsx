@@ -36,6 +36,7 @@ import Dialog from "@mui/material/Dialog";
 import Http from "../../src/utils/http";
 import { toast } from "react-toastify";
 import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
+import moment from 'moment';
 // ... Your rows data here
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -127,7 +128,7 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
               <span> {row.Reason}</span>
             </TableCell>
             <TableCell>
-              <span> {row.Date}</span>
+              <span> {moment(row.Date).format('YYYY-MM-DD')}</span>
             </TableCell>
 
             <TableCell>
@@ -161,7 +162,7 @@ function CollapsibleRow({ index, props, row, isMobile, setRejected, role }) {
                       <TableCell component="th" scope="row">
                         Date
                       </TableCell>
-                      <TableCell align="right">{row.Date}</TableCell>
+                      <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">

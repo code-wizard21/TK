@@ -47,7 +47,7 @@ exports.getTrucks = async (req, res) => {
 };
 exports.getTrucksByCompany = async (req, res) => {
   console.log(req.params.company);
-  const trucklist = await Truck.findAll({where: {Company: req.params.company}});
+  const trucklist = await Truck.findAll({where: db.sequelize.where(db.sequelize.fn('TRIM', db.sequelize.col('Company')), req.params.company)});
   console.log(trucklist);
   res.send(trucklist);
 };

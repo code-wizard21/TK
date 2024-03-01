@@ -28,6 +28,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Http from "../utils/http";
 import { toast } from "react-toastify";
+import moment from 'moment';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "white",
@@ -140,7 +141,7 @@ function CollapsibleRow({ props, row, isMobile, index, role }) {
               </div>
             </TableCell>
             <TableCell>
-              <span> {row.Date}</span>
+              <span> {moment(row.Date).format('YYYY-MM-DD')}</span>
             </TableCell>
             {role=='washer' && 
                 <TableCell>
@@ -200,7 +201,7 @@ function CollapsibleRow({ props, row, isMobile, index, role }) {
                         <TableCell component="th" scope="row">
                             Date
                         </TableCell>
-                        <TableCell align="right">{row.Date}</TableCell>
+                        <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
                     </TableRow>
                     {role=='washer' &&
                         <TableRow>
@@ -312,6 +313,7 @@ export default function RequestedList(props) {
 
             {!isMobile && (
               <>
+                {(role=='driver'||role=='washer') && <StyledTableCell>Company</StyledTableCell>}
                 <StyledTableCell>Description</StyledTableCell>
                 <StyledTableCell>Pickup</StyledTableCell>
                 <StyledTableCell>Drop</StyledTableCell>
