@@ -11,6 +11,7 @@ import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
 import moment from "moment";
+import AppWidgetSummary from "../../components/currentstate";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -64,30 +65,60 @@ export default function LabTabs() {
         // Add additional styling as needed here
       }}
     >
-      <Container>
-        <Grid xs={6} md={6}>
-          <Card
-            sx={{
-              marginBottom: '1em'
-            }}
-          >
-            <CardContent>
+      <Container maxWidth="xl" style={{ marginBottom: "20px" }}>
+        <Grid container justifyContent="center" alignItems="center" spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Washed Today"
+              total={`${
+                washedOrders.filter(
+                  (i) =>
+                    moment(i.Date).format("YYYY-MM-DD") ==
+                    moment().format("YYYY-MM-DD")
+                ).length
+              }`}
+              color="success"
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />
+              }
+            />
+            {/* <CardContent>
               Washed Today:
               {washedOrders.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD")).length}
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid xs={6} md={6}>
-          <Card
+            </CardContent> */}
+          </Grid>
+          <Grid item Grid xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="New Users"
+              total={`${
+                acceptedOrders.filter(
+                  (i) =>
+                    moment(i.Date).format("YYYY-MM-DD") ==
+                    moment().format("YYYY-MM-DD")
+                ).length
+              }`}
+              color="info"
+              icon={
+                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+              }
+            />
+            {/* <Card
             sx={{
-              marginBottom: '1em'
+              marginBottom: "1em",
             }}
           >
             <CardContent>
               Pending Today:
-              {acceptedOrders.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD")).length}
+              {
+                acceptedOrders.filter(
+                  (i) =>
+                    moment(i.Date).format("YYYY-MM-DD") ==
+                    moment().format("YYYY-MM-DD")
+                ).length
+              }
             </CardContent>
-          </Card>
+          </Card> */}
+          </Grid>
         </Grid>
       </Container>
       <Container>
