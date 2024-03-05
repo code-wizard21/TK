@@ -79,17 +79,13 @@ export default function LabTabs() {
               }`}
               color="success"
               icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />
+                <img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />
               }
             />
-            {/* <CardContent>
-              Washed Today:
-              {washedOrders.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD")).length}
-            </CardContent> */}
           </Grid>
           <Grid item Grid xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="New Users"
+              title="Pending Today"
               total={`${
                 acceptedOrders.filter(
                   (i) =>
@@ -99,25 +95,9 @@ export default function LabTabs() {
               }`}
               color="info"
               icon={
-                <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+                <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />
               }
             />
-            {/* <Card
-            sx={{
-              marginBottom: "1em",
-            }}
-          >
-            <CardContent>
-              Pending Today:
-              {
-                acceptedOrders.filter(
-                  (i) =>
-                    moment(i.Date).format("YYYY-MM-DD") ==
-                    moment().format("YYYY-MM-DD")
-                ).length
-              }
-            </CardContent>
-          </Card> */}
           </Grid>
         </Grid>
       </Container>
