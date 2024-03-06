@@ -11,21 +11,20 @@ import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
-import Label from "../../../src/components/label";
-import Iconify from "../../../src/components/iconify";
-import Http from "../../utils/http";
+import Label from "../../../components/label";
+import Iconify from "../../../components/iconify";
+import Http from "../../../utils/http";
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function WasherTableRow({
   selected,
   name,
   email,
   role,
   status,
   handleClick,
-  getCompanies,
+  getWashers,
   key,
-  setDeleteId,
   id,
   setUpdateFlag,
   setUpdateId,
@@ -39,31 +38,34 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
-  const handleDisableMenu = () => {};
   const handleUpdateMenu = () => {
+    handleCloseMenu();
     setUpdateFlag(true);
     setUpdateId(id);
   };
   const handleDeleteMenu = () => {
+    handleCloseMenu();
     Http.delete(`/api/user/${id}`)
       .then((data) => {
-        getCompanies();
+        getWashers();
       })
       .catch((err) => {});
   };
   const onDisable = () => {
+    handleCloseMenu();
     Http.post("/api/user/disable", { id: id })
       .then((data) => {
-        getCompanies();
+        getWashers();
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const onEnable = () => {
+    handleCloseMenu();
     Http.post("/api/user/enable", { id: id })
       .then((data) => {
-        getCompanies();
+        getWashers();
       })
       .catch((err) => {
         console.log(err);
@@ -92,8 +94,8 @@ export default function UserTableRow({
         {/* <TableCell align="center">{isVerified ? "Yes" : "No"}</TableCell> */}
 
         <TableCell>
-          <Label color={(status === "Disable" && "error") || "success"}>
-            {status}
+          <Label color={(status === "Disabled" && "error") || "success"}>
+            {status || "Enabled"}
           </Label>
         </TableCell>
 
@@ -118,7 +120,7 @@ export default function UserTableRow({
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-        {status == "Disable" ? (
+        {status == "Disabled" ? (
           <MenuItem onClick={onEnable} sx={{ color: "error.main" }}>
             <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
             Enable
@@ -129,10 +131,6 @@ export default function UserTableRow({
             Disable
           </MenuItem>
         )}
-        {/* <MenuItem onClick={handleDisableMenu} sx={{ color: "error.main" }}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Disable
-        </MenuItem> */}
         <MenuItem onClick={handleDeleteMenu} sx={{ color: "error.main" }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
@@ -142,9 +140,9 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
+WasherTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+  washer: PropTypes.any,
   handleClick: PropTypes.func,
   isVerified: PropTypes.any,
   name: PropTypes.any,

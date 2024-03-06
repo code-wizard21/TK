@@ -7,11 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
-import { visuallyHidden } from './utils';
+import { visuallyHidden } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableHead({
+export default function WasherTableHead({
   order,
   orderBy,
   rowCount,
@@ -62,7 +62,7 @@ export default function UserTableHead({
   );
 }
 
-UserTableHead.propTypes = {
+WasherTableHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']),
   orderBy: PropTypes.string,
   rowCount: PropTypes.number,

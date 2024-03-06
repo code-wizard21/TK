@@ -7,11 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 
-import Iconify from "../../../src/components/iconify/index";
+import Iconify from "../../../components/iconify/index";
 
 // ----------------------------------------------------------------------
 
-export default function UserTableToolbar({
+export default function WasherTableToolbar({
   numSelected,
   filterName,
   onFilterName,
@@ -37,7 +37,7 @@ export default function UserTableToolbar({
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Search washer..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify
@@ -56,17 +56,18 @@ export default function UserTableToolbar({
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
+        <></>
+        // <Tooltip title="Filter list">
+        //   <IconButton>
+        //     <Iconify icon="ic:round-filter-list" />
+        //   </IconButton>
+        // </Tooltip>
       )}
     </Toolbar>
   );
 }
 
-UserTableToolbar.propTypes = {
+WasherTableToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,

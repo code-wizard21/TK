@@ -84,7 +84,7 @@ exports.updateByUser = async (req, res) => {
 exports.updateByUserDisabled = async (req, res) => {
   console.log("121212121", req.body.id);
   const user = await User.update(
-    { State: "Disable" },
+    { State: "Disabled" },
     {
       where: {
         id: req.body.id,
@@ -96,7 +96,7 @@ exports.updateByUserDisabled = async (req, res) => {
 exports.updateByUserEnabled = async (req, res) => {
   console.log("121212121", req.body.id);
   const user = await User.update(
-    { State: "Enable" },
+    { State: "Enabled" },
     {
       where: {
         id: req.body.id,

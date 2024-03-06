@@ -17,7 +17,7 @@ const CompanyManage = lazy(() => import("../pages/admin/role/admin-role"));
 const DriverRole = lazy(() => import("../pages/admin/role/driver-role"));
 const WasherRole = lazy(() => import("../pages/admin/role/washer-role"));
 
-const CompanyPage = lazy(() => import("../pages/table/view/user-view"));
+const CompanyPage = lazy(() => import("../pages/table/company/user-view"));
 
 function RoutesDefined() {
   return (

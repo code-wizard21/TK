@@ -1,16 +1,17 @@
 import SimpleBar from 'simplebar-react';
 
 import { alpha, styled } from '@mui/material/styles';
+import { Box } from '@mui/system';
 
 // ----------------------------------------------------------------------
 
-export const StyledRootScrollbar = styled('div')(() => ({
+export const StyledRootScrollbar = styled(Box)(() => ({
   flexGrow: 1,
   height: '100%',
   overflow: 'hidden',
 }));
 
-export const StyledScrollbar = styled(SimpleBar)(({ theme }) => ({
+export const StyledScrollbar = styled(Box)(({ theme }) => ({
   maxHeight: '100%',
   '& .simplebar-scrollbar': {
     '&:before': {
