@@ -23,7 +23,7 @@ export default function CompanyTableRow({
   role,
   status,
   handleClick,
-  getWashers,
+  getCompanies,
   key,
   id,
   setUpdateFlag,
@@ -47,7 +47,7 @@ export default function CompanyTableRow({
     handleCloseMenu();
     Http.delete(`/api/user/${id}`)
       .then((data) => {
-        getWashers();
+        getCompanies();
       })
       .catch((err) => {});
   };
@@ -55,7 +55,7 @@ export default function CompanyTableRow({
     handleCloseMenu();
     Http.post("/api/user/disable", { id: id })
       .then((data) => {
-        getWashers();
+        getCompanies();
       })
       .catch((err) => {
         console.log(err);
@@ -65,7 +65,7 @@ export default function CompanyTableRow({
     handleCloseMenu();
     Http.post("/api/user/enable", { id: id })
       .then((data) => {
-        getWashers();
+        getCompanies();
       })
       .catch((err) => {
         console.log(err);
@@ -142,7 +142,7 @@ export default function CompanyTableRow({
 
 CompanyTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  washer: PropTypes.any,
+  company: PropTypes.any,
   handleClick: PropTypes.func,
   isVerified: PropTypes.any,
   name: PropTypes.any,

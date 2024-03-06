@@ -62,13 +62,15 @@ exports.createUser = async (req, res) => {
 exports.updateByUser = async (req, res) => {
   console.log(req.body);
   const id = req.params.id;
+  let data = {
+    Email: req.body.email,
+    PhoneNumber: req.body.phone,
+    Name: req.body.name,
+  };
+  if(req.body.password) data.Password = await bcrypt.hash(req.body.password, 10);
   try {
     const user = await User.update(
-      {
-        Email: req.body.email,
-        PhoneNumber: req.body.phone,
-        Name: req.body.name,
-      },
+      data,
       {
         where: {
           id: id,

@@ -105,7 +105,7 @@ export default function WasherTableRow({
 
 WasherTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+  washer: PropTypes.any,
   handleClick: PropTypes.func,
   isVerified: PropTypes.any,
   name: PropTypes.any,

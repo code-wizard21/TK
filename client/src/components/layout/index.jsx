@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const PageLayout = () => {
   const classes = useStyles();
   const auth = useSelector((state) => state.auth.user);
+  console.log(auth);
   return (
     <div className={classes.root}>
       {auth.job !== "admin" ? <Header /> : <></>}
