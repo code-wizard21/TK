@@ -15,17 +15,17 @@ import { RouterLink } from "../../../src/routes/components/index";
 
 import { useResponsive } from "../../../src/hooks/use-responsive";
 
-import { account } from "../../../src/_mock/account";
-
 import Logo from "../../../src/components/logo";
 import Scrollbar from "../../../src/components/scrollbar/index";
 
 import { NAV } from "./config-layout";
 import navConfig from "./config-navigation";
 import logo from "../../assets/images/photo.png";
+import { useSelector } from "react-redux";
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
+  const auth = useSelector(state => state.auth);
   const pathname = usePathname();
 
   const upLg = useResponsive("up", "lg");
@@ -50,13 +50,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={auth.user.avatar} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{auth.user.email}</Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {account.role}
+          {auth.user.job}
         </Typography>
       </Box>
     </Box>
@@ -89,12 +89,12 @@ export default function Nav({ openNav, onCloseNav }) {
           display: "flex",
           alignContent: "center",
           width: "100px",
-          marginLeft: "80px",
+          marginLeft: "24px",
           marginTop: "10px",
         }}
       />
 
-      {/* {renderAccount} */}
+      {renderAccount}
 
       {renderMenu}
 

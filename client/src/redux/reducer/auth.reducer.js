@@ -13,7 +13,7 @@ const AuthReducer = (state = initialState, action) => {
     case AuthTypes.LOGIN_REQUEST:
       return {
         ...state,
-        user: action.payload,
+        user: {...action.payload, avatar: `/assets/images/avatars/avatar_${(Math.floor(Math.random()*100)) % 25 + 1}.jpg`},
         isLoading: true,
         errorMessage: "",
         isLoggedIn: true,

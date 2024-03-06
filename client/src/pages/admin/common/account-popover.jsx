@@ -9,7 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
-import { account } from "../../../../src/_mock/account";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -31,12 +32,20 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const auth = useSelector(state => state.auth);
   const [open, setOpen] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
+  const logout = () => {
+    handleClose();
+    dispatch({ type: "LOGOUT_REQUEST" });
+    navigate('/');
+  }
   const handleClose = () => {
     setOpen(null);
   };
@@ -56,15 +65,15 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={account.photoURL}
-          alt={account.displayName}
+          src={auth.user.avatar}
+          alt={auth.user.name}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {auth.user.name.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -85,27 +94,27 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {auth.user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {account.email}
+            {auth.user.email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        {MENU_OPTIONS.map((option) => (
+        {/* {MENU_OPTIONS.map((option) => (
           <MenuItem key={option.label} onClick={handleClose}>
             {option.label}
           </MenuItem>
         ))}
 
-        <Divider sx={{ borderStyle: "dashed", m: 0 }} />
+        <Divider sx={{ borderStyle: "dashed", m: 0 }} /> */}
 
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={logout}
           sx={{ typography: "body2", color: "error.main", py: 1.5 }}
         >
           Logout
