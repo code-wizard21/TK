@@ -44,11 +44,11 @@ function RoutesDefined() {
               <Route path="company/dashboard" element={<CompanyDashboard />} />
               <Route path="driver/dashboard" element={<DriverDashboard />} />
               <Route path="washer/dashboard" element={<WasherDashboard />} />
-              <Route path="admin" element={<Admin />}>
-                <Route index element={<CompanyManage />} />
-                <Route path="driver-role" element={<DriverRole />} />
-                <Route path="washer-role" element={<WasherRole />} />
-              </Route>
+            </Route>
+            <Route path="admin" element={<Admin />}>
+              <Route index element={<CompanyManage />} />
+              <Route path="driver-role" element={<DriverRole />} />
+              <Route path="washer-role" element={<WasherRole />} />
             </Route>
           </Routes>
         </Suspense>

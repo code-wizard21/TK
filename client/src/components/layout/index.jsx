@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Header from "./Nav";
 import { makeStyles } from "@material-ui/core/styles";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Header from '../../pages/admin/header';
+import Main from "../../pages/admin/main";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -27,11 +28,10 @@ const PageLayout = () => {
   console.log(auth);
   return (
     <div className={classes.root}>
-      {auth.job !== "admin" ? <Header /> : <></>}
-
-      <main className={classes.content}>
-        <Outlet />
-      </main>
+      <Header />
+      <Main>
+          <Outlet />
+      </Main>
     </div>
   );
 };

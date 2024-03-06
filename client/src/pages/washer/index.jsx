@@ -67,7 +67,7 @@ export default function LabTabs() {
     >
       <Container maxWidth="xl" style={{ marginBottom: "20px" }}>
         <Grid container justifyContent="center" alignItems="center" spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={6} md={3}>
             <AppWidgetSummary
               title="Washed Today"
               total={`${
@@ -83,7 +83,7 @@ export default function LabTabs() {
               }
             />
           </Grid>
-          <Grid item Grid xs={12} sm={6} md={3}>
+          <Grid item Grid xs={6} sm={6} md={3}>
             <AppWidgetSummary
               title="Pending Today"
               total={`${
@@ -101,13 +101,13 @@ export default function LabTabs() {
           </Grid>
         </Grid>
       </Container>
-      <Container>
+      <Container sx={{ paddingLeft: 0, paddingRight: 0}}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList
               onChange={handleChange}
               aria-label="lab API tabs example"
-              centered={isSmallScreen ? false : true} // If not small screen, center the tabs for visual appeal
+              centered={true} // If not small screen, center the tabs for visual appeal
               sx={{
                 backgroundColor: theme.palette.background.paper,
                 "& .MuiTab-root": {

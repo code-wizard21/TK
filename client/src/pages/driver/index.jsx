@@ -94,7 +94,7 @@ export default function LabTabs() {
         py: { xs: 2, sm: 4, md: 6, lg: 8 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ paddingLeft: 0, paddingRight: 0}}>
         <Stack
           direction="row"
           alignItems="center"
@@ -108,6 +108,7 @@ export default function LabTabs() {
             variant="contained"
             onClick={() => toggleDrawer(true)}
             style={buttonStyle}
+            sx={{ marginRight: 2}}
             size="small"
           >
             <AddIcon />
@@ -118,7 +119,7 @@ export default function LabTabs() {
             <TabList
               onChange={handleChange}
               aria-label="lab API tabs example"
-              centered={isSmallScreen ? false : true} // If not small screen, center the tabs for visual appeal
+              centered={true} // If not small screen, center the tabs for visual appeal
               sx={{
                 backgroundColor: theme.palette.background.paper,
                 "& .MuiTab-root": {

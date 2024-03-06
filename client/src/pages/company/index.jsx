@@ -85,7 +85,7 @@ export default function DrawerAnchor() {
         py: { xs: 2, sm: 4, md: 6, lg: 8 },
       }}
     >
-      <Container>
+      <Container sx={{ paddingLeft: 0, paddingRight: 0}}>
         <Stack
           direction="row"
           alignItems="center"
@@ -99,6 +99,7 @@ export default function DrawerAnchor() {
             variant="contained"
             onClick={() => toggleDrawer(true)}
             style={buttonStyle}
+            sx={{ marginRight: 2}}
             size="small"
           >
             <AddIcon />
@@ -116,7 +117,7 @@ export default function DrawerAnchor() {
             <TabList
               onChange={handleChange}
               aria-label="lab API tabs example"
-              centered={isSmallScreen ? false : true} // If not small screen, center the tabs for visual appeal
+              centered={true} // If not small screen, center the tabs for visual appeal
               sx={{
                 backgroundColor: theme.palette.background.paper,
                 "& .MuiTab-root": {
