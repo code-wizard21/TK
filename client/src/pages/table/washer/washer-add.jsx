@@ -2,6 +2,7 @@ import { Button, Dialog, DialogContent, DialogTitle, TextField, Typography } fro
 import { Stack } from "@mui/system";
 import { Controller, useForm } from "react-hook-form"
 import Http from "../../../utils/http";
+import { useEffect } from "react";
 
 const AddWasherModal = ({open, setOpen, handleClose, onAdd}) => {
   const {
@@ -11,6 +12,9 @@ const AddWasherModal = ({open, setOpen, handleClose, onAdd}) => {
     reset,
     register,
   } = useForm();
+  useEffect(() => {
+    reset();
+  }, [open]);
   const handleOk = (data) => {
     setOpen(false);
     Http.post("/api/user", {

@@ -16,10 +16,10 @@ import Iconify from "../../../components/iconify/index";
 import Scrollbar from "../../../components/scrollbar/index";
 import { TextField, Unstable_Grid2 as Grid } from "@mui/material";
 import TableNoData from "./table-no-data";
-import WasherTableRow from "./user-table-row";
-import UserTableHead from "./user-table-head";
+import CompanyTableRow from "./company-table-row";
+import CompanyTableHead from "./company-table-head";
 import TableEmptyRows from "./table-empty-rows";
-import UserTableToolbar from "./user-table-toolbar";
+import CompanyTableToolbar from "./company-table-toolbar";
 import { emptyRows, applyFilter, getComparator } from "../utils";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
@@ -27,11 +27,11 @@ import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import { useForm, Controller } from "react-hook-form";
 import Http from "../../../utils/http";
-import AddUserModal from "./user-add";
-import UpdateUserModal from "./user-update";
+import AddCompanyModal from "./company-add";
+import UpdateCompanyModal from "./company-update";
 // ----------------------------------------------------------------------
 
-export default function UserPage(prop) {
+export default function CompanyPage(prop) {
   const { companies, getCompanies } = prop;
   const [page, setPage] = useState(0);
 
@@ -145,7 +145,7 @@ export default function UserPage(prop) {
         </Stack>
 
         <Card>
-          <UserTableToolbar
+          <CompanyTableToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -154,7 +154,7 @@ export default function UserPage(prop) {
           <Scrollbar>
             <TableContainer sx={{ overflow: "unset" }}>
               <Table sx={{ minWidth: 800 }}>
-                <UserTableHead
+                <CompanyTableHead
                   order={order}
                   orderBy={orderBy}
                   rowCount={companies.length}
@@ -174,7 +174,7 @@ export default function UserPage(prop) {
                   {dataFiltered
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
-                      <WasherTableRow
+                      <CompanyTableRow
                         key={row.id}
                         id={row.id}
                         name={row.Name}
@@ -213,8 +213,8 @@ export default function UserPage(prop) {
           />
         </Card>
       </Container>
-      {<AddUserModal open={open} setOpen={setOpen} onAdd={prop.getCompanies} handleClose={handleClose} />}
-      {<UpdateUserModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getCompanies} handleClose={handleClose} updateId={updateId} />}
+      {<AddCompanyModal open={open} setOpen={setOpen} onAdd={prop.getCompanies} handleClose={handleClose} />}
+      {<UpdateCompanyModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getCompanies} handleClose={handleClose} updateId={updateId} />}
     </>
   );
 }

@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form"
 import Http from "../../../utils/http";
 import { useState } from "react";
 
-const UpdateUserModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, updateId}) => {
+const UpdateDriverModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, updateId}) => {
   const {
     control,
     handleSubmit,
@@ -40,11 +40,11 @@ const UpdateUserModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, upda
         },
       }}
     >
-      <DialogTitle>Update Company</DialogTitle>
+      <DialogTitle>Update Driver</DialogTitle>
 
       <DialogContent>
         <Typography sx={{ mb: 3 }}>
-          Please input the necessary informations for updating a company.
+          Please input the necessary informations for updating a driver.
         </Typography>
 
         <form onSubmit={handleSubmit(handleUpdateOk)} style={{}}>
@@ -146,4 +146,4 @@ const UpdateUserModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, upda
       </DialogContent>
     </Dialog>)
 }
-export default UpdateUserModal;
+export default UpdateDriverModal;

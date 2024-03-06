@@ -13,11 +13,11 @@ const Login = lazy(() => import("../components/auth/Login"));
 const LandingPage = lazy(() => import("../pages/landing"));
 const Admin = lazy(() => import("../pages/admin"));
 
-const CompanyManage = lazy(() => import("../pages/admin/role/admin-role"));
+const CompanyManage = lazy(() => import("../pages/admin/role/company-role"));
 const DriverRole = lazy(() => import("../pages/admin/role/driver-role"));
 const WasherRole = lazy(() => import("../pages/admin/role/washer-role"));
 
-const CompanyPage = lazy(() => import("../pages/table/company/user-view"));
+const CompanyPage = lazy(() => import("../pages/table/company/company-view"));
 
 function RoutesDefined() {
   return (

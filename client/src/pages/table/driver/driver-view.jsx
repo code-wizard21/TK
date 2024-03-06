@@ -31,8 +31,8 @@ import AddUserModal from "./driver-add";
 import UpdateUserModal from "./driver-update";
 // ----------------------------------------------------------------------
 
-export default function UserPage(prop) {
-  const { company, getCompanies } = prop;
+export default function DriverPage(prop) {
+  const { drivers, getDrivers } = prop;
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -76,7 +76,7 @@ export default function UserPage(prop) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = company.map((n) => n.name);
+      const newSelecteds = drivers.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -116,7 +116,7 @@ export default function UserPage(prop) {
   };
 
   const dataFiltered = applyFilter({
-    inputData: company,
+    inputData: drivers,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -132,7 +132,7 @@ export default function UserPage(prop) {
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4">Company</Typography>
+          <Typography variant="h4">Driver</Typography>
 
           <Button
             variant="contained"
@@ -140,7 +140,7 @@ export default function UserPage(prop) {
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleOpen}
           >
-            New Company
+            New Driver
           </Button>
         </Stack>
 
@@ -157,16 +157,16 @@ export default function UserPage(prop) {
                 <UserTableHead
                   order={order}
                   orderBy={orderBy}
-                  rowCount={company.length}
+                  rowCount={drivers.length}
                   numSelected={selected.length}
                   onRequestSort={handleSort}
                   onSelectAllClick={handleSelectAllClick}
                   headLabel={[
-                    { id: "Name", label: "Company" },
+                    { id: "Name", label: "Name" },
                     { id: "Email", label: "Email" },
                     { id: "PhoneNumber", label: "PhoneNumber" },
                     // { id: "isVerified", label: "Verified", align: "center" },
-                    { id: "State", label: "Status" },
+                    // { id: "State", label: "Status" },
                     { id: "" },
                   ]}
                 />
@@ -181,7 +181,7 @@ export default function UserPage(prop) {
                         role={row.PhoneNumber}
                         status={row.State}
                         email={row.Email}
-                        getCompanies={getCompanies}
+                        getDrivers={getDrivers}
                         setUpdateFlag={setUpdateFlag}
                         setUpdateId={setUpdateId}
                         // avatarUrl={row.avatarUrl}
@@ -193,7 +193,7 @@ export default function UserPage(prop) {
 
                   <TableEmptyRows
                     height={77}
-                    emptyRows={emptyRows(page, rowsPerPage, company.length)}
+                    emptyRows={emptyRows(page, rowsPerPage, drivers.length)}
                   />
 
                   {notFound && <TableNoData query={filterName} />}
@@ -205,7 +205,7 @@ export default function UserPage(prop) {
           <TablePagination
             page={page}
             component="div"
-            count={company.length}
+            count={drivers.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}
@@ -213,8 +213,8 @@ export default function UserPage(prop) {
           />
         </Card>
       </Container>
-      {<AddUserModal open={open} setOpen={setOpen} onAdd={prop.getCompanies} handleClose={handleClose} />}
-      {<UpdateUserModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getCompanies} handleClose={handleClose} updateId={updateId} />}
+      {<AddUserModal open={open} setOpen={setOpen} onAdd={prop.getDrivers} handleClose={handleClose} />}
+      {<UpdateUserModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getDrivers} handleClose={handleClose} updateId={updateId} />}
     </>
   );
 }

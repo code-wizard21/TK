@@ -16,14 +16,14 @@ import Iconify from "../../../components/iconify";
 import Http from "../../../utils/http";
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({
+export default function DriverTableRow({
   selected,
   name,
   email,
   role,
   status,
   handleClick,
-  getCompanies,
+  getDrivers,
   key,
   id,
   setUpdateFlag,
@@ -47,29 +47,9 @@ export default function UserTableRow({
     handleCloseMenu();
     Http.delete(`/api/user/${id}`)
       .then((data) => {
-        getCompanies();
+        getDrivers();
       })
       .catch((err) => {});
-  };
-  const onDisable = () => {
-    handleCloseMenu();
-    Http.post("/api/user/disable", { id: id })
-      .then((data) => {
-        getCompanies();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const onEnable = () => {
-    handleCloseMenu();
-    Http.post("/api/user/enable", { id: id })
-      .then((data) => {
-        getCompanies();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
   return (
     <>
@@ -90,14 +70,6 @@ export default function UserTableRow({
         <TableCell>{email}</TableCell>
 
         <TableCell>{role}</TableCell>
-
-        {/* <TableCell align="center">{isVerified ? "Yes" : "No"}</TableCell> */}
-
-        <TableCell>
-          <Label color={(status === "Disabled" && "error") || "success"}>
-            {status || "Enabled"}
-          </Label>
-        </TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -120,17 +92,6 @@ export default function UserTableRow({
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-        {status == "Disabled" ? (
-          <MenuItem onClick={onEnable} sx={{ color: "error.main" }}>
-            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-            Enable
-          </MenuItem>
-        ) : (
-          <MenuItem onClick={onDisable} sx={{ color: "error.main" }}>
-            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-            Disable
-          </MenuItem>
-        )}
         <MenuItem onClick={handleDeleteMenu} sx={{ color: "error.main" }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
@@ -140,9 +101,9 @@ export default function UserTableRow({
   );
 }
 
-UserTableRow.propTypes = {
+DriverTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+  driver: PropTypes.any,
   handleClick: PropTypes.func,
   isVerified: PropTypes.any,
   name: PropTypes.any,

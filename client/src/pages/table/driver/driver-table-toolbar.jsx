@@ -11,7 +11,7 @@ import Iconify from "../../../components/iconify/index";
 
 // ----------------------------------------------------------------------
 
-export default function UserTableToolbar({
+export default function DriverTableToolbar({
   numSelected,
   filterName,
   onFilterName,
@@ -37,7 +37,7 @@ export default function UserTableToolbar({
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search company..."
+          placeholder="Search driver..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify
@@ -67,7 +67,7 @@ export default function UserTableToolbar({
   );
 }
 
-UserTableToolbar.propTypes = {
+DriverTableToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,

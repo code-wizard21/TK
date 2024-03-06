@@ -16,7 +16,7 @@ import Iconify from "../../../components/iconify";
 import Http from "../../../utils/http";
 // ----------------------------------------------------------------------
 
-export default function WasherTableRow({
+export default function CompanyTableRow({
   selected,
   name,
   email,
@@ -140,7 +140,7 @@ export default function WasherTableRow({
   );
 }
 
-WasherTableRow.propTypes = {
+CompanyTableRow.propTypes = {
   avatarUrl: PropTypes.any,
   washer: PropTypes.any,
   handleClick: PropTypes.func,

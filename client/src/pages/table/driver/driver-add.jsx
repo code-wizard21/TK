@@ -2,8 +2,9 @@ import { Button, Dialog, DialogContent, DialogTitle, TextField, Typography } fro
 import { Stack } from "@mui/system";
 import { Controller, useForm } from "react-hook-form"
 import Http from "../../../utils/http";
+import { useEffect } from "react";
 
-const AddUserModal = ({open, setOpen, handleClose, onAdd}) => {
+const AddDriverModal = ({open, setOpen, handleClose, onAdd}) => {
   const {
     control,
     handleSubmit,
@@ -11,6 +12,9 @@ const AddUserModal = ({open, setOpen, handleClose, onAdd}) => {
     reset,
     register,
   } = useForm();
+  useEffect(() => {
+    reset();
+  }, [open]);
   const handleOk = (data) => {
     setOpen(false);
     Http.post("/api/user", {
@@ -18,7 +22,7 @@ const AddUserModal = ({open, setOpen, handleClose, onAdd}) => {
       password: data.password,
       phone: data.phonenumber,
       name: data.username,
-      role: "company",
+      role: "driver",
     })
       .then((data) => {
         onAdd();
@@ -36,11 +40,11 @@ const AddUserModal = ({open, setOpen, handleClose, onAdd}) => {
       },
     }}
   >
-    <DialogTitle>Add Company</DialogTitle>
+    <DialogTitle>Add Driver</DialogTitle>
 
     <DialogContent>
       <Typography sx={{ mb: 3 }}>
-        Please input the necessary informations for adding a company.
+        Please input the necessary informations for adding a driver.
       </Typography>
 
       <form onSubmit={handleSubmit(handleOk)} style={{}}>
@@ -142,4 +146,4 @@ const AddUserModal = ({open, setOpen, handleClose, onAdd}) => {
     </DialogContent>
   </Dialog>)
 }
-export default AddUserModal;
+export default AddDriverModal;

@@ -33,7 +33,7 @@ import Dialog from "@mui/material/Dialog";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import EditIcon from "@material-ui/icons/Edit";
 import PersonAddDisabledSharpIcon from "@material-ui/icons/PersonAddDisabledSharp";
-import UserPage from "../../table/company/user-view";
+import UserPage from "../../table/company/company-view";
 import { da } from "@faker-js/faker";
 // // ... Your rows data here
 

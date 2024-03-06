@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form"
 import Http from "../../../utils/http";
 import { useState } from "react";
 
-const UpdateUserModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, updateId}) => {
+const CompanyUserModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, updateId}) => {
   const {
     control,
     handleSubmit,
@@ -146,4 +146,4 @@ const UpdateUserModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, upda
       </DialogContent>
     </Dialog>)
 }
-export default UpdateUserModal;
+export default CompanyUserModal;

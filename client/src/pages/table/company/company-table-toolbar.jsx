@@ -11,7 +11,7 @@ import Iconify from "../../../components/iconify/index";
 
 // ----------------------------------------------------------------------
 
-export default function UserTableToolbar({
+export default function CompanyTableToolbar({
   numSelected,
   filterName,
   onFilterName,
@@ -67,7 +67,7 @@ export default function UserTableToolbar({
   );
 }
 
-UserTableToolbar.propTypes = {
+CompanyTableToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
