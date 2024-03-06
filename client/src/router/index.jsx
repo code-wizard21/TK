@@ -12,11 +12,12 @@ const WasherDashboard = lazy(() => import("../pages/washer"));
 const Login = lazy(() => import("../components/auth/Login"));
 const LandingPage = lazy(() => import("../pages/landing"));
 const Admin = lazy(() => import("../pages/admin"));
-const AdminRole = lazy(() => import("../pages/admin/role/admin-role"));
+
+const CompanyManage = lazy(() => import("../pages/admin/role/admin-role"));
 const DriverRole = lazy(() => import("../pages/admin/role/driver-role"));
 const WasherRole = lazy(() => import("../pages/admin/role/washer-role"));
 
-const RejectedList = lazy(() => import("../components/rejected"));
+const CompanyPage = lazy(() => import("../pages/table/view/user-view"));
 
 function RoutesDefined() {
   return (
@@ -43,7 +44,7 @@ function RoutesDefined() {
             <Route path="driver/dashboard" element={<DriverDashboard />} />
             <Route path="washer/dashboard" element={<WasherDashboard />} />
             <Route path="admin" element={<Admin />}>
-              <Route index element={<AdminRole />} />
+              <Route index element={<CompanyManage />} />
               <Route path="driver-role" element={<DriverRole />} />
               <Route path="washer-role" element={<WasherRole />} />
             </Route>

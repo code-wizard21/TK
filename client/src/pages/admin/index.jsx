@@ -1,43 +1,39 @@
-import React, { useState } from "react";
-import { Grid, Box } from "@mui/material";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Sidebar from "./sidebar";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
 
+import Box from "@mui/material/Box";
 
-function Admin() {
-  const [open, setOpen] = useState(true);
+import Nav from "./nav";
+import Main from "./main";
+import Header from "./header";
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+// ----------------------------------------------------------------------
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+export default function DashboardLayout({ children }) {
+  const [openNav, setOpenNav] = useState(false);
 
   return (
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8,
-      }}
-    >
-      <CssBaseline />
-      <Grid container>
-        <Grid item xs={12} sm={3}>
-          <Sidebar
-            handleDrawerOpen={handleDrawerOpen}
-            handleDrawerClose={handleDrawerClose}
-            draweropen={open}
-          />
-        </Grid>
-        <Grid item xs={12} sm={9}>
+    <>
+      <Header onOpenNav={() => setOpenNav(true)} />
+
+      <Box
+        sx={{
+          minHeight: 1,
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+        }}
+      >
+        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+
+        <Main>
           <Outlet />
-        </Grid>
-      </Grid>
-    </Box>
+        </Main>
+      </Box>
+    </>
   );
 }
-export default Admin;
+
+DashboardLayout.propTypes = {
+  children: PropTypes.node,
+};
