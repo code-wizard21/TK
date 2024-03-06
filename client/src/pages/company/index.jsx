@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/joy/Box";
-import Drawer from "@mui/joy/Drawer";
-import Button from "@mui/joy/Button";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
 import { Tab } from "@mui/material";
 import { Stack } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
