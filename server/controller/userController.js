@@ -43,6 +43,7 @@ exports.createUser = async (req, res) => {
     Password: hashedPassword,
     PhoneNumber: req.body.phone,
     Job: req.body.role,
+    State: "Enable",
   };
   // Save Tutorial in the database
   User.create(userlist)
@@ -83,7 +84,7 @@ exports.updateByUser = async (req, res) => {
 exports.updateByUserDisabled = async (req, res) => {
   console.log("121212121", req.body.id);
   const user = await User.update(
-    { State: "Disabled" },
+    { State: "Disable" },
     {
       where: {
         id: req.body.id,
@@ -95,7 +96,7 @@ exports.updateByUserDisabled = async (req, res) => {
 exports.updateByUserEnabled = async (req, res) => {
   console.log("121212121", req.body.id);
   const user = await User.update(
-    { State: "" },
+    { State: "Enable" },
     {
       where: {
         id: req.body.id,
