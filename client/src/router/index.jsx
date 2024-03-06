@@ -4,7 +4,7 @@ import { Route } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { lazy } from "react";
 import PageLayout from "../components/layout";
-
+import ThemeProvider from "../../src/theme";
 const CompanyDashboard = lazy(() => import("../pages/company"));
 const DriverDashboard = lazy(() => import("../pages/driver"));
 const WasherDashboard = lazy(() => import("../pages/washer"));
@@ -21,37 +21,39 @@ const CompanyPage = lazy(() => import("../pages/table/view/user-view"));
 
 function RoutesDefined() {
   return (
-    <Router>
-      <Suspense
-        fallback={
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-            }}
-          >
-            <CircularProgress size={70} />
-          </div>
-        }
-      >
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/" element={<PageLayout />}>
-            <Route path="company/dashboard" element={<CompanyDashboard />} />
-            <Route path="driver/dashboard" element={<DriverDashboard />} />
-            <Route path="washer/dashboard" element={<WasherDashboard />} />
-            <Route path="admin" element={<Admin />}>
-              <Route index element={<CompanyManage />} />
-              <Route path="driver-role" element={<DriverRole />} />
-              <Route path="washer-role" element={<WasherRole />} />
+    <ThemeProvider>
+      <Router>
+        <Suspense
+          fallback={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
+              <CircularProgress size={70} />
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<PageLayout />}>
+              <Route path="company/dashboard" element={<CompanyDashboard />} />
+              <Route path="driver/dashboard" element={<DriverDashboard />} />
+              <Route path="washer/dashboard" element={<WasherDashboard />} />
+              <Route path="admin" element={<Admin />}>
+                <Route index element={<CompanyManage />} />
+                <Route path="driver-role" element={<DriverRole />} />
+                <Route path="washer-role" element={<WasherRole />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </Suspense>
-    </Router>
+          </Routes>
+        </Suspense>
+      </Router>
+    </ThemeProvider>
   );
 }
 export default RoutesDefined;
