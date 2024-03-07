@@ -17,9 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/index.html'));
-})
 
 const Sequelize = require("sequelize");
 const {
@@ -33,6 +30,9 @@ const {
 } = require("./config.js");
 
 app.use("/api", indexRouter);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/index.html'));
+})
 const sequelize = new Sequelize(database, user, password, {
   host,
   port,
