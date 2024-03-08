@@ -139,7 +139,7 @@ export default function LabTabs() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <RequestedList data={newOrders} role={"driver"} />
+            <RequestedList orders={newOrders} setOrders={setNewOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="2">
             <RejectedList role={"driver"} />

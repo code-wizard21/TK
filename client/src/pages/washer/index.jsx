@@ -128,8 +128,8 @@ export default function LabTabs() {
             <RequestedList
               flag={flag}
               setFlag={setFlag}
-              data={requestedOrders}
-              setData={setRequestedOrders}
+              orders={requestedOrders}
+              setOrders={setRequestedOrders}
               auth={auth}
               role={"washer"}
             />
