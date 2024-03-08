@@ -20,7 +20,7 @@ const FullHeightContainer = styled(Container)({
   alignItems: 'center',
   textAlign: 'center',
   padding: '0 24px',
-  background: '#e0f1ae',
+  // background: '#e0f1ae',
   // background: 'radial-gradient(circle at center top, #ffffff, #0066ff)',
 });
 
