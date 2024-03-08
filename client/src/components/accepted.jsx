@@ -3,199 +3,21 @@ import {
   Table,
   TableBody,
   TableContainer,
-  TableHead,
-  TableRow,
   Paper,
-  IconButton,
-  Collapse,
-  Box,
   useMediaQuery,
   useTheme,
   TablePagination,
 } from "@mui/material";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import CheckIcon from "@mui/icons-material/Check";
-import { styled } from "@mui/material/styles";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import Http from "../utils/http";
-import moment from 'moment';
 import OrderTableHead from "../pages/table/order/order-table-head";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
 import OrderTableRow from "../pages/table/order/order-table-row";
 import TableNoData from "../pages/table/order/table-no-data";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "white",
-    color: "black",
-    fontWeight: "bold",
-    fontSize: "18px",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 2,
-  },
-}));
-
-function CollapsibleRow({ row, isMobile, index, role, setFlag, flag, props }) {
-  const [open, setOpen] = useState(false);
-  const onWashed = (id) => {
-    Http.post("/api/order/wash", { id })
-      .then((data) => {
-        props.setFlag(!props.flag);
-        props.setData(data.data);
-      })
-      .catch((err) => {});
-  };
-  return (
-    <>
-      <StyledTableRow
-        sx={{ "& > *": { borderBottom: "unset" } }}
-        onClick={() => setOpen(!open)}
-      >
-        {isMobile && (
-          <TableCell>
-            <IconButton size="small">
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          </TableCell>
-        )}
-        <TableCell component="th" scope="row">
-          <div className="accept">
-            <span> {++index}</span>
-          </div>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          <div className="accept">
-            <span> {row.LeadNumber + "-" + row.PupNumber}</span>
-          </div>
-        </TableCell>
-
-        {!isMobile && (
-          <>
-            {(role=='driver' || role=='washer') && <TableCell>{row.Company}</TableCell>}
-            <TableCell>{row.Description}</TableCell>
-            <TableCell component="th" scope="row">
-              <div className="accept">
-                <span> {row.Pickup}</span>
-              </div>
-            </TableCell>
-            <TableCell component="th" scope="row">
-              <div className="accept">
-                <span> {row.Drop}</span>
-              </div>
-            </TableCell>
-            <TableCell>
-              {/* <div className="date"> */}
-              <span> {moment(row.Date).format('YYYY-MM-DD')}</span>
-              {/* </div> */}
-            </TableCell>
-            {
-                role=='washer' && 
-                    <TableCell>
-                        <IconButton
-                            color="secondary"
-                            aria-label="add an alarm"
-                            onClick={() => onWashed(row.id)}
-                        >
-                            <CheckIcon />
-                        </IconButton>
-                    </TableCell>
-            }
-          </>
-        )}
-      </StyledTableRow>
-      {isMobile && (
-        <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Table size="small" aria-label="details">
-                  <TableBody>
-                    {role=='company' &&
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        Date
-                      </TableCell>
-                      <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
-                    </TableRow>}
-                    {(role=='driver' || role=='washer') &&
-                    <>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                Company
-                            </TableCell>
-                            <TableCell align="right">{row.Company}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                Description
-                            </TableCell>
-                            <TableCell align="right">{row.Description}</TableCell>
-                        </TableRow>
-                    </>
-                    }
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        Pickup
-                      </TableCell>
-                      <TableCell align="right">{row.Pickup}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        Drop
-                      </TableCell>
-                      <TableCell align="right">{row.Drop}</TableCell>
-                    </TableRow>
-                    {
-                        role=='driver' && 
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    Date
-                                </TableCell>
-                                <TableCell align="right">{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
-                            </TableRow>
-                    }
-                    {
-                        role=='washer' &&
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    Action
-                                </TableCell>
-
-                                <TableCell align="right">
-                                    <IconButton color="secondary" aria-label="add an alarm" onClick={() => onWashed(row.id)}>
-                                        <CheckIcon />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                    }
-                  </TableBody>
-                </Table>
-              </Box>
-            </Collapse>
-          </TableCell>
-        </TableRow>
-      )}
-    </>
-  );
-}
 export default function AcceptedList(props) {
   const theme = useTheme();
-  const { role } = props;
+  const { role, orders, getOrders } = props;
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [rejected, setRejected] = useState([]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -203,10 +25,6 @@ export default function AcceptedList(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Name");
   const [filterName, setFilterName] = useState("");
-
-  const [updateId, setUpdateId] = useState("");
-
-  const [updateflag, setUpdateFlag] = useState(false);
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -235,7 +53,7 @@ export default function AcceptedList(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rejected.map((n) => n.name);
+      const newSelecteds = orders.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -257,7 +75,7 @@ export default function AcceptedList(props) {
   };
 
   const dataFiltered = applyFilter({
-    inputData: props.data,
+    inputData: orders,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -271,7 +89,7 @@ export default function AcceptedList(props) {
         <OrderTableHead
           order={order}
           orderBy={orderBy}
-          rowCount={rejected.length}
+          rowCount={orders.length}
           numSelected={selected.length}
           onRequestSort={handleSort}
           onSelectAllClick={handleSelectAllClick}
@@ -299,9 +117,6 @@ export default function AcceptedList(props) {
                 description={row.Description}
                 date={row.Date}
                 getOrders={props.getOrders}
-                setUpdateFlag={setUpdateFlag}
-                setUpdateId={setUpdateId}
-                setRejected={setRejected}
                 isMobile={isMobile}
                 role={role}
                 tab={'accepted'}
@@ -312,7 +127,7 @@ export default function AcceptedList(props) {
 
           <TableEmptyRows
             height={77}
-            emptyRows={emptyRows(page, rowsPerPage, rejected.length)}
+            emptyRows={emptyRows(page, rowsPerPage, orders.length)}
           />
 
           {notFound && <TableNoData query={filterName} />}
@@ -322,7 +137,7 @@ export default function AcceptedList(props) {
     <TablePagination
       page={page}
       component="div"
-      count={props.data.length}
+      count={orders.length}
       rowsPerPage={rowsPerPage}
       onPageChange={handleChangePage}
       rowsPerPageOptions={[5, 10, 25]}

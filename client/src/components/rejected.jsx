@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,7 +8,6 @@ import {
   useTheme,
   TablePagination,
 } from "@mui/material";
-import Http from "../../src/utils/http";
 import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
 import OrderTableHead from "../pages/table/order/order-table-head";
 import OrderTableRow from "../pages/table/order/order-table-row";
@@ -27,10 +26,6 @@ export default function RejectedList(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Name");
   const [filterName, setFilterName] = useState("");
-
-  const [updateId, setUpdateId] = useState("");
-
-  const [updateflag, setUpdateFlag] = useState(false);
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -122,8 +117,6 @@ export default function RejectedList(props) {
                 description={row.Description}
                 date={row.Date}
                 getOrders={getOrders}
-                setUpdateFlag={setUpdateFlag}
-                setUpdateId={setUpdateId}
                 isMobile={isMobile}
                 role={role}
                 tab={'rejected'}

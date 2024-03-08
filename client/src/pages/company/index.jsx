@@ -153,12 +153,12 @@ export default function DrawerAnchor() {
               getOrders={getOrders} role={"company"} />
           </TabPanel>
           <TabPanel value="3">
-            <AcceptedList data={acceptedOrders} setData={setAcceptedOrders} role={"company"} />
+            <AcceptedList orders={acceptedOrders}
+            getOrders={getOrders} role={"company"} />
           </TabPanel>
           <TabPanel value="4">
-            <CompletedList data={washedOrders} 
-              setData={setWashedOrders}
-              auth={auth}/>
+            <CompletedList orders={washedOrders} 
+              getOrders={getOrders} role={"company"} />
           </TabPanel>
         </TabContext>
 

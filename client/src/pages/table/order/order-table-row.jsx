@@ -91,6 +91,17 @@ export default function OrderTableRow({
       });
   };
 
+  const onWashed = () => {
+    Http.post("/api/order/wash", { id })
+      .then((data) => {
+        getOrders();
+        toast.success(" Successfully marked as washed.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {});
+  };
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -150,6 +161,7 @@ export default function OrderTableRow({
         {
         (
           (role=="washer" && tab=="requested") ||
+          (role=="washer" && tab=="accepted") ||
           ((role=="driver" || role=="company") && tab=="rejected")
         )
         && <TableCell align="right">
@@ -176,6 +188,23 @@ export default function OrderTableRow({
           <MenuItem onClick={handleRejectMenu} sx={{ color: "error.main" }}>
             <Iconify icon="fluent:text-change-reject-24-filled" sx={{ mr: 2 }} />
             Reject
+          </MenuItem>
+        </Popover>
+      }
+      {role=="washer" && tab=="accepted" && 
+        <Popover
+          open={!!open}
+          anchorEl={open}
+          onClose={handleCloseMenu}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          PaperProps={{
+            sx: { width: 140 },
+          }}
+        >
+          <MenuItem onClick={onWashed}>
+            <Iconify icon="fluent-mdl2:accept-medium" sx={{ mr: 2 }} />
+            Complete
           </MenuItem>
         </Popover>
       }

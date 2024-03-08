@@ -136,19 +136,15 @@ export default function LabTabs() {
           </TabPanel>
           <TabPanel value="2">
             <AcceptedList
-              data={acceptedOrders}
-              setData={setAcceptedOrders}
-              flag={flag}
-              setFlag={setFlag}
-              auth={auth}
+              orders={acceptedOrders}
+              getOrders={getOrders}
               role={"washer"}
             />
           </TabPanel>
           <TabPanel value="3">
             <CompletedList
-              data={washedOrders}
-              setData={setWashedOrders}
-              auth={auth}
+              orders={washedOrders}
+              getOrders={getOrders} role={"washer"}
             />
           </TabPanel>
         </TabContext>
