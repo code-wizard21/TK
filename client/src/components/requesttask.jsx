@@ -101,6 +101,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
         overflow: "auto", // enable scroll if content overflows
         height: "100vh", // occupy full viewport height
         boxSizing: "border-box", // ensure padding and border are included in element's total height and width
+        width: 'min-content'
       }}
       role="presentation"
     >
