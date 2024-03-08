@@ -15,6 +15,7 @@ import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
 import RejectedList from "../../components/rejected";
+import Iconify from "../../components/iconify";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -110,12 +111,12 @@ export default function LabTabs() {
 
           <Button
             variant="contained"
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={() => toggleDrawer(true)}
-            style={buttonStyle}
             sx={{ marginRight: 2}}
-            size="small"
           >
-            <AddIcon />
+            New Request
           </Button>
         </Stack>
         <TabContext value={value}>

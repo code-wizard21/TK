@@ -17,6 +17,7 @@ import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Iconify from "./iconify";
 
 export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
   const auth = useSelector((state) => state.auth);
@@ -111,7 +112,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
           variant="h4"
           align="center"
           style={{
-            color: "#3f51b5",
+            // color: "#3f51b5",
             fontWeight: 600,
             margin: "20px 0",
             textTransform: "uppercase",
@@ -263,19 +264,21 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
 
         <Button
           variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="fa:send" />}
           onClick={validate}
           style={{
-            backgroundColor: "#FF7F50",
             color: "white",
             textTransform: "uppercase",
             padding: "10px 20px",
             fontSize: "0.875rem",
             boxShadow: "0px 3px 5px 2px rgba(63,81,181, .3)",
             marginBottom: "10px",
+            width: '100%'
           }}
           size="small"
         >
-          Request
+          Send
         </Button>
       </Container>
     </Box>
