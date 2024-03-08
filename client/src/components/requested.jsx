@@ -373,8 +373,8 @@ export default function RequestedList(props) {
           onRequestSort={handleSort}
           onSelectAllClick={handleSelectAllClick}
           headLabel={[
-            { id: "LeadNumber", label: "LeadNumber" },
-            { id: "PupNumber", label: "PupNumber" },
+            { id: "LeadNumber", label: "Lead" },
+            { id: "PupNumber", label: "Pup" },
             { id: "Company", label: "Company" },
             { id: "Description", label: "Description" },
             { id: "Pickup", label: "Pickup" },

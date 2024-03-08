@@ -17,6 +17,7 @@ import {
   Stack,
   Typography,
   Unstable_Grid2 as Grid,
+  TablePagination,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -43,18 +44,6 @@ import OrderTableRow from "../pages/table/order/order-table-row";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import TableNoData from "../pages/table/order/table-no-data";
 // ... Your rows data here
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "white",
-    color: "black",
-    fontWeight: "bold",
-    fontSize: "18px",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -297,7 +286,7 @@ export default function RejectedList(props) {
   const {role} = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [rejected, setRejected] = useState([]);
+  const [orders, setRejected] = useState([]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -337,7 +326,7 @@ export default function RejectedList(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rejected.map((n) => n.name);
+      const newSelecteds = orders.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -359,7 +348,7 @@ export default function RejectedList(props) {
   };
 
   const dataFiltered = applyFilter({
-    inputData: rejected,
+    inputData: orders,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -378,18 +367,19 @@ export default function RejectedList(props) {
     getRejected();
   }, []);
   return (
+    <>
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <OrderTableHead
           order={order}
           orderBy={orderBy}
-          rowCount={rejected.length}
+          rowCount={orders.length}
           numSelected={selected.length}
           onRequestSort={handleSort}
           onSelectAllClick={handleSelectAllClick}
           headLabel={[
-            { id: "LeadNumber", label: "LeadNumber" },
-            { id: "PupNumber", label: "PupNumber" },
+            { id: "LeadNumber", label: "Lead" },
+            { id: "PupNumber", label: "Pup" },
             { id: "Company", label: "Company" },
             { id: "Description", label: "Description" },
             { id: "Pickup", label: "Pickup" },
@@ -422,12 +412,22 @@ export default function RejectedList(props) {
 
           <TableEmptyRows
             height={77}
-            emptyRows={emptyRows(page, rowsPerPage, rejected.length)}
+            emptyRows={emptyRows(page, rowsPerPage, orders.length)}
           />
 
           {notFound && <TableNoData query={filterName} />}
         </TableBody>
       </Table>
     </TableContainer>
+    <TablePagination
+      page={page}
+      component="div"
+      count={orders.length}
+      rowsPerPage={rowsPerPage}
+      onPageChange={handleChangePage}
+      rowsPerPageOptions={[5, 10, 25]}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+    </>
   );
 }

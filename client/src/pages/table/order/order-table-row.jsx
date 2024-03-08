@@ -61,15 +61,7 @@ export default function OrderTableRow({
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
-
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            {/* <Avatar alt={name} src={avatarUrl} /> */}
-            <Typography variant="subtitle2" noWrap>
-              {lead}
-            </Typography>
-          </Stack>
-        </TableCell>
+        <TableCell>{lead}</TableCell>
         <TableCell>{pup}</TableCell>
         <TableCell>{company}</TableCell>
         <TableCell>{description}</TableCell>
