@@ -15,6 +15,9 @@ import Label from "../../../components/label";
 import Iconify from "../../../components/iconify";
 import Http from "../../../utils/http";
 import moment from "moment";
+import { toast } from "react-toastify";
+import { Button, Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
 // ----------------------------------------------------------------------
 
 export default function OrderTableRow({
@@ -30,10 +33,18 @@ export default function OrderTableRow({
   description,
   id,
   key,
-  setUpdateFlag,
-  setUpdateId,
+  role,
+  tab,
 }) {
   const [open, setOpen] = useState(null);
+  const [openRejecter, setOpenRejecter] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    register,
+  } = useForm();
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -42,18 +53,41 @@ export default function OrderTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
-  const handleUpdateMenu = () => {
-    handleCloseMenu();
-    setUpdateFlag(true);
-    setUpdateId(id);
+
+  const handleCloseRejector = () => {
+    setOpenRejecter(false);
   };
-  const handleDeleteMenu = () => {
+  const handleAcceptMenu = () => {
+    // handleCloseMenu();
+    // setUpdateFlag(true);
+    // setUpdateId(id);
+    
     handleCloseMenu();
-    Http.delete(`/api/order/${id}`)
+    Http.post(`/api/order/accept`, {id})
       .then((data) => {
+        toast.success(" Request successfully accepted.", {
+          hideProgressBar: true,
+        });
         getOrders();
       })
       .catch((err) => {});
+  };
+  const handleRejectMenu = () => {
+    handleCloseMenu();
+    setOpenRejecter(true);
+  };
+  const handleOkToReject = (data) => {
+    setOpenRejecter(false);
+    Http.post("/api/order/reject", { id, ...data })
+      .then((data) => {
+        getOrders();
+        toast.success(" Request successfully rejected.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
@@ -68,32 +102,90 @@ export default function OrderTableRow({
         <TableCell>{pickup}</TableCell>
         <TableCell>{drop}</TableCell>
         <TableCell>{moment(date).format('YYYY-MM-DD')}</TableCell>
-        <TableCell align="right">
+        {role=="washer" && tab=="requested" && <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
-        </TableCell>
+        </TableCell>}
       </TableRow>
-
-      <Popover
-        open={!!open}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      {role=="washer" && tab=="requested" && 
+        <Popover
+          open={!!open}
+          anchorEl={open}
+          onClose={handleCloseMenu}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          PaperProps={{
+            sx: { width: 140 },
+          }}
+        >
+          <MenuItem onClick={handleAcceptMenu}>
+            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+            Accept
+          </MenuItem>
+          <MenuItem onClick={handleRejectMenu} sx={{ color: "error.main" }}>
+            <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+            Reject
+          </MenuItem>
+        </Popover>
+      }
+      <Dialog
+        open={openRejecter}
+        onClose={handleCloseRejector}
         PaperProps={{
-          sx: { width: 140 },
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
         }}
       >
-        <MenuItem onClick={handleUpdateMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleDeleteMenu} sx={{ color: "error.main" }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+        <DialogTitle>Reject</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>
+            Please input the reason to reject.
+          </Typography>
+
+          <form onSubmit={handleSubmit(handleOkToReject)} style={{}}>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Description is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Description"
+                  variant="outlined"
+                  style={{ marginBottom: "8px", width: "100%" }}
+                  error={!!errors.description}
+                  helperText={errors.description ? errors.description.message : ""}
+                />
+              )}
+            />
+
+            <Stack
+              direction={"row"}
+              style={{
+                justifyContent: "right",
+                gap: "8px",
+              }}
+            >
+              <Button variant="outlined" onClick={handleCloseRejector}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ width: "100px" }}
+              >
+                Reject
+              </Button>
+            </Stack>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

@@ -11,7 +11,7 @@ export const visuallyHidden = {
 };
 
 export function emptyRows(page, rowsPerPage, arrayLength) {
-  return Math.max(0, (1 + page) * rowsPerPage - arrayLength);
+  return 0;//Math.max(0, (1 + page) * rowsPerPage - arrayLength);
 }
 
 function descendingComparator(a, b, orderBy) {

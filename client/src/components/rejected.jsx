@@ -405,6 +405,8 @@ export default function RejectedList(props) {
                 setUpdateId={setUpdateId}
                 setRejected={setRejected}
                 isMobile={isMobile}
+                role={role}
+                tab={'rejected'}
                 selected={selected.indexOf(row.id) !== -1}
                 handleClick={(event) => handleClick(event, row.id)}
               />

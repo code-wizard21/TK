@@ -58,7 +58,6 @@ exports.getOrderByStatus = async (req, res) => {
   };
   if (company) qwhere.Company = company;
 
-  console.log(qwhere);
   const orders = await Order.findAll({
     where: qwhere,
   });

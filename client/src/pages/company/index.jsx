@@ -137,7 +137,8 @@ export default function DrawerAnchor() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <RequestedList orders={requestedOrders} setOrders={setRequestedOrders} auth={auth} role={"company"} />
+            <RequestedList orders={requestedOrders} 
+              getOrders={getOrders} auth={auth} role={"company"} />
           </TabPanel>
           <TabPanel value="2">
             <RejectedList role={"company"} />

@@ -30,7 +30,7 @@ export default function LabTabs() {
     }
   }, [auth.isLoggedI, navigate]);
   const theme = useTheme();
-  useEffect(() => {
+  const getOrders = () => {
     Http.get("/api/order/bystatus/requested")
       .then((data) => {
         setRequestedOrders(data.data);
@@ -53,6 +53,9 @@ export default function LabTabs() {
       .catch((err) => {
         console.log(err);
       });
+  }
+  useEffect(() => {
+    getOrders();
   }, [flag, auth.user.name]);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -129,7 +132,7 @@ export default function LabTabs() {
               flag={flag}
               setFlag={setFlag}
               orders={requestedOrders}
-              setOrders={setRequestedOrders}
+              getOrders={getOrders}
               auth={auth}
               role={"washer"}
             />

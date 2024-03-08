@@ -255,6 +255,8 @@ export default function CompletedList(props) {
                 setUpdateId={setUpdateId}
                 setRejected={setRejected}
                 isMobile={isMobile}
+                role={role}
+                tab={'washed'}
                 selected={selected.indexOf(row.id) !== -1}
                 handleClick={(event) => handleClick(event, row.id)}
               />

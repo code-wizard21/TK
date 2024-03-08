@@ -25,8 +25,7 @@ export default function LabTabs() {
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    getList();
-    getAllRequst();
+    getOrders();
   }, []);
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export default function LabTabs() {
     }
   }, []);
 
-  const getAllRequst = () => {
+  const getOrders = () => {
     Http.get("/api/order/bystatus/requested", { name: "" })
       .then((data) => {
         setNewOrders(data.data);
@@ -43,9 +42,6 @@ export default function LabTabs() {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  const getList = () => {
     Http.get("/api/order/bystatus/accepted")
       .then((data) => {
         setAcceptedOrders(data.data);
@@ -139,7 +135,8 @@ export default function LabTabs() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <RequestedList orders={newOrders} setOrders={setNewOrders} role={"driver"} />
+            <RequestedList orders={newOrders} 
+              getOrders={getOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="2">
             <RejectedList role={"driver"} />
@@ -154,7 +151,7 @@ export default function LabTabs() {
           </TabPanel>
         </TabContext>
         <Drawer open={open} onClose={() => toggleDrawer(false)} >
-          <RequestTask toggleDrawer={toggleDrawer} refreshList={getAllRequst} isDriver />
+          <RequestTask toggleDrawer={toggleDrawer} refreshList={getOrders} isDriver />
         </Drawer>
       </Container>
     </Box>
