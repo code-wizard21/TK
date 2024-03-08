@@ -37,6 +37,11 @@ import Http from "../../src/utils/http";
 import { toast } from "react-toastify";
 import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
 import moment from 'moment';
+import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
+import OrderTableHead from "../pages/table/order/order-table-head";
+import OrderTableRow from "../pages/table/order/order-table-row";
+import TableEmptyRows from "../pages/table/order/table-empty-rows";
+import TableNoData from "../pages/table/order/table-no-data";
 // ... Your rows data here
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -293,7 +298,74 @@ export default function RejectedList(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [rejected, setRejected] = useState([]);
-  useEffect(() => {
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [order, setOrder] = useState("asc");
+  const [selected, setSelected] = useState([]);
+  const [orderBy, setOrderBy] = useState("Name");
+  const [filterName, setFilterName] = useState("");
+
+  const [updateId, setUpdateId] = useState("");
+
+  const [updateflag, setUpdateFlag] = useState(false);
+
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+  const handleSort = (event, id) => {
+    const isAsc = orderBy === id && order === "asc";
+    if (id !== "") {
+      setOrder(isAsc ? "desc" : "asc");
+      setOrderBy(id);
+    }
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = rejected.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const handleFilterByName = (event) => {
+    setPage(0);
+    setFilterName(event.target.value);
+  };
+
+  const dataFiltered = applyFilter({
+    inputData: rejected,
+    comparator: getComparator(order, orderBy),
+    filterName,
+  });
+
+  const notFound = !dataFiltered.length && !!filterName;
+  const getRejected = () => {
     Http.get("/api/order/bystatus/rejected")
       .then((data) => {
         setRejected(data.data);
@@ -301,38 +373,59 @@ export default function RejectedList(props) {
       .catch((err) => {
         console.log(err);
       });
+  }
+  useEffect(() => {
+    getRejected();
   }, []);
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            {isMobile && <TableCell />}
-            <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell>Truck Number</StyledTableCell>
-            {role=='driver' && <StyledTableCell>Company</StyledTableCell>}
-            {!isMobile && (
-              <>
-                <StyledTableCell>Description</StyledTableCell>
-                <StyledTableCell>Reason</StyledTableCell>
-                <StyledTableCell>Date</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
-              </>
-            )}
-          </TableRow>
-        </TableHead>
+        <OrderTableHead
+          order={order}
+          orderBy={orderBy}
+          rowCount={rejected.length}
+          numSelected={selected.length}
+          onRequestSort={handleSort}
+          onSelectAllClick={handleSelectAllClick}
+          headLabel={[
+            { id: "LeadNumber", label: "LeadNumber" },
+            { id: "PupNumber", label: "PupNumber" },
+            { id: "Company", label: "Company" },
+            { id: "Description", label: "Description" },
+            { id: "Pickup", label: "Pickup" },
+            { id: "Drop", label: "Drop" },
+            { id: "Date", label: "Date" },
+            { id: "" },
+          ]}
+        />
         <TableBody>
-          {rejected.map((row, index) => (
-            <CollapsibleRow
-              index={index}
-              props={props}
-              role={role}
-              key={row.id}
-              row={row}
-              setRejected={setRejected}
-              isMobile={isMobile}
-            />
-          ))}
+          {dataFiltered
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => (
+              <OrderTableRow
+                key={row.id}
+                id={row.id}
+                lead={row.LeadNumber}
+                pup={row.PupNumber}
+                company={row.Company}
+                description={row.Description}
+                date={row.Date}
+                getOrders={getRejected}
+                setUpdateFlag={setUpdateFlag}
+                setUpdateId={setUpdateId}
+                setRejected={setRejected}
+                isMobile={isMobile}
+                selected={selected.indexOf(row.id) !== -1}
+                handleClick={(event) => handleClick(event, row.id)}
+              />
+            ))}
+
+          <TableEmptyRows
+            height={77}
+            emptyRows={emptyRows(page, rowsPerPage, rejected.length)}
+          />
+
+          {notFound && <TableNoData query={filterName} />}
         </TableBody>
       </Table>
     </TableContainer>
