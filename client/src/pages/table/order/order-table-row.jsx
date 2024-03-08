@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import dayjs from "dayjs";
 import Popover from "@mui/material/Popover";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
@@ -11,13 +11,16 @@ import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
-import Label from "../../../components/label";
 import Iconify from "../../../components/iconify";
 import Http from "../../../utils/http";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { Button, Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Button, Dialog, DialogContent, DialogTitle, Unstable_Grid2 as Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 // ----------------------------------------------------------------------
 
 export default function OrderTableRow({
@@ -32,12 +35,13 @@ export default function OrderTableRow({
   date,
   description,
   id,
-  key,
   role,
   tab,
 }) {
   const [open, setOpen] = useState(null);
+  const [dateNew, setDateNew] = useState(dayjs());
   const [openRejecter, setOpenRejecter] = useState(false);
+  const [openResender, setOpenResender] = useState(false);
   const {
     control,
     handleSubmit,
@@ -45,6 +49,47 @@ export default function OrderTableRow({
     reset,
     register,
   } = useForm();
+  const {
+    control1,
+    handleSubmit1,
+    formState: { errors1 },
+    reset1,
+    register1,
+  } = useForm();
+  const onResend = () => {
+    setOpenResender(true);
+    reset();
+  };
+  const onCancelOrder = (id) => {
+    Http.post("/api/order/cancel", { id })
+      .then((data) => {
+        getOrders();
+
+        toast.success("Successfully cancelled.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleCloseResend = () => {
+    setOpenResender(false);
+  };
+  const handleOkResend = (data) => {
+    setOpenResender(false);
+    Http.put("/api/order/bystatus/requested", { id, date: dateNew })
+      .then((data) => {
+        getOrders();
+
+        toast.success(" Request successfully resent.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -91,7 +136,7 @@ export default function OrderTableRow({
   };
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} key={id}>
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
@@ -102,7 +147,12 @@ export default function OrderTableRow({
         <TableCell>{pickup}</TableCell>
         <TableCell>{drop}</TableCell>
         <TableCell>{moment(date).format('YYYY-MM-DD')}</TableCell>
-        {role=="washer" && tab=="requested" && <TableCell align="right">
+        {
+        (
+          (role=="washer" && tab=="requested") ||
+          ((role=="driver" || role=="company") && tab=="rejected")
+        )
+        && <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
@@ -120,12 +170,33 @@ export default function OrderTableRow({
           }}
         >
           <MenuItem onClick={handleAcceptMenu}>
-            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+            <Iconify icon="fluent:text-change-accept-24-filled" sx={{ mr: 2 }} />
             Accept
           </MenuItem>
           <MenuItem onClick={handleRejectMenu} sx={{ color: "error.main" }}>
-            <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+            <Iconify icon="fluent:text-change-reject-24-filled" sx={{ mr: 2 }} />
             Reject
+          </MenuItem>
+        </Popover>
+      }
+      {(role=="driver" || role=="company") && tab=="rejected" && 
+        <Popover
+          open={!!open}
+          anchorEl={open}
+          onClose={handleCloseMenu}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          PaperProps={{
+            sx: { width: 140 },
+          }}
+        >
+          <MenuItem onClick={onCancelOrder}>
+            <Iconify icon="mdi:cancel" sx={{ mr: 2 }} />
+            Cancel
+          </MenuItem>
+          <MenuItem onClick={onResend} sx={{ color: "error.main" }}>
+            <Iconify icon="mdi:email-resend-outline" sx={{ mr: 2 }} />
+            Resend
           </MenuItem>
         </Popover>
       }
@@ -181,6 +252,63 @@ export default function OrderTableRow({
                 style={{ width: "100px" }}
               >
                 Reject
+              </Button>
+            </Stack>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={openResender}
+        onClose={handleCloseResend}
+        PaperProps={{
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
+        }}
+      >
+        <DialogTitle>Request Again</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>Please select new date.</Typography>
+
+          <form onSubmit={handleSubmit(handleOkResend)} style={{}}>
+            <Controller
+              name="date"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Grid xs={12} md={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoItem label="">
+                      <DateCalendar
+                        value={dateNew}
+                        onChange={(newValue) => setDateNew(dayjs(newValue))}
+                        sx={{ width: "270px" }}
+                      />
+                    </DemoItem>
+                  </LocalizationProvider>
+                </Grid>
+              )}
+            />
+
+            <Stack
+              direction={"row"}
+              style={{
+                justifyContent: "right",
+                gap: "8px",
+              }}
+            >
+              <Button variant="outlined" onClick={handleCloseResend}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ width: "100px" }}
+              >
+                Request
               </Button>
             </Stack>
           </form>

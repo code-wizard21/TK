@@ -29,6 +29,7 @@ export default function DrawerAnchor() {
   const [requestedOrders, setRequestedOrders] = useState([]);
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [washedOrders, setWashedOrders] = useState([]);
+  const [rejectedOrders, setRejectedOrders] = useState([]);
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
@@ -55,6 +56,13 @@ export default function DrawerAnchor() {
     Http.get("/api/order/bystatus/washed", { name: auth.user.name })
       .then((data) => {
         setWashedOrders(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    Http.get("/api/order/bystatus/rejected", { name: auth.user.name })
+      .then((data) => {
+        setRejectedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -138,10 +146,11 @@ export default function DrawerAnchor() {
           </Box>
           <TabPanel value="1">
             <RequestedList orders={requestedOrders} 
-              getOrders={getOrders} auth={auth} role={"company"} />
+              getOrders={getOrders} role={"company"} />
           </TabPanel>
           <TabPanel value="2">
-            <RejectedList role={"company"} />
+            <RejectedList orders={rejectedOrders} 
+              getOrders={getOrders} role={"company"} />
           </TabPanel>
           <TabPanel value="3">
             <AcceptedList data={acceptedOrders} setData={setAcceptedOrders} role={"company"} />

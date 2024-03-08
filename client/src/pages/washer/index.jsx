@@ -129,11 +129,8 @@ export default function LabTabs() {
           </Box>
           <TabPanel value="1">
             <RequestedList
-              flag={flag}
-              setFlag={setFlag}
               orders={requestedOrders}
               getOrders={getOrders}
-              auth={auth}
               role={"washer"}
             />
           </TabPanel>

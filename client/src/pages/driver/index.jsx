@@ -21,6 +21,7 @@ export default function LabTabs() {
   const [newOrders, setNewOrders] = useState([]);
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [washedOrders, setWashedOrders] = useState([]);
+  const [rejectedOrders, setRejectedOrders] = useState([]);
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
@@ -52,6 +53,13 @@ export default function LabTabs() {
     Http.get("/api/order/bystatus/washed")
       .then((data) => {
         setWashedOrders(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    Http.get("/api/order/bystatus/rejected", { name: auth.user.name })
+      .then((data) => {
+        setRejectedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -139,7 +147,8 @@ export default function LabTabs() {
               getOrders={getOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="2">
-            <RejectedList role={"driver"} />
+            <RejectedList orders={rejectedOrders} 
+              getOrders={getOrders} role={"driver"} />
           </TabPanel>
           <TabPanel value="3">
             <AcceptedList data={acceptedOrders} setData={setAcceptedOrders} role={"driver"} />
