@@ -7,6 +7,7 @@ import {
   useMediaQuery,
   useTheme,
   TablePagination,
+  Typography,
 } from "@mui/material";
 import OrderTableHead from "../pages/table/order/order-table-head";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
@@ -15,6 +16,7 @@ import OrderTableRow from "../pages/table/order/order-table-row";
 import TableNoData from "../pages/table/order/table-no-data";
 import Http from "../utils/http";
 import { useSelector } from "react-redux";
+import { Container, Stack } from "@mui/system";
 
 export default function AcceptedList(props) {
   const theme = useTheme();
@@ -101,65 +103,76 @@ export default function AcceptedList(props) {
 
   return (
     <>
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <OrderTableHead
-          order={order}
-          orderBy={orderBy}
-          rowCount={orders.length}
-          numSelected={selected.length}
-          onRequestSort={handleSort}
-          onSelectAllClick={handleSelectAllClick}
-          headLabel={[
-            { id: "LeadNumber", label: "Lead" },
-            { id: "PupNumber", label: "Pup" },
-            { id: "Company", label: "Company" },
-            { id: "Description", label: "Description" },
-            { id: "Pickup", label: "Pickup" },
-            { id: "Drop", label: "Drop" },
-            { id: "Date", label: "Date" },
-            { id: "" },
-          ]}
-        />
-        <TableBody>
-          {dataFiltered
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
-              <OrderTableRow
-                key={row.id}
-                id={row.id}
-                lead={row.LeadNumber}
-                pup={row.PupNumber}
-                company={row.Company}
-                description={row.Description}
-                date={row.Date}
-                getOrders={props.getOrders}
-                isMobile={isMobile}
-                role={role}
-                tab={'accepted'}
-                selected={selected.indexOf(row.id) !== -1}
-                handleClick={(event) => handleClick(event, row.id)}
-              />
-            ))}
-
-          <TableEmptyRows
-            height={77}
-            emptyRows={emptyRows(page, rowsPerPage, orders.length)}
+    <Container>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={1}
+        sx={{ width: 1 }} // makes
+      >
+        <Typography variant="h4">In Progress</Typography>
+      </Stack>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <OrderTableHead
+            order={order}
+            orderBy={orderBy}
+            rowCount={orders.length}
+            numSelected={selected.length}
+            onRequestSort={handleSort}
+            onSelectAllClick={handleSelectAllClick}
+            headLabel={[
+              { id: "LeadNumber", label: "Lead" },
+              { id: "PupNumber", label: "Pup" },
+              { id: "Company", label: "Company" },
+              { id: "Description", label: "Description" },
+              { id: "Pickup", label: "Pickup" },
+              { id: "Drop", label: "Drop" },
+              { id: "Date", label: "Date" },
+              { id: "" },
+            ]}
           />
+          <TableBody>
+            {dataFiltered
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <OrderTableRow
+                  key={row.id}
+                  id={row.id}
+                  lead={row.LeadNumber}
+                  pup={row.PupNumber}
+                  company={row.Company}
+                  description={row.Description}
+                  date={row.Date}
+                  getOrders={props.getOrders}
+                  isMobile={isMobile}
+                  role={role}
+                  tab={'accepted'}
+                  selected={selected.indexOf(row.id) !== -1}
+                  handleClick={(event) => handleClick(event, row.id)}
+                />
+              ))}
 
-          {notFound && <TableNoData query={filterName} />}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <TablePagination
-      page={page}
-      component="div"
-      count={orders.length}
-      rowsPerPage={rowsPerPage}
-      onPageChange={handleChangePage}
-      rowsPerPageOptions={[5, 10, 25]}
-      onRowsPerPageChange={handleChangeRowsPerPage}
-    />
+            <TableEmptyRows
+              height={77}
+              emptyRows={emptyRows(page, rowsPerPage, orders.length)}
+            />
+
+            {notFound && <TableNoData query={filterName} />}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        page={page}
+        component="div"
+        count={orders.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        rowsPerPageOptions={[5, 10, 25]}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      </Container>
     </>
   );
 }

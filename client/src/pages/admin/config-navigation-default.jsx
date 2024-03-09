@@ -1,3 +1,4 @@
+import Iconify from "../../components/iconify";
 import SvgColor from "../../components/svg-color";
 
 // ----------------------------------------------------------------------
@@ -19,21 +20,22 @@ const navConfigDefault = [
     title: "Requested",
     path: "/customer/requested",
     icon: icon("ic_user"),
+    icon: <Iconify icon="material-symbols:pending-actions" />,
   },
   {
     title: "Rejected",
     path: "/customer/rejected",
-    icon: icon("ic_user"),
+    icon: <Iconify icon="fluent:text-change-reject-24-filled" />,
   },
   {
     title: "In Progress",
     path: "/customer/accepted",
-    icon: icon("ic_user"),
+    icon: <Iconify icon="ri:progress-3-line" />,
   },
   {
     title: "Completed",
     path: "/customer/washed",
-    icon: icon("ic_user"),
+    icon: <Iconify icon="ic:twotone-done" />,
   },
 ];
 
