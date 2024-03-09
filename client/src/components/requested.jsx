@@ -105,6 +105,7 @@ export default function RequestedList(props) {
   });
 
   const notFound = !dataFiltered.length && !!filterName;
+  const isDriver = role == 'driver';
   
   return (
     <>
@@ -128,7 +129,7 @@ export default function RequestedList(props) {
         </Button>
       </Stack>
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} >
-        <RequestTask toggleDrawer={() => setDrawerOpen(!drawerOpen)} refreshList={getOrders} isDriver />
+        <RequestTask toggleDrawer={() => setDrawerOpen(!drawerOpen)} refreshList={getOrders} isDriver={isDriver} />
       </Drawer>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
