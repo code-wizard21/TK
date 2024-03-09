@@ -10,18 +10,17 @@ import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import ListItemButton from "@mui/material/ListItemButton";
 
-import { usePathname } from "../../../src/routes/hooks/index";
-import { RouterLink } from "../../../src/routes/components/index";
+import { usePathname } from "../../../routes/hooks/index";
+import { RouterLink } from "../../../routes/components/index";
 
-import { useResponsive } from "../../../src/hooks/use-responsive";
+import { useResponsive } from "../../../hooks/use-responsive";
 
-import Logo from "../../../src/components/logo";
-import Scrollbar from "../../../src/components/scrollbar/index";
+import Scrollbar from "../../scrollbar/index";
 
-import { NAV } from "./config-layout";
-import navConfig from "./config-navigation";
-import logo from "../../assets/images/photo.png";
+import { NAV } from "../../../pages/admin/config-layout";
+import navConfig from "../../../pages/admin/config-navigation-admin";
 import { useSelector } from "react-redux";
+import logo from "../../../assets/images/photo.png";
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {

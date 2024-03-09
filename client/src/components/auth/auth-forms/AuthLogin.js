@@ -118,11 +118,11 @@ const Login = ({ ...others }) => {
                   const decodedToken = jwtDecode(token);
                   dispatch({ type: "LOGIN_REQUEST", payload: decodedToken });
                   if (decodedToken.job === "company") {
-                    navigate("/company/dashboard");
+                    navigate("/customer/requested");
                   } else if (decodedToken.job === "washer") {
-                    navigate("/washer/dashboard");
+                    navigate("/customer/requested");
                   } else if (decodedToken.job === "driver") {
-                    navigate("/driver/dashboard");
+                    navigate("/customer/requested");
                   } else if (decodedToken.job === "admin") {
                     navigate("/admin");
                   } else {

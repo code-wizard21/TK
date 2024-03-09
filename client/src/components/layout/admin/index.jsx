@@ -4,13 +4,13 @@ import PropTypes from "prop-types";
 
 import Box from "@mui/material/Box";
 
-import Nav from "./nav";
-import Main from "./main";
-import Header from "./header";
+import NavAdmin from "./nav_admin";
+import Main from "../../../pages/admin/main";
+import Header from "../header";
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout({ children }) {
+export default function AdminLayout({ children }) {
   const [openNav, setOpenNav] = useState(false);
 
   return (
@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }) {
           flexDirection: { xs: "column", lg: "row" },
         }}
       >
-        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <NavAdmin openNav={openNav} onCloseNav={() => setOpenNav(false)} />
 
         <Main>
           <Outlet />
@@ -34,6 +34,6 @@ export default function DashboardLayout({ children }) {
   );
 }
 
-DashboardLayout.propTypes = {
+AdminLayout.propTypes = {
   children: PropTypes.node,
 };

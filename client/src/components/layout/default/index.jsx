@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Header from '../../pages/admin/header';
-import Main from "../../pages/admin/main";
+import Main from "../../../pages/admin/main";
+import Header from "../header";
+import { Box } from "@mui/system";
+import NavDefault from "./nav_default";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -25,14 +27,23 @@ const useStyles = makeStyles((theme) => ({
 const PageLayout = () => {
   const classes = useStyles();
   const auth = useSelector((state) => state.auth.user);
-  console.log(auth);
+  const [openNav, setOpenNav] = useState(false);
   return (
-    <div className={classes.root}>
-      <Header />
-      <Main>
-          <Outlet />
-      </Main>
-    </div>
+    <>
+      <Header onOpenNav={() => setOpenNav(true)} />
+      <Box
+        sx={{
+          minHeight: 1,
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+        }}
+      >
+        <NavDefault openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <Main>
+            <Outlet />
+        </Main>
+      </Box>
+    </>
   );
 };
 

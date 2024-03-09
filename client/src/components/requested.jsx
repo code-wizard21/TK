@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,25 +7,47 @@ import {
   useMediaQuery,
   useTheme,
   TablePagination,
+  Button,
+  Drawer,
 } from "@mui/material";
 import OrderTableHead from "../pages/table/order/order-table-head";
 import OrderTableRow from "../pages/table/order/order-table-row";
 import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import TableNoData from "../pages/table/order/table-no-data";
+import Http from "../utils/http";
+import { useSelector } from "react-redux";
+import { Box, Stack } from "@mui/system";
+import Iconify from "./iconify";
+import { RequestTask } from "./requesttask";
 
 export default function RequestedList(props) {
   const theme = useTheme();
-  const {role} = props;
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { orders, getOrders } = props;
-
+  
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState("asc");
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Name");
   const [filterName, setFilterName] = useState("");
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [orders, setOrders] = useState([]);
+  const auth = useSelector(state => state.auth);
+  const role = auth.user.job;
+  const getOrders = () => {
+    Http.post("/api/order/bystatus/requested", { company: auth.user.job=='company'?auth.user.name:'' })
+      .then((data) => {
+        setOrders(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -85,6 +107,28 @@ export default function RequestedList(props) {
   
   return (
     <>
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      mb={1}
+      sx={{ width: 1 }} // makes
+    >
+      <Box flexGrow={1}></Box>
+
+      <Button
+        variant="contained"
+        color="inherit"
+        startIcon={<Iconify icon="eva:plus-fill" />}
+        onClick={() => setDrawerOpen(true)}
+        sx={{ marginRight: 2}}
+      >
+        New Request
+      </Button>
+    </Stack>
+    <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} >
+      <RequestTask toggleDrawer={() => setDrawerOpen(!drawerOpen)} refreshList={getOrders} isDriver />
+    </Drawer>
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <OrderTableHead

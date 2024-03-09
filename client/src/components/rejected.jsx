@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,12 +13,12 @@ import OrderTableHead from "../pages/table/order/order-table-head";
 import OrderTableRow from "../pages/table/order/order-table-row";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import TableNoData from "../pages/table/order/table-no-data";
+import Http from "../utils/http";
+import { useSelector } from "react-redux";
 
 export default function RejectedList(props) {
-  const {role} = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { orders, getOrders } = props;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -26,6 +26,22 @@ export default function RejectedList(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Name");
   const [filterName, setFilterName] = useState("");
+  const [orders, setOrders] = useState([]);
+  const auth = useSelector(state => state.auth);
+  const role = auth.user.job;
+  const getOrders = () => {
+    Http.post("/api/order/bystatus/rejected", { company: auth.user.job=='company'?auth.user.name:'' })
+      .then((data) => {
+        setOrders(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);

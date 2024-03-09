@@ -7,17 +7,17 @@ import Toolbar from "@mui/material/Toolbar";
 import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 
-import { useResponsive } from "../../../src/hooks/use-responsive";
+import { useResponsive } from "../../hooks/use-responsive";
 
-import { bgBlur } from "../../../src/theme/css";
+import { bgBlur } from "../../theme/css";
 
-import Iconify from "../../../src/components/iconify";
+import Iconify from "../iconify";
 
-import Searchbar from "./common/searchbar";
-import { NAV, HEADER } from "./config-layout";
-import AccountPopover from "./common/account-popover";
-import LanguagePopover from "./common/language-popover";
-import NotificationsPopover from "./common/notifications-popover";
+import Searchbar from "../../pages/admin/common/searchbar";
+import { NAV, HEADER } from "../../pages/admin/config-layout";
+import AccountPopover from "../../pages/admin/common/account-popover";
+import LanguagePopover from "../../pages/admin/common/language-popover";
+import NotificationsPopover from "../../pages/admin/common/notifications-popover";
 
 // ----------------------------------------------------------------------
 
