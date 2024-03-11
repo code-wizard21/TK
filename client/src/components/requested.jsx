@@ -118,7 +118,7 @@ export default function RequestedList(props) {
         sx={{ width: 1 }} // makes
       >
         <Typography variant="h4">Requested</Typography>
-
+        {(role=='driver' || role=='company') && 
         <Button
           variant="contained"
           color="inherit"
@@ -127,6 +127,7 @@ export default function RequestedList(props) {
         >
           New Request
         </Button>
+        }
       </Stack>
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} >
         <RequestTask toggleDrawer={() => setDrawerOpen(!drawerOpen)} refreshList={getOrders} isDriver={isDriver} />

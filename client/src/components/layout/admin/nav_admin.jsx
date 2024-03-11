@@ -51,7 +51,7 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Avatar src={auth.user.avatar} alt="photoURL" />
 
-      <Box sx={{ ml: 2 }}>
+      <Box sx={{ ml: 2, width: 0, flexGrow: 1 }}>
         <Typography variant="subtitle2">{auth.user.email}</Typography>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>

@@ -51,10 +51,10 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Avatar src={auth.user.avatar} alt="photoURL" />
 
-      <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{auth.user.email}</Typography>
+      <Box sx={{ ml: 2, width: 0, flexGrow: 1 }}>
+        <Typography variant="subtitle2" noWrap>{auth.user.email}</Typography>
 
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
           {auth.user.job}
         </Typography>
       </Box>
