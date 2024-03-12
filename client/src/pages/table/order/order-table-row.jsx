@@ -68,6 +68,19 @@ export default function OrderTableRow({
         console.log(err);
       });
   };
+  const onComplete = () => {
+    Http.post("/api/order/complete", { id: row.id })
+      .then((data) => {
+        getOrders();
+
+        toast.success("Successfully marked as completed.", {
+          hideProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleCloseResend = () => {
     setOpenResender(false);
   };
@@ -161,7 +174,8 @@ export default function OrderTableRow({
         (
           (role=="washer" && tab=="requested") ||
           (role=="washer" && tab=="inprogress") ||
-          ((role=="driver" || role=="company") && tab=="rejected")
+          ((role=="driver" || role=="company") && tab=="rejected") ||
+          (role=="driver" && row.Status == STATUS_WASHED && tab=="inprogress")
         )
         && <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -218,13 +232,30 @@ export default function OrderTableRow({
             sx: { width: 140 },
           }}
         >
-          <MenuItem onClick={onCancelOrder}>
-            <Iconify icon="mdi:cancel" sx={{ mr: 2 }} />
-            Cancel
-          </MenuItem>
-          <MenuItem onClick={onResend} sx={{ color: "error.main" }}>
+          <MenuItem onClick={onResend}>
             <Iconify icon="mdi:email-resend-outline" sx={{ mr: 2 }} />
             Resend
+          </MenuItem>
+          <MenuItem onClick={onCancelOrder} sx={{ color: "error.main" }}>
+            <Iconify icon="mdi:cancel" sx={{ mr: 2, color: "error.main" }} />
+            Cancel
+          </MenuItem>
+        </Popover>
+      }
+      {role=="driver" && row.Status == STATUS_WASHED && tab=="inprogress" && 
+        <Popover
+          open={!!open}
+          anchorEl={open}
+          onClose={handleCloseMenu}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          PaperProps={{
+            sx: { width: 160 },
+          }}
+        >
+          <MenuItem onClick={onComplete}>
+            <Iconify icon="fluent-mdl2:accept-medium" sx={{ mr: 2 }} />
+            Mark Completed
           </MenuItem>
         </Popover>
       }

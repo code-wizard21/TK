@@ -18,6 +18,7 @@ import Http from "../utils/http";
 import { useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
 import { STATUS_COMPLETED, STATUS_WASHED } from "../store/constant";
+import moment from "moment";
 
 export default function CompletedList(props) {
   const theme = useTheme();
@@ -33,7 +34,7 @@ export default function CompletedList(props) {
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
   const getOrders = () => {
-    Http.post("/api/order/bystatus/" + STATUS_COMPLETED, { company: auth.user.job=='company'?auth.user.name:'' })
+    Http.post("/api/order/bystatus/" + STATUS_COMPLETED, { company: role=='company'?auth.user.name:'', date: moment().format('YYYY-MM-DD') })
       .then((data) => {
         setOrders(data.data);
       })

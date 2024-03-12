@@ -18,6 +18,7 @@ import Http from "../utils/http";
 import { useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
 import { STATUS_ACCEPTED, STATUS_WASHED } from "../store/constant";
+import moment from "moment";
 
 export default function AcceptedList(props) {
   const theme = useTheme();
@@ -33,7 +34,7 @@ export default function AcceptedList(props) {
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
   const getOrders = () => {
-    Http.post(`/api/order/bystatus/${STATUS_ACCEPTED},${STATUS_WASHED}`, { company: auth.user.job=='company'?auth.user.name:'' })
+    Http.post(`/api/order/bystatus/${STATUS_ACCEPTED},${STATUS_WASHED}`, { company: role=='company'?auth.user.name:'', date: role=='driver'?moment().format('YYYY-MM-DD'):'' })
       .then((data) => {
         setOrders(data.data);
       })
@@ -140,7 +141,7 @@ export default function AcceptedList(props) {
               .map((row) => (
                 <OrderTableRow
                   row={row}
-                  getOrders={props.getOrders}
+                  getOrders={getOrders}
                   isMobile={isMobile}
                   role={role}
                   tab={'inprogress'}

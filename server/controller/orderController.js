@@ -55,12 +55,16 @@ exports.createOrder = (req, res) => {
 exports.getOrderByStatus = async (req, res) => {
   const status = req.params.status.split(",");
   const company = req.body.company;
+  const date = req.body.date;
   let qwhere = {
     Status: {
       [Op.or]: status
     },
   };
   if (company) qwhere.Company = company;
+  if (date) qwhere.Date = {
+    [Op.like]: `${date}%`
+  };
 
   const orders = await Order.findAll({
     where: qwhere,

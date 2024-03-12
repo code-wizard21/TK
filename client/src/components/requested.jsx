@@ -38,7 +38,7 @@ export default function RequestedList(props) {
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
   const getOrders = () => {
-    Http.post("/api/order/bystatus/" + STATUS_REQUESTED, { company: auth.user.job=='company'?auth.user.name:'' })
+    Http.post("/api/order/bystatus/" + STATUS_REQUESTED, { company: role=='company'?auth.user.name:'' })
       .then((data) => {
         setOrders(data.data);
       })
