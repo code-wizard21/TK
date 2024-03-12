@@ -9,7 +9,7 @@ import WasherLayout from "../components/layout/washer";
 import AdminLayout from "../components/layout/admin";
 import RequestedList from "../components/requested";
 import RejectedList from "../components/rejected";
-import AcceptedList from "../components/accepted";
+import AcceptedList from "../components/inprogress";
 import CompletedList from "../components/completed";
 import { useSelector } from "react-redux";
 

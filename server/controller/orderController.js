@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {
   STATUS_REJECTED,
   STATUS_REQUESTED,
@@ -52,10 +53,12 @@ exports.createOrder = (req, res) => {
 // };
 
 exports.getOrderByStatus = async (req, res) => {
-  const status = req.params.status;
+  const status = req.params.status.split(",");
   const company = req.body.company;
   let qwhere = {
-    Status: status,
+    Status: {
+      [Op.or]: status
+    },
   };
   if (company) qwhere.Company = company;
 

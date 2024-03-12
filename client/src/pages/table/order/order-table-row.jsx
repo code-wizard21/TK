@@ -161,7 +161,7 @@ export default function OrderTableRow({
         {
         (
           (role=="washer" && tab=="requested") ||
-          (role=="washer" && tab=="accepted") ||
+          (role=="washer" && tab=="inprogress") ||
           ((role=="driver" || role=="company") && tab=="rejected")
         )
         && <TableCell align="right">
@@ -191,7 +191,7 @@ export default function OrderTableRow({
           </MenuItem>
         </Popover>
       }
-      {role=="washer" && tab=="accepted" && 
+      {role=="washer" && tab=="inprogress" && 
         <Popover
           open={!!open}
           anchorEl={open}
@@ -204,7 +204,7 @@ export default function OrderTableRow({
         >
           <MenuItem onClick={onWashed}>
             <Iconify icon="fluent-mdl2:accept-medium" sx={{ mr: 2 }} />
-            Complete
+            Mark Washed
           </MenuItem>
         </Popover>
       }
