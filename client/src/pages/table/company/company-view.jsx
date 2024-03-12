@@ -49,6 +49,7 @@ export default function CompanyPage(prop) {
   const [updateId, setUpdateId] = useState("");
 
   const [updateflag, setUpdateFlag] = useState(false);
+  const [initData, setInitData] = useState({});
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc";
@@ -57,13 +58,6 @@ export default function CompanyPage(prop) {
       setOrderBy(id);
     }
   };
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    register,
-  } = useForm();
 
   const handleOpen = () => {
     setOpen(true);
@@ -183,7 +177,7 @@ export default function CompanyPage(prop) {
                         email={row.Email}
                         getCompanies={getCompanies}
                         setUpdateFlag={setUpdateFlag}
-                        setUpdateId={setUpdateId}
+                        setUpdateId={id => (console.log(id), setInitData(dataFiltered.find(d => d.id == id) || {}), setUpdateId(id))}
                         // avatarUrl={row.avatarUrl}
                         // isVerified={row.isVerified}
                         selected={selected.indexOf(row.id) !== -1}
@@ -214,7 +208,7 @@ export default function CompanyPage(prop) {
         </Card>
       </Container>
       {<AddCompanyModal open={open} setOpen={setOpen} onAdd={prop.getCompanies} handleClose={handleClose} />}
-      {<UpdateCompanyModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getCompanies} handleClose={handleClose} updateId={updateId} />}
+      {updateflag?<UpdateCompanyModal initData={initData} updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getCompanies} handleClose={handleClose} updateId={updateId} />:<></>}
     </>
   );
 }

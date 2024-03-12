@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form"
 import Http from "../../../utils/http";
 import { useState } from "react";
 
-const UpdateDriverModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, updateId}) => {
+const UpdateDriverModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, updateId, initData}) => {
   const {
     control,
     handleSubmit,
@@ -12,9 +12,9 @@ const UpdateDriverModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, up
     reset,
     register,
   } = useForm();
-  const [nameList, setNamelist] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userPhone, setUserPhone] = useState("");
+  const nameList = initData.Name;
+  const userEmail = initData.Email;
+  const userPhone = initData.PhoneNumber;
   const handleUpdateOk = (data) => {
     console.log(updateId);
     Http.put(`/api/user/${updateId}`, {
@@ -91,7 +91,6 @@ const UpdateDriverModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, up
             name="password"
             control={control}
             defaultValue=""
-            rules={{ required: "Password is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -99,8 +98,6 @@ const UpdateDriverModal = ({updateflag, setUpdateFlag, handleClose, onUpdate, up
                 type="password"
                 variant="outlined"
                 style={{ marginBottom: "8px", width: "100%" }}
-                error={!!errors.password}
-                helperText={errors.password ? errors.password.message : ""}
               />
             )}
           />

@@ -45,7 +45,7 @@ export default function WasherTableRow({
   };
   const handleDeleteMenu = () => {
     handleCloseMenu();
-    Http.delete(`/api/washer/${id}`)
+    Http.delete(`/api/user/${id}`)
       .then((data) => {
         getWashers();
       })

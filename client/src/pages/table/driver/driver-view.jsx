@@ -49,6 +49,7 @@ export default function DriverPage(prop) {
   const [updateId, setUpdateId] = useState("");
 
   const [updateflag, setUpdateFlag] = useState(false);
+  const [initData, setInitData] = useState({});
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc";
@@ -183,7 +184,7 @@ export default function DriverPage(prop) {
                         email={row.Email}
                         getDrivers={getDrivers}
                         setUpdateFlag={setUpdateFlag}
-                        setUpdateId={setUpdateId}
+                        setUpdateId={id => (console.log(id), setInitData(dataFiltered.find(d => d.id == id) || {}), setUpdateId(id))}
                         // avatarUrl={row.avatarUrl}
                         // isVerified={row.isVerified}
                         selected={selected.indexOf(row.id) !== -1}
@@ -214,7 +215,7 @@ export default function DriverPage(prop) {
         </Card>
       </Container>
       {<AddUserModal open={open} setOpen={setOpen} onAdd={prop.getDrivers} handleClose={handleClose} />}
-      {<UpdateUserModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getDrivers} handleClose={handleClose} updateId={updateId} />}
+      {updateflag?<UpdateUserModal initData={initData} updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getDrivers} handleClose={handleClose} updateId={updateId} />:<></>}
     </>
   );
 }

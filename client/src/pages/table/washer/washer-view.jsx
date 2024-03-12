@@ -49,6 +49,7 @@ export default function WasherPage(prop) {
   const [updateId, setUpdateId] = useState("");
 
   const [updateflag, setUpdateFlag] = useState(false);
+  const [initData, setInitData] = useState({});
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === "asc";
@@ -183,7 +184,7 @@ export default function WasherPage(prop) {
                         email={row.Email}
                         getWashers={getWashers}
                         setUpdateFlag={setUpdateFlag}
-                        setUpdateId={setUpdateId}
+                        setUpdateId={id => (console.log(id), setInitData(dataFiltered.find(d => d.id == id) || {}), setUpdateId(id))}
                         // avatarUrl={row.avatarUrl}
                         // isVerified={row.isVerified}
                         selected={selected.indexOf(row.id) !== -1}
@@ -214,7 +215,7 @@ export default function WasherPage(prop) {
         </Card>
       </Container>
       {<AddWasherModal open={open} setOpen={setOpen} onAdd={prop.getWashers} handleClose={handleClose} />}
-      {<UpdateWasherModal updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getWashers} handleClose={handleClose} updateId={updateId} />}
+      {updateflag?<UpdateWasherModal initData={initData} updateflag={updateflag} setUpdateFlag={setUpdateFlag} onUpdate={prop.getWashers} handleClose={handleClose} updateId={updateId} />:<></>}
     </>
   );
 }
