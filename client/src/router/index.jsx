@@ -47,7 +47,7 @@ function RoutesDefined() {
               <Route path="requested" element={<RequestedList />} />
               <Route path="rejected" element={<RejectedList />} />
               <Route path="accepted" element={<AcceptedList />} />
-              <Route path="washed" element={<CompletedList />} />
+              <Route path="completed" element={<CompletedList />} />
             </Route>
             <Route path="admin" element={<AdminLayout />}>
               <Route index element={<CompanyManage />} />

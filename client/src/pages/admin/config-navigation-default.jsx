@@ -1,6 +1,6 @@
 import Iconify from "../../components/iconify";
 import SvgColor from "../../components/svg-color";
-import { STATUS_ACCEPTED, STATUS_REJECTED, STATUS_REQUESTED, STATUS_WASHED } from "../../store/constant";
+import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_REJECTED, STATUS_REQUESTED, STATUS_WASHED } from "../../store/constant";
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ const navConfigDefault = [
   },
   {
     title: "Completed",
-    path: "/customer/" + STATUS_WASHED,
+    path: "/customer/" + STATUS_COMPLETED,
     icon: <Iconify icon="ic:twotone-done" />,
   },
 ];

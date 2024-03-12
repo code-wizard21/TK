@@ -129,6 +129,7 @@ export default function AcceptedList(props) {
               { id: "Description", label: "Service Type" },
               { id: "Pickup", label: "Pickup" },
               { id: "Drop", label: "Drop" },
+              { id: "Status", label: "Status" },
               { id: "Date", label: "Date" },
               { id: "" },
             ]}
