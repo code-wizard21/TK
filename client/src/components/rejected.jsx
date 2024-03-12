@@ -15,9 +15,10 @@ import OrderTableRow from "../pages/table/order/order-table-row";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import TableNoData from "../pages/table/order/table-no-data";
 import Http from "../utils/http";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
 import { STATUS_REJECTED } from "../store/constant";
+import { fetchRejected } from "../redux/action";
 
 export default function RejectedList(props) {
   const theme = useTheme();
@@ -29,18 +30,11 @@ export default function RejectedList(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Date");
   const [filterName, setFilterName] = useState("");
-  const [orders, setOrders] = useState([]);
+  const {rejected: orders} = useSelector(state => state.orders);
   const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const role = auth.user.job;
-  const getOrders = () => {
-    Http.post("/api/order/bystatus/" + STATUS_REJECTED, { company: role=='company'?auth.user.name:'' })
-      .then((data) => {
-        setOrders(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const getOrders = () => fetchRejected(role, auth.user.name)(dispatch);
 
   useEffect(() => {
     getOrders();

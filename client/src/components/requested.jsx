@@ -17,11 +17,12 @@ import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import TableNoData from "../pages/table/order/table-no-data";
 import Http from "../utils/http";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Container, Stack } from "@mui/system";
 import Iconify from "./iconify";
 import { RequestTask } from "./requesttask";
 import { STATUS_REQUESTED } from "../store/constant";
+import { fetchRequested } from "../redux/action";
 
 export default function RequestedList(props) {
   const theme = useTheme();
@@ -34,18 +35,11 @@ export default function RequestedList(props) {
   const [orderBy, setOrderBy] = useState("Date");
   const [filterName, setFilterName] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [orders, setOrders] = useState([]);
+  const {requested: orders} = useSelector(state => state.orders);
   const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const role = auth.user.job;
-  const getOrders = () => {
-    Http.post("/api/order/bystatus/" + STATUS_REQUESTED, { company: role=='company'?auth.user.name:'' })
-      .then((data) => {
-        setOrders(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const getOrders = () => fetchRequested(role, auth.user.name)(dispatch);
 
   useEffect(() => {
     getOrders();
