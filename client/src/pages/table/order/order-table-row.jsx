@@ -21,7 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { STATUS_REQUESTED, STATUS_WASHED } from "../../../store/constant";
+import { STATUS_ACCEPTED, STATUS_REQUESTED, STATUS_WASHED } from "../../../store/constant";
 import Label from "../../../components/label";
 // ----------------------------------------------------------------------
 
@@ -166,9 +166,9 @@ export default function OrderTableRow({
         <TableCell>{row.Pickup}</TableCell>
         <TableCell>{row.Drop}</TableCell>
         {tab=="rejected" && <TableCell>{row.Reason}</TableCell>}
-        {tab=="inprogress" && <TableCell>
-          <Label color={(row.Status === STATUS_WASHED && "success") || "error"}>
-            {row.Status==STATUS_WASHED?"Washed":"Unwashed"}
+        {(tab=="inprogress" || tab=="completed") && <TableCell>
+          <Label color={(row.Status === STATUS_ACCEPTED && "error") || "success"}>
+            {row.Status==STATUS_ACCEPTED?"Unwashed":"Washed"}
           </Label></TableCell>}
         <TableCell>{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
         {
