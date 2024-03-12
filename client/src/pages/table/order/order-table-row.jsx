@@ -102,6 +102,7 @@ export default function OrderTableRow({
   const onWashed = () => {
     Http.post("/api/order/wash", { id: row.id })
       .then((data) => {
+        handleCloseMenu();
         getOrders();
         toast.success(" Successfully marked as washed.", {
           hideProgressBar: true,

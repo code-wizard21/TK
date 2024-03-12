@@ -15,10 +15,11 @@ import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
 import OrderTableRow from "../pages/table/order/order-table-row";
 import TableNoData from "../pages/table/order/table-no-data";
 import Http from "../utils/http";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
 import { STATUS_ACCEPTED, STATUS_WASHED } from "../store/constant";
 import moment from "moment";
+import { fetchInprogress } from "../redux/action";
 
 export default function AcceptedList(props) {
   const theme = useTheme();
@@ -30,18 +31,11 @@ export default function AcceptedList(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Date");
   const [filterName, setFilterName] = useState("");
-  const [orders, setOrders] = useState([]);
+  const {inprogress: orders} = useSelector(state => state.orders);
+  const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
-  const getOrders = () => {
-    Http.post(`/api/order/bystatus/${STATUS_ACCEPTED},${STATUS_WASHED}`, { company: role=='company'?auth.user.name:'', date: role=='driver'?moment().format('YYYY-MM-DD'):'' })
-      .then((data) => {
-        setOrders(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const getOrders = () => fetchInprogress(role, auth.user.name)(dispatch);
 
   useEffect(() => {
     getOrders();

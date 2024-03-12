@@ -12,6 +12,7 @@ import AppWidgetSummary from "../../currentstate";
 import moment from "moment";
 import Http from "../../../utils/http";
 import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_REQUESTED, STATUS_WASHED } from "../../../store/constant";
+import { fetchCompleted, fetchInprogress } from "../../../redux/action";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -31,27 +32,16 @@ const useStyles = makeStyles((theme) => ({
 
 const WasherLayout = () => {
   const [openNav, setOpenNav] = useState(false);
-  const [acceptedOrders, setAcceptedOrders] = useState([]);
-  const [washedOrders, setWashedOrders] = useState([]);
-  const getOrders = () => {
-    Http.post("/api/order/bystatus/" + STATUS_ACCEPTED)
-      .then((data) => {
-        console.log(data);
-        setAcceptedOrders(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    Http.post(`/api/order/bystatus/${STATUS_WASHED},${STATUS_COMPLETED}`)
-      .then((data) => {
-        setWashedOrders(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const role = auth.user.job;
+  const {inprogress, completed} = useSelector(state => state.orders)
+  const pending = inprogress.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD") && i.Status == STATUS_ACCEPTED).length;
+  const washed = inprogress.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD") && i.Status == STATUS_WASHED).length 
+              + completed.filter(i => moment(i.Date).format("YYYY-MM-DD") == moment().format("YYYY-MM-DD") && i.Status == STATUS_COMPLETED).length;
   useEffect(() => {
-    getOrders();
+    fetchCompleted(role, auth.user.name)(dispatch)
+    fetchInprogress(role, auth.user.name)(dispatch)
   }, []);
   return (
     <>
@@ -70,13 +60,7 @@ const WasherLayout = () => {
                 <Grid item xs={6} sm={6} md={3}>
                   <AppWidgetSummary
                     title="Washed Today"
-                    total={`${
-                      washedOrders.filter(
-                        (i) =>
-                          moment(i.Date).format("YYYY-MM-DD") ==
-                          moment().format("YYYY-MM-DD")
-                      ).length
-                    }`}
+                    total={`${washed}`}
                     color="success"
                     icon={
                       <img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />
@@ -86,13 +70,7 @@ const WasherLayout = () => {
                 <Grid item Grid xs={6} sm={6} md={3}>
                   <AppWidgetSummary
                     title="Pending Today"
-                    total={`${
-                      acceptedOrders.filter(
-                        (i) =>
-                          moment(i.Date).format("YYYY-MM-DD") ==
-                          moment().format("YYYY-MM-DD")
-                      ).length
-                    }`}
+                    total={`${pending}`}
                     color="info"
                     icon={
                       <img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />

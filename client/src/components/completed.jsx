@@ -15,10 +15,11 @@ import TableNoData from "../pages/table/order/table-no-data";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
 import OrderTableRow from "../pages/table/order/order-table-row";
 import Http from "../utils/http";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
 import { STATUS_COMPLETED, STATUS_WASHED } from "../store/constant";
 import moment from "moment";
+import { fetchCompleted } from "../redux/action";
 
 export default function CompletedList(props) {
   const theme = useTheme();
@@ -30,18 +31,11 @@ export default function CompletedList(props) {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("Date");
   const [filterName, setFilterName] = useState("");
-  const [orders, setOrders] = useState([]);
+  const {completed: orders} = useSelector(state => state.orders);
   const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const role = auth.user.job;
-  const getOrders = () => {
-    Http.post("/api/order/bystatus/" + STATUS_COMPLETED, { company: role=='company'?auth.user.name:'', date: moment().format('YYYY-MM-DD') })
-      .then((data) => {
-        setOrders(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const getOrders = () => fetchCompleted(role, auth.user.name)(dispatch);
 
   useEffect(() => {
     getOrders();
