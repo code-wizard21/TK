@@ -123,8 +123,7 @@ export default function AcceptedList(props) {
             onRequestSort={handleSort}
             onSelectAllClick={handleSelectAllClick}
             headLabel={[
-              { id: "LeadNumber", label: "Lead" },
-              { id: "PupNumber", label: "Pup" },
+              { id: "LeadNumber", label: "Trailer" },
               { id: "Company", label: "Company" },
               { id: "Description", label: "Service Type" },
               { id: "Pickup", label: "Pickup" },

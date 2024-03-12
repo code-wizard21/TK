@@ -151,8 +151,7 @@ export default function OrderTableRow({
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
-        <TableCell>{lead}</TableCell>
-        <TableCell>{pup}</TableCell>
+        <TableCell>{lead}-{pup}</TableCell>
         <TableCell>{company}</TableCell>
         <TableCell>{description}</TableCell>
         <TableCell>{pickup}</TableCell>
