@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Label from "../../../components/label";
 import Iconify from "../../../components/iconify";
 import Http from "../../../utils/http";
+import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 // ----------------------------------------------------------------------
 
 export default function WasherTableRow({
@@ -30,6 +31,10 @@ export default function WasherTableRow({
   setUpdateId,
 }) {
   const [open, setOpen] = useState(null);
+  const [deleteflag, setDeleteFlag] = useState(false);
+  const handleCloseDelete = () => {
+    setDeleteFlag(false);
+  }
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -45,12 +50,15 @@ export default function WasherTableRow({
   };
   const handleDeleteMenu = () => {
     handleCloseMenu();
+    setDeleteFlag(true);
+  };
+  const confirmDelete = () => {
     Http.delete(`/api/user/${id}`)
       .then((data) => {
         getWashers();
       })
       .catch((err) => {});
-  };
+  }
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -99,6 +107,46 @@ export default function WasherTableRow({
           Delete
         </MenuItem>
       </Popover>
+      
+      <Dialog
+        open={deleteflag}
+        onClose={handleCloseDelete}
+        PaperProps={{
+          sx: {
+            width: "80%", // You can use any valid CSS value here
+            maxWidth: "400px", // Optional: you can set a maximum width as well
+          },
+        }}
+      >
+        <DialogTitle>Delete confirmation</DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ mb: 3 }}>
+            Are you sure to delete?
+          </Typography>
+
+          <Stack
+            direction={"row"}
+            style={{
+              justifyContent: "right",
+              gap: "8px",
+            }}
+          >
+            <Button variant="outlined" onClick={handleCloseDelete}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ width: "100px" }}
+              onClick={confirmDelete}
+            >
+              Delete
+            </Button>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
