@@ -91,6 +91,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
         });
     }
   };
+  const serviceTypes = ["Wash", "Pickup&Wash", "Shuttle1Way", "Shuttle2Way"];
 
   return (
     <Box
@@ -201,14 +202,22 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
           </Grid>
 
           <Grid xs={12}>
-            <TextField
-              name="tell"
-              label="Description"
-              id="standard-basic"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              minRows={5}
-              fullWidth
+            <Autocomplete
+              disablePortal
+              id="combo-box-description"
+              options={serviceTypes}
+              onChange={(e, v) => setDescription(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  value={pickup}
+                  id="outlined-basic-description"
+                  name="description"
+                  label="Service Type"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
             />
           </Grid>
           <Grid xs={6} sm={6}>

@@ -126,7 +126,7 @@ export default function CompletedList(props) {
               { id: "LeadNumber", label: "Lead" },
               { id: "PupNumber", label: "Pup" },
               { id: "Company", label: "Company" },
-              { id: "Description", label: "Description" },
+              { id: "Description", label: "Service Type" },
               { id: "Pickup", label: "Pickup" },
               { id: "Drop", label: "Drop" },
               { id: "Date", label: "Date" },
