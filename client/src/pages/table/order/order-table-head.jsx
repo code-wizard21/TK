@@ -35,7 +35,7 @@ export default function OrderTableHead({
           />
         </TableCell>
 
-        {headLabel.map((headCell) => (
+        {headLabel.filter(headCell => headCell.hide !== true).map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.align || 'left'}

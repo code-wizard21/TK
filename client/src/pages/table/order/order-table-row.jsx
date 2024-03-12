@@ -26,16 +26,9 @@ import { STATUS_REQUESTED } from "../../../store/constant";
 
 export default function OrderTableRow({
   selected,
-  lead,
-  pup,
-  company,
-  pickup,
   handleClick,
   getOrders,
-  drop,
-  date,
-  description,
-  id,
+  row,
   role,
   tab,
 }) {
@@ -61,8 +54,8 @@ export default function OrderTableRow({
     setOpenResender(true);
     reset();
   };
-  const onCancelOrder = (id) => {
-    Http.post("/api/order/cancel", { id })
+  const onCancelOrder = () => {
+    Http.post("/api/order/cancel", { id: row.id })
       .then((data) => {
         getOrders();
 
@@ -79,7 +72,7 @@ export default function OrderTableRow({
   };
   const handleOkResend = (data) => {
     setOpenResender(false);
-    Http.put("/api/order/bystatus/" + STATUS_REQUESTED, { id, date: dateNew })
+    Http.put("/api/order/bystatus/" + STATUS_REQUESTED, { id: row.id, date: dateNew })
       .then((data) => {
         getOrders();
 
@@ -93,7 +86,7 @@ export default function OrderTableRow({
   };
 
   const onWashed = () => {
-    Http.post("/api/order/wash", { id })
+    Http.post("/api/order/wash", { id: row.id })
       .then((data) => {
         getOrders();
         toast.success(" Successfully marked as washed.", {
@@ -120,7 +113,7 @@ export default function OrderTableRow({
     // setUpdateId(id);
     
     handleCloseMenu();
-    Http.post(`/api/order/accept`, {id})
+    Http.post(`/api/order/accept`, {id: row.id})
       .then((data) => {
         toast.success(" Request successfully accepted.", {
           hideProgressBar: true,
@@ -135,7 +128,7 @@ export default function OrderTableRow({
   };
   const handleOkToReject = (data) => {
     setOpenRejecter(false);
-    Http.post("/api/order/reject", { id, ...data })
+    Http.post("/api/order/reject", { id: row.id, ...data })
       .then((data) => {
         getOrders();
         toast.success(" Request successfully rejected.", {
@@ -148,16 +141,17 @@ export default function OrderTableRow({
   };
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} key={id}>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} key={row.id}>
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
-        <TableCell>{lead}-{pup}</TableCell>
-        <TableCell>{company}</TableCell>
-        <TableCell>{description}</TableCell>
-        <TableCell>{pickup}</TableCell>
-        <TableCell>{drop}</TableCell>
-        <TableCell>{moment(date).format('YYYY-MM-DD')}</TableCell>
+        <TableCell>{row.LeadNumber}-{row.PupNumber}</TableCell>
+        {role!=="company" && <TableCell>{row.Company}</TableCell>}
+        <TableCell>{row.Description}</TableCell>
+        <TableCell>{row.Pickup}</TableCell>
+        <TableCell>{row.Drop}</TableCell>
+        {tab=="rejected" && <TableCell>{row.Reason}</TableCell>}
+        <TableCell>{moment(row.Date).format('YYYY-MM-DD')}</TableCell>
         {
         (
           (role=="washer" && tab=="requested") ||

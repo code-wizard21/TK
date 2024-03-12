@@ -125,7 +125,7 @@ export default function AcceptedList(props) {
             onSelectAllClick={handleSelectAllClick}
             headLabel={[
               { id: "LeadNumber", label: "Trailer" },
-              { id: "Company", label: "Company" },
+              { id: "Company", label: "Company", hide: role=="company" },
               { id: "Description", label: "Service Type" },
               { id: "Pickup", label: "Pickup" },
               { id: "Drop", label: "Drop" },
@@ -138,13 +138,7 @@ export default function AcceptedList(props) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <OrderTableRow
-                  key={row.id}
-                  id={row.id}
-                  lead={row.LeadNumber}
-                  pup={row.PupNumber}
-                  company={row.Company}
-                  description={row.Description}
-                  date={row.Date}
+                  row={row}
                   getOrders={props.getOrders}
                   isMobile={isMobile}
                   role={role}
