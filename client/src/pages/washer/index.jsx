@@ -12,6 +12,7 @@ import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
 import moment from "moment";
 import AppWidgetSummary from "../../components/currentstate";
+import { STATUS_ACCEPTED, STATUS_REJECTED, STATUS_WASHED } from "../../store/constant";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -31,14 +32,14 @@ export default function LabTabs() {
   }, [auth.isLoggedI, navigate]);
   const theme = useTheme();
   const getOrders = () => {
-    Http.get("/api/order/bystatus/requested")
+    Http.get("/api/order/bystatus/" + STATUS_REJECTED)
       .then((data) => {
         setRequestedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/accepted", { name: auth.user.name })
+    Http.get("/api/order/bystatus/" + STATUS_ACCEPTED, { name: auth.user.name })
       .then((data) => {
         console.log(data);
         setAcceptedOrders(data.data);
@@ -46,7 +47,7 @@ export default function LabTabs() {
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/washed")
+    Http.get("/api/order/bystatus/" + STATUS_WASHED)
       .then((data) => {
         setWashedOrders(data.data);
       })

@@ -21,6 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { STATUS_REQUESTED } from "../../../store/constant";
 // ----------------------------------------------------------------------
 
 export default function OrderTableRow({
@@ -78,7 +79,7 @@ export default function OrderTableRow({
   };
   const handleOkResend = (data) => {
     setOpenResender(false);
-    Http.put("/api/order/bystatus/requested", { id, date: dateNew })
+    Http.put("/api/order/bystatus/" + STATUS_REQUESTED, { id, date: dateNew })
       .then((data) => {
         getOrders();
 

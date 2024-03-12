@@ -4,6 +4,7 @@ const {
   STATUS_ACCEPTED,
   STATUS_WASHED,
   STATUS_CANCELLED,
+  STATUS_COMPLETED,
 } = require("../constants");
 const db = require("../models");
 const Order = db.order;
@@ -118,6 +119,27 @@ exports.wash = async (req, res) => {
     const orders = await Order.findAll({
       where: {
         Status: STATUS_ACCEPTED,
+      },
+    });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.complete = async (req, res) => {
+  try {
+    const user = await Order.update(
+      { Status: STATUS_COMPLETED },
+      {
+        where: {
+          id: req.body.id,
+        },
+      }
+    );
+    const orders = await Order.findAll({
+      where: {
+        Status: STATUS_WASHED,
       },
     });
     res.status(200).json(orders);

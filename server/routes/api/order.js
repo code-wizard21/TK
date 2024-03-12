@@ -10,6 +10,7 @@ router.post("/accept", orderController.accept);
 router.post("/reject", orderController.reject);
 router.post("/wash", orderController.wash);
 router.post("/cancel", orderController.cancel);
+router.post("/complete", orderController.complete);
 router.put("/bystatus/:status", orderController.updateOrderByStatus);
 
 module.exports = router;

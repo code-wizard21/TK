@@ -17,6 +17,7 @@ import AcceptedList from "../../components/accepted";
 import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
 import RejectedList from "../../components/rejected";
+import { STATUS_ACCEPTED, STATUS_REJECTED, STATUS_REQUESTED, STATUS_WASHED } from "../../store/constant";
 
 export default function DrawerAnchor() {
   const auth = useSelector((state) => state.auth);
@@ -39,28 +40,28 @@ export default function DrawerAnchor() {
     setValue(newValue);
   };
   const getOrders = () => {
-    Http.get("/api/order/bystatus/requested", { name: auth.user.name })
+    Http.get("/api/order/bystatus/" + STATUS_REQUESTED, { name: auth.user.name })
       .then((data) => {
         setRequestedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/accepted", { name: auth.user.name })
+    Http.get("/api/order/bystatus/" + STATUS_ACCEPTED, { name: auth.user.name })
       .then((data) => {
         setAcceptedOrders(data.data);  
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/washed", { name: auth.user.name })
+    Http.get("/api/order/bystatus/" + STATUS_WASHED, { name: auth.user.name })
       .then((data) => {
         setWashedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/rejected", { name: auth.user.name })
+    Http.get("/api/order/bystatus/" + STATUS_REJECTED, { name: auth.user.name })
       .then((data) => {
         setRejectedOrders(data.data);
       })

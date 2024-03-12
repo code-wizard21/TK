@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import { Box, Container, Stack } from "@mui/system";
 import Iconify from "./iconify";
 import { RequestTask } from "./requesttask";
+import { STATUS_REQUESTED } from "../store/constant";
 
 export default function RequestedList(props) {
   const theme = useTheme();
@@ -37,7 +38,7 @@ export default function RequestedList(props) {
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
   const getOrders = () => {
-    Http.post("/api/order/bystatus/requested", { company: auth.user.job=='company'?auth.user.name:'' })
+    Http.post("/api/order/bystatus/" + STATUS_REQUESTED, { company: auth.user.job=='company'?auth.user.name:'' })
       .then((data) => {
         setOrders(data.data);
       })

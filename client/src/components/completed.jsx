@@ -17,6 +17,7 @@ import OrderTableRow from "../pages/table/order/order-table-row";
 import Http from "../utils/http";
 import { useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
+import { STATUS_WASHED } from "../store/constant";
 
 export default function CompletedList(props) {
   const theme = useTheme();
@@ -32,7 +33,7 @@ export default function CompletedList(props) {
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
   const getOrders = () => {
-    Http.post("/api/order/bystatus/washed", { company: auth.user.job=='company'?auth.user.name:'' })
+    Http.post("/api/order/bystatus/" + STATUS_WASHED, { company: auth.user.job=='company'?auth.user.name:'' })
       .then((data) => {
         setOrders(data.data);
       })

@@ -17,6 +17,7 @@ import TableNoData from "../pages/table/order/table-no-data";
 import Http from "../utils/http";
 import { useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
+import { STATUS_REJECTED } from "../store/constant";
 
 export default function RejectedList(props) {
   const theme = useTheme();
@@ -32,7 +33,7 @@ export default function RejectedList(props) {
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
   const getOrders = () => {
-    Http.post("/api/order/bystatus/rejected", { company: auth.user.job=='company'?auth.user.name:'' })
+    Http.post("/api/order/bystatus/" + STATUS_REJECTED, { company: auth.user.job=='company'?auth.user.name:'' })
       .then((data) => {
         setOrders(data.data);
       })

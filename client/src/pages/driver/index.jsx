@@ -16,6 +16,7 @@ import RequestedList from "../../components/requested";
 import CompletedList from "../../components/completed";
 import RejectedList from "../../components/rejected";
 import Iconify from "../../components/iconify";
+import { STATUS_ACCEPTED, STATUS_REJECTED, STATUS_WASHED } from "../../store/constant";
 
 export default function LabTabs() {
   const [value, setValue] = useState("1");
@@ -37,28 +38,28 @@ export default function LabTabs() {
   }, []);
 
   const getOrders = () => {
-    Http.get("/api/order/bystatus/requested", { name: "" })
+    Http.get("/api/order/bystatus/" + STATUS_REJECTED, { name: "" })
       .then((data) => {
         setNewOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/accepted")
+    Http.get("/api/order/bystatus/" + STATUS_ACCEPTED)
       .then((data) => {
         setAcceptedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/washed")
+    Http.get("/api/order/bystatus/" + STATUS_WASHED)
       .then((data) => {
         setWashedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.get("/api/order/bystatus/rejected", { name: auth.user.name })
+    Http.get("/api/order/bystatus/" + STATUS_REJECTED, { name: auth.user.name })
       .then((data) => {
         setRejectedOrders(data.data);
       })

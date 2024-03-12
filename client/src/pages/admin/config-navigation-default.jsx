@@ -1,5 +1,6 @@
 import Iconify from "../../components/iconify";
 import SvgColor from "../../components/svg-color";
+import { STATUS_ACCEPTED, STATUS_REJECTED, STATUS_REQUESTED, STATUS_WASHED } from "../../store/constant";
 
 // ----------------------------------------------------------------------
 
@@ -18,23 +19,23 @@ const navConfigDefault = [
   // },
   {
     title: "Requested",
-    path: "/customer/requested",
+    path: "/customer/" + STATUS_REQUESTED,
     icon: icon("ic_user"),
     icon: <Iconify icon="material-symbols:pending-actions" />,
   },
   {
     title: "Rejected",
-    path: "/customer/rejected",
+    path: "/customer/" + STATUS_REJECTED,
     icon: <Iconify icon="fluent:text-change-reject-24-filled" />,
   },
   {
     title: "In Progress",
-    path: "/customer/accepted",
+    path: "/customer/" + STATUS_ACCEPTED,
     icon: <Iconify icon="ri:progress-3-line" />,
   },
   {
     title: "Completed",
-    path: "/customer/washed",
+    path: "/customer/" + STATUS_WASHED,
     icon: <Iconify icon="ic:twotone-done" />,
   },
 ];

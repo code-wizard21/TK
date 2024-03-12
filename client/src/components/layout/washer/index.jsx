@@ -11,6 +11,7 @@ import { Grid } from "@mui/material";
 import AppWidgetSummary from "../../currentstate";
 import moment from "moment";
 import Http from "../../../utils/http";
+import { STATUS_ACCEPTED, STATUS_REQUESTED, STATUS_WASHED } from "../../../store/constant";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -34,14 +35,14 @@ const WasherLayout = () => {
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [washedOrders, setWashedOrders] = useState([]);
   const getOrders = () => {
-    Http.post("/api/order/bystatus/requested")
+    Http.post("/api/order/bystatus/" + STATUS_REQUESTED)
       .then((data) => {
         setRequestedOrders(data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    Http.post("/api/order/bystatus/accepted")
+    Http.post("/api/order/bystatus/" + STATUS_ACCEPTED)
       .then((data) => {
         console.log(data);
         setAcceptedOrders(data.data);
@@ -49,7 +50,7 @@ const WasherLayout = () => {
       .catch((err) => {
         console.log(err);
       });
-    Http.post("/api/order/bystatus/washed")
+    Http.post("/api/order/bystatus/" + STATUS_WASHED)
       .then((data) => {
         setWashedOrders(data.data);
       })
