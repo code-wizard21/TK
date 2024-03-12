@@ -28,9 +28,9 @@ export default function RequestedList(props) {
   
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState("Name");
+  const [orderBy, setOrderBy] = useState("Date");
   const [filterName, setFilterName] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [orders, setOrders] = useState([]);

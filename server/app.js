@@ -48,6 +48,15 @@ sequelize
     console.log("Successfully connected to PostgreSQL database using Sequelize")
   )
   .catch((error) => console.log("Unable to connect to the database:", error));
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Application specific logging, throwing an error, or other logic here
+});
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Application specific logging, throwing an error, or other logic here
+  process.exit(1); // It is advised to restart the process in case of an uncaught exception
+});
 
 const pt = process.env.PORT || 5000;
 

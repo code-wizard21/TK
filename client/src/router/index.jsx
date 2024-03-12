@@ -5,14 +5,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { lazy } from "react";
 import ThemeProvider from "../../src/theme";
 import PageLayout from "../components/layout/default";
+import WasherLayout from "../components/layout/washer";
 import AdminLayout from "../components/layout/admin";
 import RequestedList from "../components/requested";
 import RejectedList from "../components/rejected";
 import AcceptedList from "../components/accepted";
 import CompletedList from "../components/completed";
-const CompanyDashboard = lazy(() => import("../pages/company"));
-const DriverDashboard = lazy(() => import("../pages/driver"));
-const WasherDashboard = lazy(() => import("../pages/washer"));
+import { useSelector } from "react-redux";
 
 const Login = lazy(() => import("../components/auth/Login"));
 const LandingPage = lazy(() => import("../pages/landing"));
@@ -22,6 +21,8 @@ const DriverRole = lazy(() => import("../pages/admin/role/driver-role"));
 const WasherRole = lazy(() => import("../pages/admin/role/washer-role"));
 
 function RoutesDefined() {
+  const auth = useSelector(state => state.auth);
+  const role = auth.user.job;
   return (
     <ThemeProvider>
       <Router>
@@ -42,7 +43,7 @@ function RoutesDefined() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<LandingPage />} />
-            <Route path="/customer" element={<PageLayout />}>
+            <Route path="/customer" element={role=="washer"?<WasherLayout />:<PageLayout />}>
               <Route path="requested" element={<RequestedList />} />
               <Route path="rejected" element={<RejectedList />} />
               <Route path="accepted" element={<AcceptedList />} />
