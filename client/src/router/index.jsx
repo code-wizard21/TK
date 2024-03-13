@@ -12,6 +12,7 @@ import RejectedList from "../components/rejected";
 import AcceptedList from "../components/inprogress";
 import CompletedList from "../components/completed";
 import { useSelector } from "react-redux";
+import CancelledList from "../components/cancelled";
 
 const Login = lazy(() => import("../components/auth/Login"));
 const LandingPage = lazy(() => import("../pages/landing"));
@@ -53,6 +54,10 @@ function RoutesDefined() {
               <Route index element={<CompanyManage />} />
               <Route path="driver-role" element={<DriverRole />} />
               <Route path="washer-role" element={<WasherRole />} />
+              <Route path="cancelled" element={<CancelledList />} />
+              <Route path="rejected" element={<RejectedList />} />
+              <Route path="inprogress" element={<AcceptedList />} />
+              <Route path="completed" element={<CompletedList />} />
             </Route>
           </Routes>
         </Suspense>

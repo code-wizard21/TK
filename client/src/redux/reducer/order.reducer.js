@@ -5,6 +5,7 @@ const initialState = {
   rejected: [],
   inprogress: [],
   completed: [],
+  cancelled: [],
   isLoading: false,
   errorMessage: "",
 };
@@ -21,6 +22,11 @@ const OrderReducer = (state = initialState, action) => {
       return {
         ...state,
         rejected: action.payload,
+      };
+    case OrderTypes.ORDER_CANCELLED_LOADED:
+      return {
+        ...state,
+        cancelled: action.payload,
       };
     case OrderTypes.ORDER_INPROGRESS_LOADED:
       return {

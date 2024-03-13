@@ -1,5 +1,5 @@
 import moment from "moment";
-import { STATUS_ACCEPTED, STATUS_COMPLETED, STATUS_REJECTED, STATUS_REQUESTED, STATUS_WASHED } from "../store/constant";
+import { STATUS_ACCEPTED, STATUS_CANCELLED, STATUS_COMPLETED, STATUS_REJECTED, STATUS_REQUESTED, STATUS_WASHED } from "../store/constant";
 import Http from "../utils/http";
 import { OrderTypes } from "./types";
 
@@ -15,6 +15,14 @@ export const fetchRejected = (role, name) => async (dispatch) => {
     try {
         const data = await Http.post("/api/order/bystatus/" + STATUS_REJECTED, { company: role=='company'?name:'' });
         dispatch({type: OrderTypes.ORDER_REJECTED_LOADED, payload: data.data});
+    } catch(e) {
+    }
+}
+
+export const fetchCancelled = (role, name) => async (dispatch) => {
+    try {
+        const data = await Http.post("/api/order/bystatus/" + STATUS_CANCELLED, { company: role=='company'?name:'' });
+        dispatch({type: OrderTypes.ORDER_CANCELLED_LOADED, payload: data.data});
     } catch(e) {
     }
 }
