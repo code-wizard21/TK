@@ -73,7 +73,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
         leadNumber,
         pupNumber,
         description,
-        date,
+        date: dayjs(date).format("YYYY-MM-DD"),
         pickup,
         drop,
       })

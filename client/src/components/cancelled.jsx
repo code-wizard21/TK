@@ -8,6 +8,7 @@ import {
   useTheme,
   TablePagination,
   Typography,
+  Button,
 } from "@mui/material";
 import { applyFilter, emptyRows, getComparator } from "../pages/table/utils";
 import OrderTableHead from "../pages/table/order/order-table-head";
@@ -18,7 +19,11 @@ import Http from "../utils/http";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Stack } from "@mui/system";
 import { STATUS_REJECTED } from "../store/constant";
-import { fetchRejected } from "../redux/action";
+import { fetchCancelled, fetchRejected } from "../redux/action";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import Iconify from "./iconify";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 export default function CancelledList(props) {
   const theme = useTheme();
@@ -34,11 +39,13 @@ export default function CancelledList(props) {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const role = auth.user.job;
-  const getOrders = () => fetchRejected(role, auth.user.name)(dispatch);
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+  const getOrders = () => fetchCancelled(role, auth.user.name, dateFrom, dateTo)(dispatch);
 
   useEffect(() => {
     getOrders();
-  }, []);
+  }, [dateFrom, dateTo]);
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -106,6 +113,19 @@ export default function CancelledList(props) {
         sx={{ width: 1 }} // makes
       >
         <Typography variant="h4">Cancelled</Typography>
+        <Stack
+          direction="row"
+          gap={1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label={'From'} sx={{width: 200}}
+                  value={dateFrom}
+                  onChange={(newValue) => setDateFrom(dayjs(newValue))} />
+            <DatePicker label={'To'} sx={{width: 200}}
+                  value={dateTo}
+                  onChange={(newValue) => setDateTo(dayjs(newValue))} />
+            <Button><Iconify icon="tdesign:download" /></Button>
+          </LocalizationProvider>
+        </Stack>
       </Stack>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
@@ -122,7 +142,6 @@ export default function CancelledList(props) {
               { id: "Description", label: "Service Type" },
               { id: "Pickup", label: "Pickup" },
               { id: "Drop", label: "Drop" },
-              { id: "Reason", label: "Reason" },
               { id: "Date", label: "Date" },
               { id: "" },
             ]}

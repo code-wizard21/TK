@@ -8,6 +8,7 @@ import {
   useTheme,
   TablePagination,
   Typography,
+  Button,
 } from "@mui/material";
 import OrderTableHead from "../pages/table/order/order-table-head";
 import TableEmptyRows from "../pages/table/order/table-empty-rows";
@@ -20,6 +21,10 @@ import { Container, Stack } from "@mui/system";
 import { STATUS_ACCEPTED, STATUS_WASHED } from "../store/constant";
 import moment from "moment";
 import { fetchInprogress } from "../redux/action";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import Iconify from "./iconify";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 export default function AcceptedList(props) {
   const theme = useTheme();
@@ -35,11 +40,13 @@ export default function AcceptedList(props) {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const role = auth.user.job;
-  const getOrders = () => fetchInprogress(role, auth.user.name)(dispatch);
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+  const getOrders = () => fetchInprogress(role, auth.user.name, dateFrom, dateTo)(dispatch);
 
   useEffect(() => {
     getOrders();
-  }, []);
+  }, [dateFrom, dateTo]);
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -108,6 +115,19 @@ export default function AcceptedList(props) {
         sx={{ width: 1 }} // makes
       >
         <Typography variant="h4">In Progress</Typography>
+        <Stack
+          direction="row"
+          gap={1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label={'From'} sx={{width: 200}}
+                  value={dateFrom}
+                  onChange={(newValue) => setDateFrom(dayjs(newValue))} />
+            <DatePicker label={'To'} sx={{width: 200}}
+                  value={dateTo}
+                  onChange={(newValue) => setDateTo(dayjs(newValue))} />
+            <Button><Iconify icon="tdesign:download" /></Button>
+          </LocalizationProvider>
+        </Stack>
       </Stack>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
