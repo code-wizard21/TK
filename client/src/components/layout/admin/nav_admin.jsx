@@ -21,6 +21,7 @@ import { NAV } from "../../../pages/admin/config-layout";
 import navConfig from "../../../pages/admin/config-navigation-admin";
 import { useSelector } from "react-redux";
 import logo from "../../../assets/images/photo.png";
+import { ListItemText, ListSubheader } from "@mui/material";
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
@@ -147,7 +148,14 @@ function NavItem({ item }) {
   const pathname = usePathname();
 
   const active = item.path === pathname;
-
+  if(item.seperator) return (
+    <>
+      {/* <hr/> */}
+      <ListSubheader sx={{background: 'transparent'}}>
+        {item.label}
+      </ListSubheader>
+    </>
+  )
   return (
     <ListItemButton
       component={RouterLink}
