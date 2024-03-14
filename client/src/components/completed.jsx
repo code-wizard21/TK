@@ -25,6 +25,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import Iconify from "./iconify";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import ExportCSVButton from "./exportcsvbutton";
 
 export default function CompletedList(props) {
   const theme = useTheme();
@@ -125,7 +126,7 @@ export default function CompletedList(props) {
             <DatePicker label={'To'} sx={{width: 200}}
                   value={dateTo}
                   onChange={(newValue) => setDateTo(dayjs(newValue))} />
-            <Button><Iconify icon="tdesign:download" /></Button>
+            <ExportCSVButton orders={orders} filename={`Report-${moment().format('YYYY-MM-DD')}-Completed.csv`} />
           </LocalizationProvider>
         </Stack>}
       </Stack>

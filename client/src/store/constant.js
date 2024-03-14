@@ -8,3 +8,7 @@ export const STATUS_REJECTED = 'rejected';
 export const STATUS_CANCELLED = 'cancelled';
 export const STATUS_ACCEPTED = 'accepted';
 export const STATUS_COMPLETED = 'completed';
+export const SERVICE_TYPE_WASH = 'Wash';
+export const SERVICE_TYPE_PICKWASH = 'Pickup & Wash';
+export const SERVICE_TYPE_SHUTTLE1WAY = 'Shuttle 1 Way';
+export const SERVICE_TYPE_SHUTTLE2WAY = 'Shuttle 2 Way';

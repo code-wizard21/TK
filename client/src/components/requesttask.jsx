@@ -18,6 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Iconify from "./iconify";
+import { SERVICE_TYPE_PICKWASH, SERVICE_TYPE_SHUTTLE1WAY, SERVICE_TYPE_SHUTTLE2WAY, SERVICE_TYPE_WASH } from "../store/constant";
 
 export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
   const auth = useSelector((state) => state.auth);
@@ -91,7 +92,7 @@ export const RequestTask = ({ toggleDrawer, refreshList, isDriver }) => {
         });
     }
   };
-  const serviceTypes = ["Wash", "Pickup&Wash", "Shuttle1Way", "Shuttle2Way"];
+  const serviceTypes = [SERVICE_TYPE_WASH, SERVICE_TYPE_PICKWASH, SERVICE_TYPE_SHUTTLE1WAY, SERVICE_TYPE_SHUTTLE2WAY];
 
   return (
     <Box
