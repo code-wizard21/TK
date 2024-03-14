@@ -113,7 +113,7 @@ export default function CancelledList(props) {
         sx={{ width: 1 }} // makes
       >
         <Typography variant="h4">Cancelled</Typography>
-        <Stack
+        {role=='admin' && <Stack
           direction="row"
           gap={1}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -125,7 +125,7 @@ export default function CancelledList(props) {
                   onChange={(newValue) => setDateTo(dayjs(newValue))} />
             <Button><Iconify icon="tdesign:download" /></Button>
           </LocalizationProvider>
-        </Stack>
+        </Stack>}
       </Stack>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">

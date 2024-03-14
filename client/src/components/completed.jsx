@@ -115,7 +115,7 @@ export default function CompletedList(props) {
         sx={{ width: 1 }} // makes
       >
         <Typography variant="h4">Completed</Typography>
-        <Stack
+        {role=='admin' && <Stack
           direction="row"
           gap={1}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -127,7 +127,7 @@ export default function CompletedList(props) {
                   onChange={(newValue) => setDateTo(dayjs(newValue))} />
             <Button><Iconify icon="tdesign:download" /></Button>
           </LocalizationProvider>
-        </Stack>
+        </Stack>}
       </Stack>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
